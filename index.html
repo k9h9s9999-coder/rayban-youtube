@@ -6,7 +6,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=600, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>V40 Focus Navigation Fixed</title>
+<title>V41 Keyboard Grid Nav</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{background:#000;color:#fff;font-family:sans-serif;width:600px;height:600px;overflow:hidden;display:flex;justify-content:center;align-items:center}
@@ -39,17 +39,16 @@ body{background:#000;color:#fff;font-family:sans-serif;width:600px;height:600px;
 .page-btn:focus{background:#00ff88;color:#000;border-color:#00ff88;box-shadow:0 0 0 3px #fff}
 .footer{height:16px;padding:0 8px;background:#000;display:flex;justify-content:space-between;font-size:8px;color:#444;flex-shrink:0;align-items:center}
 .center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:#666;padding:20px;text-align:center}
-.version{position:absolute;top:2px;right:2px;background:#ff0044;color:#fff;font-size:13px;font-weight:900;padding:5px 10px;border-radius:6px;z-index:99;animation:blink 0.6s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0.4}}
-.keypad-wrap{display:flex;flex-direction:column;background:#000;border-top:4px solid #00ff88;flex-shrink:0;height:300px;overflow:hidden}
+.version{position:absolute;top:2px;right:2px;background:#ff0044;color:#fff;font-size:13px;font-weight:900;padding:5px 10px;border-radius:6px;z-index:99}
+.keypad-wrap{display:flex;flex-direction:column;background:#000;border-top:4px solid #00ff88;flex-shrink:0;height:320px;overflow:hidden}
 .keypad-wrap.hidden{display:none !important}
 .keypad-tabs{display:flex;gap:4px;padding:6px;background:#111;flex-shrink:0}
 .keypad-tabs button{flex:1;padding:12px;border-radius:8px;border:2px solid #333;background:#1e1e1e;color:#fff;font-size:12px;font-weight:800;min-height:40px;outline:none}
 .keypad-tabs button:focus{background:#00ff88;color:#000;border-color:#00ff88;box-shadow:0 0 0 3px #fff}
 .keypad-tabs button.active{background:#00ff88;color:#000;border-color:#00ff88}
 .keypad{display:grid;gap:6px;padding:8px;flex:1;overflow-y:auto;align-content:start;background:#000;grid-template-columns:repeat(10,1fr)}
-.keypad button{background:#333;border:2px solid #555;color:#fff;border-radius:10px;font-size:16px;font-weight:700;min-height:50px;outline:none}
-.keypad button:focus{background:#00ff88 !important;color:#000 !important;border-color:#fff !important;transform:scale(1.15);box-shadow:0 0 0 4px #00ff88}
+.keypad button{background:#333;border:2px solid #555;color:#fff;border-radius:10px;font-size:16px;font-weight:700;min-height:50px;outline:none;position:relative}
+.keypad button:focus{background:#00ff88 !important;color:#000 !important;border-color:#fff !important;transform:scale(1.15);box-shadow:0 0 0 4px #00ff88;z-index:10}
 .keypad button.del{background:#552222;color:#ff7777;border-color:#ff4444}
 .keypad button.search{background:#00ff88;color:#000;border-color:#00ff88;font-weight:900;font-size:18px}
 .keypad button.space{background:#111;color:#00ff88;border-color:#00ff88;grid-column:span 4}
@@ -57,14 +56,14 @@ body{background:#000;color:#fff;font-family:sans-serif;width:600px;height:600px;
 </head>
 <body>
 <div class="hud" id="hud">
-<div class="version">V40 NEW</div>
-<div class="header"><div>RB YouTube V40</div><div style="font-size:9px;color:#ff0044" id="pageInfo">V40 - 2024</div></div>
+<div class="version">V41 키보드 위아래</div>
+<div class="header"><div>RB YouTube V41</div><div style="font-size:9px;color:#ff0044" id="pageInfo">V41 - 격자 이동</div></div>
 <div class="search-row">
 <input id="q" type="text" readonly placeholder="여기 누르면 키보드" onclick="showKB()">
 <button id="kbBtn" class="kb" onclick="toggleKB()">⌨️ 키보드</button>
 <button id="searchBtn" onclick="doSearchHide()">검색</button>
 </div>
-<div class="status"><span id="statusText">V40: 아래위로 스와이프 선택 가능</span><span id="info">대기중</span></div>
+<div class="status"><span id="statusText">V41: 키보드도 위아래/좌우로 이동 가능</span><span id="info">대기중</span></div>
 <div class="content" id="content"><div id="list" class="list"></div><div id="player" class="player"></div></div>
 <div class="pagination" id="pagination">
 <button class="page-btn" id="prevBtn" onclick="changePage(-1)">◀ 이전</button>
@@ -79,10 +78,10 @@ body{background:#000;color:#fff;font-family:sans-serif;width:600px;height:600px;
 </div>
 <div id="keypad" class="keypad"></div>
 </div>
-<div class="footer"><span>V40 스와이프 선택</span><span id="count">0개</span></div>
+<div class="footer"><span>V41 키보드 격자 이동</span><span id="count">0개</span></div>
 </div>
 <script>
-console.log('V40 NEW VERSION');
+console.log('V41 Keyboard Grid Navigation');
 const CHO = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
 const JUNG = ['ㅏ','ㅐ','ㅑ','ㅒ','ㅓ','ㅔ','ㅕ','ㅖ','ㅗ','ㅘ','ㅙ','ㅚ','ㅛ','ㅜ','ㅝ','ㅞ','ㅟ','ㅠ','ㅡ','ㅢ','ㅣ'];
 const JONG = ['', 'ㄱ','ㄲ','ㄳ','ㄴ','ㄵ','ㄶ','ㄷ','ㄹ','ㄺ','ㄻ','ㄼ','ㄽ','ㄾ','ㄿ','ㅀ','ㅁ','ㅂ','ㅄ','ㅅ','ㅆ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
@@ -91,7 +90,7 @@ function makeSyllable(cho,jung,jong){if(cho<0||jung<0) return null; return Strin
 let committed=''; let composing={cho:-1,jung:-1,jong:0};
 function getComposingChar(){if(composing.cho>=0&&composing.jung>=0){return makeSyllable(composing.cho,composing.jung,composing.jong);} if(composing.cho>=0&&composing.jung<0){return CHO[composing.cho];} if(composing.cho<0&&composing.jung>=0){return JUNG[composing.jung];} return '';}
 function commitComposing(){const ch=getComposingChar(); if(ch) committed+=ch; composing={cho:-1,jung:-1,jong:0};}
-function updateInput(){const d=committed+getComposingChar(); const el=document.getElementById('q'); if(el) el.value=d; const st=document.getElementById('statusText'); if(st) st.textContent=d?`입력: ${d} (${d.length}자)`:`V40: 아래위로 스와이프로 영상 선택 가능`;}
+function updateInput(){const d=committed+getComposingChar(); const el=document.getElementById('q'); if(el) el.value=d; const st=document.getElementById('statusText'); if(st) st.textContent=d?`입력: ${d} - 키보드 위아래/좌우 이동 가능`:`V41: 키보드 위아래로 이동 가능 - 스와이프 해보세요`;}
 function isConsonant(j){return CHO.includes(j);}
 function inputHangul(jamo){
   if(jamo===' '){commitComposing(); committed+=' '; updateInput(); return;}
@@ -119,7 +118,13 @@ function setLang(lang){currentLang=lang; const kr=document.getElementById('tabKr
 function toggleKB(){const w=document.getElementById('keypadWrap'); const btn=document.getElementById('kbBtn'); if(!w) return; if(w.classList.contains('hidden')){w.classList.remove('hidden'); w.style.display='flex'; if(btn){btn.textContent='⌨️ 닫기';} rebuildFocusable(); setTimeout(()=>{moveFocusToFirstKeypad()},100);} else {w.classList.add('hidden'); w.style.display='none'; if(btn){btn.textContent='⌨️ 키보드';} rebuildFocusable();}}
 function showKB(){const w=document.getElementById('keypadWrap'); const btn=document.getElementById('kbBtn'); if(!w) return; w.classList.remove('hidden'); w.style.display='flex'; if(btn) btn.textContent='⌨️ 닫기'; rebuildFocusable(); setTimeout(()=>{moveFocusToFirstKeypad()},100);}
 function hideKB(){const w=document.getElementById('keypadWrap'); const btn=document.getElementById('kbBtn'); if(!w) return; w.classList.add('hidden'); w.style.display='none'; if(btn) btn.textContent='⌨️ 키보드'; rebuildFocusable();}
-let focusableElements=[]; let focusIndex=0;
+
+// 포커스 시스템 V41 - 키보드 격자 이동
+let focusableElements=[]; 
+let focusIndex=0;
+let keypadRows = []; // 각 행의 길이
+let keypadRowStarts = []; // 각 행 시작 인덱스
+
 function rebuildFocusable(){
   const visible = [];
   const q=document.getElementById('q'); if(q) visible.push(q);
@@ -127,20 +132,72 @@ function rebuildFocusable(){
   const searchBtn=document.getElementById('searchBtn'); if(searchBtn) visible.push(searchBtn);
   const keypadWrap=document.getElementById('keypadWrap');
   const isKeypadVisible = keypadWrap && !keypadWrap.classList.contains('hidden');
+  
   if(isKeypadVisible){
     const tabs=document.querySelectorAll('#keypadWrap .keypad-tabs button');
     tabs.forEach(b=>visible.push(b));
+    // 키보드 행 구조 계산
+    if(currentLang==='kr'){
+      keypadRows = [10,9,7,3]; // ㅂ줄 10개, ㅁ줄 9개, ㅋ줄 7개, 스페이스/삭제/입력 3개
+    } else {
+      keypadRows = [10,8,7,3]; // q 10개, a 8개, z 7개, 스페이스/삭제/입력 3개
+    }
+    keypadRowStarts = [];
+    let sum=0;
+    for(let i=0;i<keypadRows.length;i++){
+      keypadRowStarts.push(sum);
+      sum+=keypadRows[i];
+    }
     const keys=document.querySelectorAll('#keypad button');
     keys.forEach(b=>visible.push(b));
   } else {
+    keypadRows = [];
+    keypadRowStarts = [];
     const cards=document.querySelectorAll('#list .card-btn');
     cards.forEach(b=>visible.push(b));
     const prev=document.getElementById('prevBtn'); if(prev) visible.push(prev);
     const next=document.getElementById('nextBtn'); if(next) visible.push(next);
   }
   focusableElements=visible;
+  console.log('Focusable:', visible.length, 'rows:', keypadRows, 'starts:', keypadRowStarts);
 }
+
+function getKeypadIndexFromFocusable(focusIdx){
+  // focusableElements에서 키패드 버튼의 인덱스 (0부터)
+  const tabsCount = 4; // 한글, ENG, 지우기, 닫기
+  const topCount = 3; // 검색창, 키보드버튼, 검색버튼
+  const keypadStartInFocusable = topCount + tabsCount; // 7
+  return focusIdx - keypadStartInFocusable;
+}
+
+function getFocusableIndexFromKeypad(keypadIdx){
+  const tabsCount = 4;
+  const topCount = 3;
+  const keypadStartInFocusable = topCount + tabsCount;
+  return keypadStartInFocusable + keypadIdx;
+}
+
+function getRowColFromKeypadIdx(kIdx){
+  for(let r=0;r<keypadRows.length;r++){
+    const start=keypadRowStarts[r];
+    const len=keypadRows[r];
+    if(kIdx>=start && kIdx<start+len){
+      return {row:r, col:kIdx-start, rowLen:len};
+    }
+  }
+  return null;
+}
+
+function getKeypadIdxFromRowCol(row, col){
+  if(row<0 || row>=keypadRows.length) return -1;
+  const len=keypadRows[row];
+  if(col<0) col=0;
+  if(col>=len) col=len-1;
+  return keypadRowStarts[row]+col;
+}
+
 function moveFocus(dir){
+  // dir: 1=다음, -1=이전 (좌우/아래위로 공통)
   if(focusableElements.length===0) rebuildFocusable();
   if(focusableElements.length===0) return;
   focusIndex+=dir;
@@ -149,6 +206,107 @@ function moveFocus(dir){
   const el=focusableElements[focusIndex];
   if(el){ el.focus(); el.scrollIntoView({block:'nearest', behavior:'smooth'}); }
 }
+
+function moveFocusGrid(dRow, dCol){
+  const keypadWrap=document.getElementById('keypadWrap');
+  const isKeypadVisible = keypadWrap && !keypadWrap.classList.contains('hidden');
+  
+  if(!isKeypadVisible){
+    // 리스트에서는 위아래가 곧 다음/이전
+    if(dRow!==0) moveFocus(dRow>0 ? 1 : -1);
+    else if(dCol!==0) moveFocus(dCol>0 ? 1 : -1);
+    return;
+  }
+  
+  // 키패드 보이는 경우
+  const currentEl=document.activeElement;
+  const currentFocusIdx=focusableElements.indexOf(currentEl);
+  if(currentFocusIdx>=0) focusIndex=currentFocusIdx;
+  
+  const tabsCount=4;
+  const topCount=3;
+  const keypadStart=topCount+tabsCount;
+  
+  // 상단 검색창/탭 영역
+  if(focusIndex < keypadStart){
+    if(dRow>0){
+      // 아래로 - 첫 키로
+      focusIndex=getFocusableIndexFromKeypad(0);
+    } else if(dRow<0){
+      // 위로 - 순환
+      focusIndex=focusableElements.length-1;
+    } else {
+      moveFocus(dCol>0 ? 1 : -1);
+      return;
+    }
+  } else {
+    // 키패드 내부
+    const kIdx=getKeypadIndexFromFocusable(focusIndex);
+    const pos=getRowColFromKeypadIdx(kIdx);
+    if(!pos){
+      moveFocus(dCol>0 ? 1 : -1);
+      return;
+    }
+    let newRow=pos.row;
+    let newCol=pos.col;
+    if(dRow!==0){
+      newRow=pos.row+dRow;
+      // 위로 올라갈 때 탭으로 가기
+      if(newRow<0){
+        // 첫 줄에서 위로 -> 탭의 마지막 (닫기)
+        focusIndex=keypadStart-1;
+        focusableElements[focusIndex].focus();
+        return;
+      }
+      if(newRow>=keypadRows.length){
+        // 마지막 줄에서 아래로 -> 리스트 첫 번째나 순환
+        focusIndex=0;
+        focusableElements[focusIndex].focus();
+        return;
+      }
+      // 같은 열 유지, 없으면 마지막 열
+      const newRowLen=keypadRows[newRow];
+      if(newCol>=newRowLen) newCol=newRowLen-1;
+      const newKIdx=getKeypadIdxFromRowCol(newRow, newCol);
+      focusIndex=getFocusableIndexFromKeypad(newKIdx);
+    } else if(dCol!==0){
+      newCol=pos.col+dCol;
+      const rowLen=keypadRows[pos.row];
+      if(newCol<0){
+        // 왼쪽 끝에서 왼쪽 -> 이전 행 마지막 또는 같은 행 마지막으로 랩
+        if(pos.row>0){
+          newRow=pos.row-1;
+          newCol=keypadRows[newRow]-1;
+          const newKIdx=getKeypadIdxFromRowCol(newRow, newCol);
+          focusIndex=getFocusableIndexFromKeypad(newKIdx);
+        } else {
+          // 첫 행 첫 열에서 왼쪽 -> 같은 행 마지막
+          newCol=rowLen-1;
+          const newKIdx=getKeypadIdxFromRowCol(pos.row, newCol);
+          focusIndex=getFocusableIndexFromKeypad(newKIdx);
+        }
+      } else if(newCol>=rowLen){
+        // 오른쪽 끝에서 오른쪽 -> 다음 행 첫 열 또는 같은 행 첫 열로 랩
+        if(pos.row<keypadRows.length-1){
+          newRow=pos.row+1;
+          newCol=0;
+          const newKIdx=getKeypadIdxFromRowCol(newRow, newCol);
+          focusIndex=getFocusableIndexFromKeypad(newKIdx);
+        } else {
+          newCol=0;
+          const newKIdx=getKeypadIdxFromRowCol(pos.row, newCol);
+          focusIndex=getFocusableIndexFromKeypad(newKIdx);
+        }
+      } else {
+        const newKIdx=getKeypadIdxFromRowCol(pos.row, newCol);
+        focusIndex=getFocusableIndexFromKeypad(newKIdx);
+      }
+    }
+  }
+  const el=focusableElements[focusIndex];
+  if(el){ el.focus(); el.scrollIntoView({block:'nearest'}); }
+}
+
 function moveFocusToFirstCard(){
   rebuildFocusable();
   const cards=document.querySelectorAll('#list .card-btn');
@@ -162,8 +320,8 @@ function moveFocusToFirstKeypad(){
   rebuildFocusable();
   const keys=document.querySelectorAll('#keypad button');
   if(keys.length>0){
-    focusIndex=focusableElements.indexOf(keys[0]);
-    if(focusIndex<0) focusIndex=0;
+    const firstKeyIdx=getFocusableIndexFromKeypad(0);
+    focusIndex=firstKeyIdx;
     keys[0].focus();
   }
 }
@@ -235,7 +393,7 @@ function renderPage(){
     }
     safeSetText('pageInfo', `${currentPage+1}/${totalPages}`);
     safeSetText('count', `${lastItems.length}개`);
-    safeSetText('statusText', `검색 완료: ${lastItems.length}개 - 스와이프/방향키로 이동`);
+    safeSetText('statusText', `검색 완료: ${lastItems.length}개 - 스와이프로 이동`);
     rebuildFocusable();
     setTimeout(()=>{moveFocusToFirstCard();},200);
   }catch(e){safeSetText('statusText', `렌더 오류: ${e.message}`);}
@@ -272,10 +430,23 @@ function doSearchHide(){
     }
   })();
 }
+
+// V41 네비게이션 - 위아래/좌우 모두
 document.addEventListener('keydown', (e)=>{
-  if(e.key==='ArrowDown' || e.key==='ArrowRight'){ e.preventDefault(); moveFocus(1); }
-  else if(e.key==='ArrowUp' || e.key==='ArrowLeft'){ e.preventDefault(); moveFocus(-1); }
-  else if(e.key==='Escape'){
+  console.log('Key', e.key);
+  if(e.key==='ArrowDown'){
+    e.preventDefault();
+    moveFocusGrid(1,0);
+  } else if(e.key==='ArrowUp'){
+    e.preventDefault();
+    moveFocusGrid(-1,0);
+  } else if(e.key==='ArrowRight'){
+    e.preventDefault();
+    moveFocusGrid(0,1);
+  } else if(e.key==='ArrowLeft'){
+    e.preventDefault();
+    moveFocusGrid(0,-1);
+  } else if(e.key==='Escape'){
     if(isPlayer){
       const hud=document.getElementById('hud'); if(hud) hud.classList.remove('playing');
       const player=document.getElementById('player'); if(player) player.style.display='none';
@@ -288,12 +459,29 @@ document.addEventListener('keydown', (e)=>{
     }
   }
 });
-let touchStartY=0;
-document.addEventListener('touchstart', (e)=>{ touchStartY=e.touches[0].clientY; }, {passive:true});
-document.addEventListener('touchend', (e)=>{
-  const diff=e.changedTouches[0].clientY - touchStartY;
-  if(Math.abs(diff)>50){ if(diff>0) moveFocus(-1); else moveFocus(1); }
+
+// 터치 스와이프
+let touchStartY=0, touchStartX=0;
+document.addEventListener('touchstart', (e)=>{
+  touchStartY=e.touches[0].clientY;
+  touchStartX=e.touches[0].clientX;
 }, {passive:true});
+document.addEventListener('touchend', (e)=>{
+  const diffY=e.changedTouches[0].clientY - touchStartY;
+  const diffX=e.changedTouches[0].clientX - touchStartX;
+  if(Math.abs(diffY)>Math.abs(diffX)){
+    if(Math.abs(diffY)>50){
+      if(diffY>0) moveFocusGrid(-1,0);
+      else moveFocusGrid(1,0);
+    }
+  } else {
+    if(Math.abs(diffX)>50){
+      if(diffX>0) moveFocusGrid(0,-1);
+      else moveFocusGrid(0,1);
+    }
+  }
+}, {passive:true});
+
 buildKeypad();
 setTimeout(()=>{ committed='고양이'; updateInput(); doSearchHide(); },800);
 setTimeout(()=>{rebuildFocusable();},1000);
