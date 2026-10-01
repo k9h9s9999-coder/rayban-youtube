@@ -2,58 +2,76 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=600, initial-scale=1">
-<title>Ray-Ban YouTube - Fixed</title>
+<meta name="viewport" content="width=600, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Ray-Ban Touch Fix</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:#0a0a0a;color:#fff;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;display:flex;justify-content:center;align-items:center;min-height:100vh}
-.hud{width:600px;height:600px;background:#121212;border-radius:20px;overflow:hidden;display:flex;flex-direction:column;border:1px solid #2a2a2a;position:relative}
-.header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:#1a1a1a;border-bottom:1px solid #2a2a2a}
-.logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:18px}
-.badge{background:#333;color:#aaa;font-size:11px;padding:3px 8px;border-radius:6px;font-weight:700;letter-spacing:.5px}
-.live{color:#00ff88;font-size:12px;font-weight:700;letter-spacing:1px}
-.search-row{display:flex;gap:8px;padding:12px;background:#1a1a1a;border-bottom:1px solid #2a2a2a}
-.search-row input{flex:1;background:#0f0f0f;border:1px solid #333;border-radius:12px;padding:12px 14px;color:#fff;font-size:16px;outline:none}
-.search-row input:focus{border-color:#00ff88}
-.search-row button{background:#fff;color:#000;border:0;border-radius:12px;padding:0 20px;font-weight:800;font-size:14px;cursor:pointer}
-.search-row button:active{transform:scale(.97)}
-.status{padding:8px 16px;font-size:12px;color:#ff6b7a;min-height:28px}
-.content{flex:1;overflow-y:auto;padding:8px;display:flex;flex-direction:column;gap:8px}
-.card{display:flex;gap:10px;background:#1e1e1e;border-radius:12px;padding:8px;cursor:pointer;border:1px solid transparent}
-.card:hover{border-color:#333;background:#242424}
-.thumb{width:96px;height:54px;border-radius:8px;background:#000;object-fit:cover;flex-shrink:0}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:#000;color:#fff;font-family:-apple-system,sans-serif;width:600px;height:600px;overflow:hidden;display:flex;justify-content:center;align-items:center}
+.hud{width:600px;height:600px;background:#121212;display:flex;flex-direction:column;position:relative;border-radius:18px;overflow:hidden;border:2px solid #222}
+.header{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;background:#1a1a1a;border-bottom:1px solid #2a2a2a;flex-shrink:0}
+.logo{font-weight:900;font-size:15px;display:flex;align-items:center;gap:6px}
+.badge{font-size:10px;background:#00ff88;color:#000;padding:2px 6px;border-radius:4px;font-weight:800}
+.search-row{display:flex;gap:6px;padding:8px;background:#1a1a1a;border-bottom:1px solid #2a2a2a;flex-shrink:0}
+.search-row input{flex:1;background:#0a0a0a;border:1px solid #444;border-radius:10px;padding:14px 12px;color:#fff;font-size:18px;outline:none}
+.search-row button{background:#fff;color:#000;border:0;border-radius:10px;padding:0 16px;font-weight:900;font-size:15px;min-width:74px}
+.status{height:26px;padding:0 12px;font-size:11px;color:#00ff88;display:flex;align-items:center;background:#0f0f0f;flex-shrink:0}
+.content{flex:1;overflow:hidden;display:flex;flex-direction:column;position:relative}
+.list{flex:1;overflow-y:auto;padding:6px;display:flex;flex-direction:column;gap:6px;scroll-behavior:smooth}
+.card{display:flex;gap:8px;background:#1e1e1e;border-radius:12px;padding:8px;cursor:pointer;border:2px solid transparent;min-height:86px;align-items:center}
+.card:active,.card:focus{border-color:#00ff88;background:#2a2a2a;transform:scale(0.98)}
+.card.selected{border-color:#00ff88;background:#242424}
+.thumb{width:120px;height:68px;border-radius:8px;background:#000;object-fit:cover;flex-shrink:0}
 .meta{flex:1;min-width:0}
-.title{font-size:13px;font-weight:600;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.ch{font-size:11px;color:#999;margin-top:4px}
-.player-wrap{flex:1;display:flex;flex-direction:column;background:#000}
-.player-wrap iframe{width:100%;flex:1;border:0}
-.back{padding:10px 16px;background:#1a1a1a;border-bottom:1px solid #2a2a2a;display:flex;gap:8px}
-.back button{background:#2a2a2a;border:0;color:#fff;padding:8px 14px;border-radius:8px;font-size:13px;cursor:pointer}
-.footer{padding:6px 12px;background:#0f0f0f;border-top:1px solid #222;display:flex;justify-content:space-between;font-size:10px;color:#666;letter-spacing:1px}
-.center{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:12px;color:#888;text-align:center;padding:20px}
-.center b{color:#fff}
-.retry{background:#2a2a2a;color:#fff;border:0;padding:10px 18px;border-radius:20px;cursor:pointer;font-size:13px}
+.title{font-size:14px;font-weight:700;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ch{font-size:11px;color:#aaa;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.num{background:#2a2a2a;color:#00ff88;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;flex-shrink:0}
+.player{flex:1;display:flex;flex-direction:column;background:#000}
+.player iframe{flex:1;width:100%;border:0}
+.controls{display:flex;gap:6px;padding:8px;background:#1a1a1a;border-bottom:1px solid #2a2a2a;flex-shrink:0}
+.ctrl{flex:1;background:#2a2a2a;border:0;color:#fff;padding:14px 4px;border-radius:12px;font-size:13px;font-weight:800;display:flex;flex-direction:column;align-items:center;gap:2px}
+.ctrl.big{flex:1.3;background:#fff;color:#000;font-size:15px}
+.ctrl:active{transform:scale(0.96);background:#3a3a3a}
+.ctrl.big:active{background:#ddd}
+.scroll-ctrls{display:flex;gap:6px;padding:6px;background:#0f0f0f;border-top:1px solid #222;flex-shrink:0}
+.scroll-ctrls button{flex:1;background:#1e1e1e;border:1px solid #333;color:#fff;padding:16px;border-radius:12px;font-weight:900;font-size:18px}
+.scroll-ctrls button:active{background:#2a2a2a;border-color:#00ff88}
+.keypad{display:grid;grid-template-columns:repeat(10,1fr);gap:3px;padding:6px;background:#0a0a0a;border-top:1px solid #222;flex-shrink:0}
+.keypad button{background:#1e1e1e;border:0;color:#fff;padding:10px 2px;border-radius:6px;font-size:13px;font-weight:700}
+.keypad button:active{background:#00ff88;color:#000}
+.keypad .space{grid-column:span 6}
+.keypad .del{grid-column:span 2;background:#ff3b30}
+.keypad .enter{grid-column:span 2;background:#00ff88;color:#000}
+.footer{height:20px;padding:0 10px;background:#000;display:flex;justify-content:space-between;align-items:center;font-size:9px;color:#555;flex-shrink:0;letter-spacing:0.5px}
+.center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:#777;padding:20px;text-align:center}
+.center b{color:#fff;font-size:16px}
 </style>
 </head>
 <body>
 <div class="hud">
   <div class="header">
-    <div class="logo"><span style="background:#fff;color:#000;width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:900">RB</span> Ray-Ban Display <span class="badge">HUD</span></div>
-    <div class="live">● LIVE</div>
+    <div class="logo"><span style="width:26px;height:26px;background:#fff;color:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px">RB</span> Ray-Ban <span class="badge">TOUCH</span></div>
+    <div style="font-size:11px;color:#00ff88;font-weight:800">600×600 HUD</div>
   </div>
   <div class="search-row">
-    <input id="q" placeholder="검색어 입력 (예: 고양이, BTS, 요리)" value="Cat" onkeydown="if(event.key==='Enter') doSearch()">
-    <button onclick="doSearch()">Search</button>
+    <input id="q" placeholder="검색어 - 예: 고양이" value="Cat">
+    <button onclick="doSearch()">검색</button>
   </div>
-  <div id="status" class="status"></div>
-  <div id="content" class="content">
-    <div class="center"><b>검색어를 입력하고 Search를 누르세요</b><span>600×600 HUD 최적화 • API 키 필요 없음</span></div>
+  <div id="status" class="status">터치로 조작 가능 - 아래 버튼으로 스크롤</div>
+  <div class="content">
+    <div id="list" class="list"></div>
+    <div id="player" class="player" style="display:none"></div>
   </div>
-  <div class="footer"><span>FIXED • MULTI-PIPED • NO KEY • 600×600 HUD</span><span id="instance">ready</span></div>
+  <div id="scrollCtrl" class="scroll-ctrls">
+    <button onclick="scrollList(-200)">▲ 위</button>
+    <button onclick="scrollList(200)">▼ 아래</button>
+    <button onclick="focusInput()">⌨️ 키보드</button>
+  </div>
+  <div id="keypad" class="keypad" style="display:none"></div>
+  <div class="footer"><span>TOUCH FIX • NO KEYBOARD NEEDED</span><span id="info">ready</span></div>
 </div>
 
 <script>
-const PIPED_INSTANCES = [
+const INSTANCES = [
   "https://pipedapi.kavin.rocks",
   "https://api.piped.private.coffee",
   "https://pipedapi.adminforge.de",
@@ -64,109 +82,156 @@ const PIPED_INSTANCES = [
   "https://api.piped.privacydev.net"
 ];
 
-async function fetchWithTimeout(url, ms=6000){
-  const ctrl = new AbortController();
-  const id = setTimeout(()=>ctrl.abort(), ms);
-  try{
-    const r = await fetch(url, {signal: ctrl.signal, headers: {'Accept':'application/json'}});
-    clearTimeout(id);
-    if(!r.ok) throw new Error('http '+r.status);
-    return await r.json();
-  }catch(e){
-    clearTimeout(id);
-    throw e;
-  }
+let lastItems=[], lastQuery='', selectedIndex=-1, isPlayer=false;
+
+async function fetchTimeout(url, ms=6500){
+  const c=new AbortController(); const t=setTimeout(()=>c.abort(), ms);
+  try{ const r=await fetch(url,{signal:c.signal}); clearTimeout(t); if(!r.ok) throw new Error(r.status); return await r.json(); }catch(e){ clearTimeout(t); throw e; }
 }
 
-async function searchPiped(query){
-  let lastErr='';
-  for(let i=0;i<PIPED_INSTANCES.length;i++){
-    const base = PIPED_INSTANCES[i];
-    document.getElementById('instance').textContent = `try ${i+1}/${PIPED_INSTANCES.length} ${new URL(base).hostname}`;
+async function searchPiped(q){
+  for(let i=0;i<INSTANCES.length;i++){
+    document.getElementById('info').textContent=`${i+1}/${INSTANCES.length} ${new URL(INSTANCES[i]).host}`;
     try{
-      const url = `${base}/search?q=${encodeURIComponent(query)}&filter=videos`;
-      const data = await fetchWithTimeout(url, 7000);
-      if(data && data.items && data.items.length>0) return {data, base};
-      if(data && data.items) lastErr='empty';
-      else lastErr='no items';
-    }catch(e){
-      lastErr = e.message;
-      continue;
-    }
+      const d=await fetchTimeout(`${INSTANCES[i]}/search?q=${encodeURIComponent(q)}&filter=videos`,7000);
+      if(d.items && d.items.length) return {items:d.items, host:new URL(INSTANCES[i]).host};
+    }catch(e){ continue; }
   }
-  throw new Error(lastErr||'all instances failed');
+  throw new Error('all failed');
 }
 
 function renderList(items){
-  const c = document.getElementById('content');
-  c.innerHTML = '';
-  items.forEach(v=>{
-    const id = v.url?.replace('/watch?v=','') || v.id || '';
-    const title = v.title || v.name || 'No title';
-    const ch = v.uploaderName || v.uploader || v.author || '';
-    const thumb = v.thumbnail || (v.thumbnails && v.thumbnails[0]) || `https://i.ytimg.com/vi/${id}/mqdefault.jpg`;
-    const card = document.createElement('div');
-    card.className='card';
-    card.innerHTML = `<img class="thumb" src="${thumb}" onerror="this.src='https://i.ytimg.com/vi/${id}/mqdefault.jpg'"><div class="meta"><div class="title">${title}</div><div class="ch">${ch}</div></div>`;
-    card.onclick = ()=> playVideo(id, title);
-    c.appendChild(card);
+  const list=document.getElementById('list');
+  list.innerHTML='';
+  document.getElementById('player').style.display='none';
+  list.style.display='flex';
+  document.getElementById('scrollCtrl').style.display='flex';
+  isPlayer=false;
+  items.forEach((v, idx)=>{
+    const id=v.url?.replace('/watch?v=','')||v.id||'';
+    const title=v.title||'No title';
+    const ch=v.uploaderName||v.author||'';
+    const thumb=v.thumbnail||`https://i.ytimg.com/vi/${id}/mqdefault.jpg`;
+    const div=document.createElement('div');
+    div.className='card';
+    div.id='card-'+idx;
+    div.innerHTML=`<div class="num">${idx+1}</div><img class="thumb" src="${thumb}" onerror="this.src='https://i.ytimg.com/vi/${id}/mqdefault.jpg'"><div class="meta"><div class="title">${title}</div><div class="ch">${ch}</div></div>`;
+    div.onclick=()=>playVideo(id, title, idx);
+    list.appendChild(div);
+  });
+  selectedIndex=-1;
+}
+
+function playVideo(id, title, idx){
+  selectedIndex=idx;
+  lastItems.forEach((_,i)=>{const el=document.getElementById('card-'+i); if(el) el.classList.remove('selected')});
+  const cur=document.getElementById('card-'+idx); if(cur) cur.classList.add('selected');
+  const player=document.getElementById('player');
+  const list=document.getElementById('list');
+  list.style.display='none';
+  document.getElementById('scrollCtrl').style.display='none';
+  player.style.display='flex';
+  isPlayer=true;
+  player.innerHTML=`
+    <div class="controls">
+      <button class="ctrl" onclick="backToList()"><span>←</span>목록</button>
+      <button class="ctrl big" onclick="toggleFullscreen()">⛶ 크게</button>
+      <button class="ctrl" onclick="nextVideo(1)"><span>→</span>다음</button>
+    </div>
+    <iframe id="yt" src="https://www.youtube.com/embed/${id}?autoplay=1&playsinline=1&enablejsapi=1&origin=https://k9h9s9999-coder.github.io" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>
+    <div class="controls">
+      <button class="ctrl" onclick="nextVideo(-1)">이전</button>
+      <button class="ctrl big" onclick="backToList()">✕ 닫기</button>
+      <button class="ctrl" onclick="copyLink('${id}')">복사</button>
+    </div>
+  `;
+  document.getElementById('status').textContent=`${idx+1} / ${lastItems.length} - ${title.slice(0,30)}`;
+}
+
+function backToList(){
+  document.getElementById('player').style.display='none';
+  document.getElementById('list').style.display='flex';
+  document.getElementById('scrollCtrl').style.display='flex';
+  isPlayer=false;
+  if(selectedIndex>=0){ setTimeout(()=>{document.getElementById('card-'+selectedIndex)?.scrollIntoView({block:'center'})},100); }
+}
+
+function nextVideo(dir){
+  if(!lastItems.length) return;
+  let ni = selectedIndex+dir;
+  if(ni<0) ni=lastItems.length-1;
+  if(ni>=lastItems.length) ni=0;
+  const v=lastItems[ni];
+  const id=v.url?.replace('/watch?v=','')||v.id;
+  playVideo(id, v.title, ni);
+}
+
+function scrollList(px){ document.getElementById('list').scrollBy({top:px, behavior:'smooth'}); }
+
+function focusInput(){
+  const kp=document.getElementById('keypad');
+  kp.style.display = kp.style.display==='none' ? 'grid' : 'none';
+  document.getElementById('q').focus();
+}
+
+function buildKeypad(){
+  const keys='ㅂㅈㄷㄱㅅㅛㅕㅑㅐㅔㅁㄴㅇㄹㅎㅗㅓㅏㅣㅋㅌㅊㅍㅠㅜㅡ'.split('');
+  const en='qwertyuiopasdfghjklzxcvbnm'.split('');
+  const kp=document.getElementById('keypad');
+  const all=[...en, ' ', 'DEL', '검색'];
+  kp.innerHTML='';
+  all.forEach(k=>{
+    const b=document.createElement('button');
+    if(k===' '){ b.textContent='스페이스'; b.className='space'; b.onclick=()=>typeKey(' '); }
+    else if(k==='DEL'){ b.textContent='⌫'; b.className='del'; b.onclick=()=>delKey(); }
+    else if(k==='검색'){ b.textContent='검색'; b.className='enter'; b.onclick=()=>{kp.style.display='none'; doSearch();}; }
+    else { b.textContent=k; b.onclick=()=>typeKey(k); }
+    kp.appendChild(b);
   });
 }
+function typeKey(k){ const inp=document.getElementById('q'); inp.value+=k; inp.focus(); }
+function delKey(){ const inp=document.getElementById('q'); inp.value=inp.value.slice(0,-1); }
 
-function playVideo(id, title){
-  const c = document.getElementById('content');
-  c.innerHTML = `<div class="player-wrap">
-    <div class="back"><button onclick="doSearch(true)">← 뒤로가기</button><button onclick="copyLink('${id}')">링크 복사</button></div>
-    <iframe src="https://www.youtube.com/embed/${id}?autoplay=1&playsinline=1" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>
-  </div>`;
-  document.getElementById('status').textContent = title;
-}
-
-function fallbackYoutubeSearch(query){
-  const c = document.getElementById('content');
-  c.innerHTML = `<div class="player-wrap">
-    <div class="back"><button onclick="doSearch(true)">← 뒤로가기</button><span style="font-size:12px;color:#999;padding:8px">Piped 실패 → 유튜브 직접 검색</span></div>
-    <iframe src="https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(query)}&autoplay=0" allow="encrypted-media; fullscreen"></iframe>
-  </div>`;
-  document.getElementById('status').textContent = 'Piped 서버 일시 오류 - 유튜브 직접 검색 모드로 전환됨';
-}
-
-let lastQuery = '';
-let lastItems = [];
-
-async function doSearch(isBack=false){
-  const input = document.getElementById('q');
-  let query = input.value.trim();
-  if(!query) query = 'Cat';
-  if(isBack && lastItems.length){
-    renderList(lastItems);
-    document.getElementById('status').textContent = `${lastQuery} - ${lastItems.length}개 결과`;
-    return;
-  }
-  lastQuery = query;
-  document.getElementById('status').textContent = '검색 중...';
-  document.getElementById('content').innerHTML = '<div class="center"><b>검색 중...</b><span>여러 서버를 시도하고 있어요</span></div>';
+async function doSearch(){
+  const q=document.getElementById('q').value.trim()||'Cat';
+  lastQuery=q;
+  document.getElementById('status').textContent='검색 중... 서버 돌리는 중';
+  document.getElementById('list').innerHTML='<div class="center"><b>검색 중...</b>8개 서버 순회</div>';
+  document.getElementById('player').style.display='none';
+  document.getElementById('list').style.display='flex';
+  document.getElementById('scrollCtrl').style.display='flex';
   try{
-    const {data, base} = await searchPiped(query);
-    lastItems = data.items.slice(0,20);
-    document.getElementById('instance').textContent = new URL(base).hostname + ' ✓';
-    document.getElementById('status').textContent = `${query} - ${lastItems.length}개 결과 (${new URL(base).hostname})`;
+    const res=await searchPiped(q);
+    lastItems=res.items.slice(0,20);
+    document.getElementById('status').textContent=`${q} - ${lastItems.length}개 (${res.host}) - 터치로 선택`;
+    document.getElementById('info').textContent=res.host+' ✓';
     renderList(lastItems);
   }catch(e){
-    console.error(e);
-    document.getElementById('status').textContent = `검색 실패 - ${e.message}. 유튜브 직접 모드로 전환`;
-    fallbackYoutubeSearch(query);
+    document.getElementById('status').textContent='Piped 실패 - 유튜브 직접 검색으로 전환';
+    document.getElementById('list').innerHTML='';
+    const p=document.getElementById('player');
+    p.style.display='flex';
+    document.getElementById('list').style.display='none';
+    p.innerHTML=`
+      <div class="controls"><button class="ctrl" onclick="backToList()">← 목록</button><button class="ctrl big" onclick="doSearch()">재시도</button></div>
+      <iframe src="https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(q)}" allow="encrypted-media; fullscreen"></iframe>
+    `;
   }
 }
+function copyLink(id){ navigator.clipboard.writeText('https://youtu.be/'+id); document.getElementById('status').textContent='링크 복사됨!'; }
+function toggleFullscreen(){ const f=document.getElementById('yt'); if(f) f.requestFullscreen?.(); }
 
-function copyLink(id){
-  const url = `https://www.youtube.com/watch?v=${id}`;
-  navigator.clipboard.writeText(url);
-  document.getElementById('status').textContent = '링크 복사됨: '+url;
-}
+buildKeypad();
+setTimeout(doSearch,600);
 
-// auto search on load
-setTimeout(()=>doSearch(), 500);
+// D-pad support for Ray-Ban temple touch
+let touchStartY=0;
+document.addEventListener('touchstart', e=>{ touchStartY=e.touches[0].clientY; });
+document.addEventListener('touchend', e=>{
+  if(isPlayer) return;
+  const dy=e.changedTouches[0].clientY-touchStartY;
+  if(Math.abs(dy)>50){ scrollList(dy>0?-120:120); }
+});
 </script>
 </body>
 </html>
