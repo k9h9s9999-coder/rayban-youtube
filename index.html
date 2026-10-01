@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta name="viewport" content="width=600, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>V32 Keyboard Simple Toggle</title>
+<title>V33 Search Input Keyboard</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{background:#000;color:#fff;font-family:-apple-system,sans-serif;width:600px;height:600px;overflow:hidden;display:flex;justify-content:center;align-items:center}
@@ -15,7 +15,8 @@ body{background:#000;color:#fff;font-family:-apple-system,sans-serif;width:600px
 .hud.playing .player iframe{height:600px !important;width:600px !important;border:0}
 .header{height:26px;display:flex;align-items:center;justify-content:space-between;padding:0 10px;background:#1a1a1a;border-bottom:1px solid #2a2a2a;flex-shrink:0;font-size:12px}
 .search-row{display:flex;gap:4px;padding:6px;background:#1a1a1a;border-bottom:1px solid #2a2a2a;flex-shrink:0}
-.search-row input{flex:1;background:#000;border:2px solid #00ff88;border-radius:10px;padding:12px 10px;color:#fff;font-size:16px;outline:none}
+.search-row input{flex:1;background:#000;border:2px solid #00ff88;border-radius:10px;padding:12px 10px;color:#fff;font-size:16px;outline:none;cursor:pointer}
+.search-row input:active, .search-row input:focus{box-shadow:0 0 0 4px rgba(0,255,136,.6);background:#1a1a1a}
 .search-row button{background:#00ff88;color:#000;border:2px solid #00ff88;border-radius:10px;padding:0 12px;font-weight:900;font-size:14px;min-width:60px;height:46px;outline:none}
 .search-row button.kb{background:#1e1e1e;color:#00ff88;border:2px solid #00ff88;min-width:88px}
 .search-row button.kb.active{background:#00ff88;color:#000}
@@ -53,14 +54,14 @@ body{background:#000;color:#fff;font-family:-apple-system,sans-serif;width:600px
 </head>
 <body>
 <div class="hud" id="hud">
-<div class="version">V32 무조건 뜸</div>
-<div class="header"><div>RB YouTube <span style="font-size:8px;background:#00ff88;color:#000;padding:2px 4px;border-radius:3px">V32 심플 토글</span></div><div style="font-size:9px;color:#00ff88" id="pageInfo"></div></div>
+<div class="version">V33 검색창 키보드</div>
+<div class="header"><div>RB YouTube <span style="font-size:8px;background:#00ff88;color:#000;padding:2px 4px;border-radius:3px">V33 검색창 클릭</span></div><div style="font-size:9px;color:#00ff88" id="pageInfo"></div></div>
 <div class="search-row">
-<input id="q" type="text" readonly placeholder="⌨️ 누르면 키보드 나옴">
+<input id="q" type="text" readonly placeholder="여기 누르면 키보드 뜸" onclick="showKeypadSimple()">
 <button id="kbBtn" class="kb" onclick="toggleKeypadSimple()">⌨️ 키보드</button>
-<button id="searchBtn" onclick="doSearch()">검색</button>
+<button id="searchBtn" onclick="doSearchAndHide()">검색</button>
 </div>
-<div class="status"><span id="statusText">V32: ⌨️ 누르면 무조건 나옴 - 제일 심플</span><span id="info"></span></div>
+<div class="status"><span id="statusText">V33: 검색창 누르면 키보드 뜸 / 검색 누르면 사라짐</span><span id="info"></span></div>
 <div class="content" id="content"><div id="list" class="list"></div><div id="player" class="player"></div></div>
 <div class="pagination" id="pagination">
 <button class="page-btn" onclick="changePage(-1)">◀ 이전</button>
@@ -75,11 +76,10 @@ body{background:#000;color:#fff;font-family:-apple-system,sans-serif;width:600px
 </div>
 <div id="keypad" class="keypad kr"></div>
 </div>
-<div class="footer"><span>V32 누르면 무조건 뜸 - 심플</span><span id="count"></span></div>
+<div class="footer"><span>V33 검색창 클릭시 키보드 / 검색시 사라짐</span><span id="count"></span></div>
 </div>
 <script>
-// V32 - 제일 심플하게, 무조건 뜨게만
-console.log('V32 Simple Toggle');
+console.log('V33 Search Input -> Keyboard Show / Search -> Hide');
 const CHO = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
 const JUNG = ['ㅏ','ㅐ','ㅑ','ㅒ','ㅓ','ㅔ','ㅕ','ㅖ','ㅗ','ㅘ','ㅙ','ㅚ','ㅛ','ㅜ','ㅝ','ㅞ','ㅟ','ㅠ','ㅡ','ㅢ','ㅣ'];
 const JONG = ['', 'ㄱ','ㄲ','ㄳ','ㄴ','ㄵ','ㄶ','ㄷ','ㄹ','ㄺ','ㄻ','ㄼ','ㄽ','ㄾ','ㄿ','ㅀ','ㅁ','ㅂ','ㅄ','ㅅ','ㅆ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
@@ -88,7 +88,7 @@ function makeSyllable(cho,jung,jong){if(cho<0||jung<0) return null; return Strin
 let committed=''; let composing={cho:-1,jung:-1,jong:0};
 function getComposingChar(){if(composing.cho>=0&&composing.jung>=0){return makeSyllable(composing.cho,composing.jung,composing.jong);} if(composing.cho>=0&&composing.jung<0){return CHO[composing.cho];} if(composing.cho<0&&composing.jung>=0){return JUNG[composing.jung];} return '';}
 function commitComposing(){const ch=getComposingChar(); if(ch) committed+=ch; composing={cho:-1,jung:-1,jong:0};}
-function updateInputField(){const d=committed+getComposingChar(); document.getElementById('q').value=d; document.getElementById('statusText').textContent=d?`입력: ${d}`:`V32: ⌨️ 누르면 무조건 키보드 뜸`;}
+function updateInputField(){const d=committed+getComposingChar(); document.getElementById('q').value=d; document.getElementById('statusText').textContent=d?`입력: ${d} - 검색 누르면 키보드 사라짐`:`V33: 검색창 누르면 키보드 뜸 / 검색 누르면 사라짐`;}
 function isConsonant(j){return CHO.includes(j);}
 function inputHangulClean(jamo){
   if(jamo===' '){commitComposing(); committed+=' '; updateInputField(); return;}
@@ -120,23 +120,19 @@ function setLang(lang){
   buildKeypad();
 }
 
-// 제일 심플한 토글 - 복잡한 거 다 빼고
 function toggleKeypadSimple(){
   const wrap=document.getElementById('keypadWrap');
   const btn=document.getElementById('kbBtn');
-  console.log('TOGGLE - current hidden:', wrap.classList.contains('hidden'));
   if(wrap.classList.contains('hidden')){
     wrap.classList.remove('hidden');
     btn.textContent='⌨️ 닫기';
     btn.classList.add('active');
-    document.getElementById('statusText').textContent='V32: 키보드 뜸 - 입력하세요';
-    console.log('SHOW KEYBOARD');
+    document.getElementById('statusText').textContent='V33: 키보드 뜸 - 입력 후 검색 누르면 사라짐';
   } else {
     wrap.classList.add('hidden');
     btn.textContent='⌨️ 키보드';
     btn.classList.remove('active');
-    document.getElementById('statusText').textContent='V32: 키보드 숨김 - ⌨️ 누르면 나옴';
-    console.log('HIDE KEYBOARD');
+    document.getElementById('statusText').textContent='V33: 키보드 숨김 - 검색창 누르면 다시 뜸';
   }
 }
 
@@ -145,6 +141,7 @@ function showKeypadSimple(){
   wrap.classList.remove('hidden');
   document.getElementById('kbBtn').textContent='⌨️ 닫기';
   document.getElementById('kbBtn').classList.add('active');
+  document.getElementById('statusText').textContent='V33: 검색창 클릭으로 키보드 뜸';
 }
 
 function hideKeypadSimple(){
@@ -152,6 +149,7 @@ function hideKeypadSimple(){
   wrap.classList.add('hidden');
   document.getElementById('kbBtn').textContent='⌨️ 키보드';
   document.getElementById('kbBtn').classList.remove('active');
+  document.getElementById('statusText').textContent='V33: 키보드 사라짐 - 검색창 누르면 다시 뜸';
 }
 
 function buildKeypad(){
@@ -162,8 +160,8 @@ function buildKeypad(){
     const b=document.createElement('button');
     b.textContent=label;
     b.className=cls||'';
-    b.onclick=()=>{ onClick(); console.log('KEY:',label); };
-    b.ontouchstart=(e)=>{ e.preventDefault(); onClick(); console.log('TOUCH KEY:',label); };
+    b.onclick=()=>{ onClick(); };
+    b.ontouchstart=(e)=>{ e.preventDefault(); onClick(); };
     kp.appendChild(b);
   };
   if(currentLang==='kr'){
@@ -171,13 +169,13 @@ function buildKeypad(){
     rows.forEach(r=>{r.forEach(k=>{createBtn(k,'',()=>typeKey(k));});});
     createBtn('스페이스','space',()=>typeKey(' '));
     createBtn('⌫','del',()=>delKey());
-    createBtn('검색','search',()=>doSearch());
+    createBtn('입력','search',()=>doSearchAndHide());
   } else {
     const rows=[['q','w','e','r','t','y','u','i','o','p'],['a','s','d','f','g','h','j','k','l'],['z','x','c','v','b','n','m']];
     rows.forEach(r=>{r.forEach(k=>{createBtn(k,'',()=>typeKey(k));});});
     createBtn('Space','space',()=>typeKey(' '));
     createBtn('⌫','del',()=>delKey());
-    createBtn('Search','search',()=>doSearch());
+    createBtn('입력','search',()=>doSearchAndHide());
   }
 }
 
@@ -216,26 +214,33 @@ function playVideo(id){
   document.getElementById('hud').classList.add('playing');
 }
 function backToList(){document.getElementById('player').style.display='none'; document.getElementById('list').style.display='flex'; document.getElementById('pagination').style.display='flex'; isPlayer=false; document.getElementById('hud').classList.remove('playing'); renderPage();}
-document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ if(isPlayer){ backToList(); } else { const wrap=document.getElementById('keypadWrap'); if(!wrap.classList.contains('hidden')) hideKeypadSimple(); } } });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ if(isPlayer){ backToList(); } else { hideKeypadSimple(); } } });
 
-async function doSearch(){
+function doSearchAndHide(){
   commitComposing();
   const q=document.getElementById('q').value.trim()||'고양이';
   hideKeypadSimple();
   document.getElementById('list').innerHTML='<div class="center"><b>검색 중...</b><br>'+q+'</div>';
   document.getElementById('player').style.display='none'; document.getElementById('list').style.display='flex';
-  try{
-    const res=await searchPiped(q);
-    lastItems=res.items.slice(0,20);
-    currentPage=0;
-    document.getElementById('info').textContent=res.host+' ✓';
-    renderPage();
-  }catch(e){
-    document.getElementById('list').innerHTML=`<div class="center"><b>실패</b><br><button onclick="doSearch()" style="background:#00ff88;color:#000;border:0;padding:10px 20px;border-radius:10px;font-weight:900">재시도</button></div>`;
-  }
+  (async()=>{
+    try{
+      const res=await searchPiped(q);
+      lastItems=res.items.slice(0,20);
+      currentPage=0;
+      document.getElementById('info').textContent=res.host+' ✓';
+      renderPage();
+    }catch(e){
+      document.getElementById('list').innerHTML=`<div class="center"><b>실패</b><br><button onclick="doSearchAndHide()" style="background:#00ff88;color:#000;border:0;padding:10px 20px;border-radius:10px;font-weight:900">재시도</button></div>`;
+    }
+  })();
 }
+
+function doSearch(){
+  doSearchAndHide();
+}
+
 buildKeypad();
-setTimeout(()=>{ committed='고양이'; updateInputField(); doSearch(); },500);
+setTimeout(()=>{ committed='고양이'; updateInputField(); doSearchAndHide(); },500);
 </script>
 </body>
 </html>
