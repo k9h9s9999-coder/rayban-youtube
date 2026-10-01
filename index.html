@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta name="viewport" content="width=600, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>V36 Search Dual</title>
+<title>V37 Korean English Fixed</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#000;color:#fff;font-family:sans-serif;width:600px;height:600px;overflow:hidden;display:flex;justify-content:center;align-items:center}
@@ -34,29 +34,29 @@ body{background:#000;color:#fff;font-family:sans-serif;width:600px;height:600px;
 .footer{height:10px;background:#000}
 .center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:#666;padding:20px;text-align:center}
 .version{position:absolute;top:2px;right:2px;background:#00ff88;color:#000;font-size:9px;font-weight:900;padding:3px 6px;border-radius:4px;z-index:99}
-.keypad-wrap{display:flex;flex-direction:column;background:#000;border-top:4px solid #00ff88;flex-shrink:0;height:280px;overflow:hidden}
+.keypad-wrap{display:flex;flex-direction:column;background:#000;border-top:4px solid #00ff88;flex-shrink:0;height:300px;overflow:hidden}
 .keypad-wrap.hidden{display:none !important}
 .keypad-tabs{display:flex;gap:4px;padding:6px;background:#111;flex-shrink:0}
-.keypad-tabs button{flex:1;padding:10px;border-radius:8px;border:1px solid #333;background:#1e1e1e;color:#888;font-size:11px;font-weight:800;min-height:36px}
-.keypad-tabs button.active{background:#00ff88;color:#000;border-color:#00ff88}
-.keypad{display:grid;gap:5px;padding:8px;flex:1;overflow-y:auto;align-content:start;background:#000}
-.keypad.kr{grid-template-columns:repeat(10,1fr)}
-.keypad button{background:#222;border:2px solid #444;color:#fff;border-radius:10px;font-size:16px;font-weight:700;min-height:48px}
-.keypad button.del{background:#331111;color:#ff5555;border-color:#ff3333}
-.keypad button.search{background:#00ff88;color:#000;border-color:#00ff88;font-weight:900}
+.keypad-tabs button{flex:1;padding:12px;border-radius:8px;border:2px solid #333;background:#1e1e1e;color:#fff;font-size:12px;font-weight:800;min-height:40px}
+.keypad-tabs button.active{background:#00ff88;color:#000;border-color:#00ff88;box-shadow:0 0 10px #00ff88}
+.keypad{display:grid;gap:6px;padding:8px;flex:1;overflow-y:auto;align-content:start;background:#000;grid-template-columns:repeat(10,1fr)}
+.keypad button{background:#333;border:2px solid #555;color:#fff;border-radius:10px;font-size:16px;font-weight:700;min-height:50px;cursor:pointer}
+.keypad button:active{background:#00ff88;color:#000;transform:scale(0.95)}
+.keypad button.del{background:#552222;color:#ff7777;border-color:#ff4444}
+.keypad button.search{background:#00ff88;color:#000;border-color:#00ff88;font-weight:900;font-size:18px}
 .keypad button.space{background:#111;color:#00ff88;border-color:#00ff88;grid-column:span 4}
 </style>
 </head>
 <body>
 <div class="hud" id="hud">
-<div class="version">V36 검색 듀얼</div>
-<div class="header"><div>RB YouTube V36</div><div style="font-size:9px;color:#00ff88" id="pageInfo">V36</div></div>
+<div class="version">V37 한영 모두 수정</div>
+<div class="header"><div>RB YouTube V37</div><div style="font-size:9px;color:#00ff88" id="pageInfo">V37</div></div>
 <div class="search-row">
 <input id="q" type="text" readonly placeholder="여기 누르면 키보드" onclick="showKB()">
 <button id="kbBtn" class="kb" onclick="toggleKB()">⌨️ 키보드</button>
 <button id="searchBtn" onclick="doSearchHide()">검색</button>
 </div>
-<div class="status"><span id="statusText">V36: Piped+Invidious 듀얼 검색</span><span id="info"></span></div>
+<div class="status"><span id="statusText">V37: 한영 키보드 모두 수정 / 한국어 검색 수정</span><span id="info"></span></div>
 <div class="content" id="content"><div id="list" class="list"></div><div id="player" class="player"></div></div>
 <div class="pagination" id="pagination">
 <button class="page-btn" onclick="changePage(-1)">◀ 이전</button>
@@ -69,12 +69,12 @@ body{background:#000;color:#fff;font-family:sans-serif;width:600px;height:600px;
 <button onclick="clearInput()">지우기</button>
 <button onclick="hideKB()">닫기</button>
 </div>
-<div id="keypad" class="keypad kr"></div>
+<div id="keypad" class="keypad"></div>
 </div>
 <div class="footer"></div>
 </div>
 <script>
-console.log('V36 Dual Search');
+console.log('V37 Fixed Korean + English');
 const CHO = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
 const JUNG = ['ㅏ','ㅐ','ㅑ','ㅒ','ㅓ','ㅔ','ㅕ','ㅖ','ㅗ','ㅘ','ㅙ','ㅚ','ㅛ','ㅜ','ㅝ','ㅞ','ㅟ','ㅠ','ㅡ','ㅢ','ㅣ'];
 const JONG = ['', 'ㄱ','ㄲ','ㄳ','ㄴ','ㄵ','ㄶ','ㄷ','ㄹ','ㄺ','ㄻ','ㄼ','ㄽ','ㄾ','ㄿ','ㅀ','ㅁ','ㅂ','ㅄ','ㅅ','ㅆ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
@@ -83,7 +83,7 @@ function makeSyllable(cho,jung,jong){if(cho<0||jung<0) return null; return Strin
 let committed=''; let composing={cho:-1,jung:-1,jong:0};
 function getComposingChar(){if(composing.cho>=0&&composing.jung>=0){return makeSyllable(composing.cho,composing.jung,composing.jong);} if(composing.cho>=0&&composing.jung<0){return CHO[composing.cho];} if(composing.cho<0&&composing.jung>=0){return JUNG[composing.jung];} return '';}
 function commitComposing(){const ch=getComposingChar(); if(ch) committed+=ch; composing={cho:-1,jung:-1,jong:0};}
-function updateInput(){const d=committed+getComposingChar(); document.getElementById('q').value=d; document.getElementById('statusText').textContent=d?`입력: ${d}`:`V36: 검색결과 안나오면 알려주세요`;}
+function updateInput(){const d=committed+getComposingChar(); document.getElementById('q').value=d; document.getElementById('statusText').textContent=d?`입력: ${d} (${d.length}자)`:`V37: 한글/영어 모두 입력 가능`;}
 function isConsonant(j){return CHO.includes(j);}
 function inputHangul(jamo){
   if(jamo===' '){commitComposing(); committed+=' '; updateInput(); return;}
@@ -105,24 +105,65 @@ function inputHangul(jamo){
 }
 function delKey(){if(getComposingChar()){if(composing.jong>0){composing.jong=0;} else if(composing.jung>=0){composing.jung=-1;} else if(composing.cho>=0){composing.cho=-1;}} else {if(committed.length>0) committed=committed.slice(0,-1);} updateInput();}
 function clearInput(){committed=''; composing={cho:-1,jung:-1,jong:0}; updateInput();}
-function typeKey(k){if(currentLang==='kr'){if(k===' ') inputHangul(' '); else inputHangul(k);} else {commitComposing(); committed+=k; updateInput();}}
+function typeKey(k){
+  console.log('typeKey', k, 'lang', currentLang);
+  if(currentLang==='kr'){
+    if(k===' ') inputHangul(' ');
+    else inputHangul(k);
+  } else {
+    commitComposing();
+    committed+=k;
+    updateInput();
+  }
+}
 
 let currentLang='kr';
-function setLang(lang){currentLang=lang; document.getElementById('tabKr').classList.toggle('active',lang==='kr'); document.getElementById('tabEn').classList.toggle('active',lang==='en'); buildKeypad();}
+function setLang(lang){
+  console.log('setLang', lang);
+  currentLang=lang;
+  document.getElementById('tabKr').classList.toggle('active',lang==='kr');
+  document.getElementById('tabEn').classList.toggle('active',lang==='en');
+  buildKeypad();
+  document.getElementById('statusText').textContent= lang==='kr' ? '한글 키보드' : '영어 키보드 - 이제 눌림!';
+}
 function toggleKB(){const w=document.getElementById('keypadWrap'); if(w.classList.contains('hidden')){w.classList.remove('hidden'); w.style.display='flex'; document.getElementById('kbBtn').textContent='⌨️ 닫기';} else {w.classList.add('hidden'); w.style.display='none'; document.getElementById('kbBtn').textContent='⌨️ 키보드';}}
 function showKB(){const w=document.getElementById('keypadWrap'); w.classList.remove('hidden'); w.style.display='flex'; document.getElementById('kbBtn').textContent='⌨️ 닫기';}
 function hideKB(){const w=document.getElementById('keypadWrap'); w.classList.add('hidden'); w.style.display='none'; document.getElementById('kbBtn').textContent='⌨️ 키보드';}
+
 function buildKeypad(){
-  const kp=document.getElementById('keypad'); kp.innerHTML=''; kp.className='keypad '+currentLang;
-  const mk=(label, cls, fn)=>{const b=document.createElement('button'); b.textContent=label; b.className=cls||''; b.onclick=fn; kp.appendChild(b);};
+  const kp=document.getElementById('keypad');
+  kp.innerHTML='';
+  console.log('buildKeypad lang=', currentLang);
+  const mk=(label, cls, fn)=>{
+    const b=document.createElement('button');
+    b.textContent=label;
+    b.className=cls||'';
+    b.onclick=()=>{
+      console.log('Button clicked', label);
+      fn();
+    };
+    b.ontouchstart=(e)=>{
+      e.preventDefault();
+      console.log('Touch', label);
+      fn();
+    };
+    kp.appendChild(b);
+  };
   if(currentLang==='kr'){
-    [['ㅂ','ㅈ','ㄷ','ㄱ','ㅅ','ㅛ','ㅕ','ㅑ','ㅐ','ㅔ'],['ㅁ','ㄴ','ㅇ','ㄹ','ㅎ','ㅗ','ㅓ','ㅏ','ㅣ'],['ㅋ','ㅌ','ㅊ','ㅍ','ㅠ','ㅜ','ㅡ']].forEach(r=>r.forEach(k=>mk(k,'',()=>typeKey(k))));
-    mk('스페이스','space',()=>typeKey(' ')); mk('⌫','del',()=>delKey()); mk('입력','search',()=>doSearchHide());
+    const rows=[['ㅂ','ㅈ','ㄷ','ㄱ','ㅅ','ㅛ','ㅕ','ㅑ','ㅐ','ㅔ'],['ㅁ','ㄴ','ㅇ','ㄹ','ㅎ','ㅗ','ㅓ','ㅏ','ㅣ'],['ㅋ','ㅌ','ㅊ','ㅍ','ㅠ','ㅜ','ㅡ']];
+    rows.forEach(r=>r.forEach(k=>mk(k,'',()=>typeKey(k))));
+    mk('스페이스','space',()=>typeKey(' '));
+    mk('⌫','del',()=>delKey());
+    mk('입력','search',()=>doSearchHide());
   } else {
-    [['q','w','e','r','t','y','u','i','o','p'],['a','s','d','f','g','h','j','k','l'],['z','x','c','v','b','n','m']].forEach(r=>r.forEach(k=>mk(k,'',()=>typeKey(k))));
-    mk('Space','space',()=>typeKey(' ')); mk('⌫','del',()=>delKey()); mk('입력','search',()=>doSearchHide());
+    const rows=[['q','w','e','r','t','y','u','i','o','p'],['a','s','d','f','g','h','j','k','l'],['z','x','c','v','b','n','m']];
+    rows.forEach(r=>r.forEach(k=>mk(k,'',()=>typeKey(k))));
+    mk('Space','space',()=>typeKey(' '));
+    mk('⌫','del',()=>delKey());
+    mk('입력','search',()=>doSearchHide());
   }
 }
+
 let lastItems=[], currentPage=0, isPlayer=false;
 const ITEMS_PER_PAGE=10;
 
@@ -130,14 +171,17 @@ async function fetchTimeout(url,ms=12000){
   const c=new AbortController();
   const t=setTimeout(()=>c.abort(),ms);
   try{
-    const r=await fetch(url,{signal:c.signal, mode:'cors'});
+    const r=await fetch(url,{signal:c.signal, mode:'cors', headers:{'Accept':'application/json'}});
     clearTimeout(t);
     if(!r.ok) throw new Error(`HTTP ${r.status}`);
-    return await r.json();
+    const txt=await r.text();
+    try{ return JSON.parse(txt); }catch(e){ console.log('JSON parse fail', txt.slice(0,200)); throw e; }
   }catch(e){clearTimeout(t); throw e;}
 }
 
 async function searchPiped(q){
+  // 한국어 검색을 위해 더 많은 서버와 인코딩 확실히
+  const query=encodeURIComponent(q);
   const INSTANCES=[
     "https://pipedapi.kavin.rocks",
     "https://api.piped.private.coffee",
@@ -145,57 +189,71 @@ async function searchPiped(q){
     "https://piped-api.lunar.icu",
     "https://api.piped.privacydev.net",
     "https://pipedapi.syncpundit.io",
-    "https://pipedapi-libre.kavin.rocks"
+    "https://pipedapi-libre.kavin.rocks",
+    "https://pipedapi.drgns.space"
   ];
   for(let i=0;i<INSTANCES.length;i++){
     const host=INSTANCES[i];
-    document.getElementById('statusText').textContent=`Piped ${i+1}/${INSTANCES.length} 시도중... ${new URL(host).hostname}`;
+    document.getElementById('statusText').textContent=`Piped ${i+1}/${INSTANCES.length} 검색중... ${q}`;
     try{
-      const d=await fetchTimeout(`${host}/search?q=${encodeURIComponent(q)}&filter=videos`, 8000);
-      if(d.items && d.items.length>0) return {items:d.items, host:new URL(host).host, type:'Piped'};
-    }catch(e){ console.log(`Piped ${host} fail`, e); continue; }
+      const url=`${host}/search?q=${query}&filter=videos`;
+      console.log('Fetching', url);
+      const d=await fetchTimeout(url, 10000);
+      if(d.items && d.items.length>0){
+        console.log('Piped success', host, d.items.length);
+        return {items:d.items, host:new URL(host).host, type:'Piped'};
+      }
+    }catch(e){ console.log(`Piped ${host} fail`, e.message); continue; }
   }
-  throw new Error('Piped all fail');
+  throw new Error('Piped 전체 실패');
 }
 
 async function searchInvidious(q){
+  const query=encodeURIComponent(q);
   const INSTANCES=[
     "https://yewtu.be",
     "https://inv.tux.pizza",
     "https://invidious.privacydev.net",
     "https://iv.melmac.space",
-    "https://invidious.lunar.icu"
+    "https://invidious.lunar.icu",
+    "https://inv.zzls.xyz"
   ];
   for(let i=0;i<INSTANCES.length;i++){
     const host=INSTANCES[i];
-    document.getElementById('statusText').textContent=`Invidious ${i+1}/${INSTANCES.length} 시도중... ${new URL(host).hostname}`;
+    document.getElementById('statusText').textContent=`Invidious ${i+1}/${INSTANCES.length} 검색중... ${q}`;
     try{
-      const d=await fetchTimeout(`${host}/api/v1/search?q=${encodeURIComponent(q)}&type=video`, 8000);
+      const url=`${host}/api/v1/search?q=${query}&type=video`;
+      console.log('Fetching Invidious', url);
+      const d=await fetchTimeout(url, 10000);
       if(d && d.length>0){
         const items=d.map(v=>({
           title:v.title,
           uploaderName:v.author,
           url:'/watch?v='+v.videoId,
-          thumbnail:v.videoThumbnails ? v.videoThumbnails[0].url : `https://i.ytimg.com/vi/${v.videoId}/mqdefault.jpg`,
+          thumbnail: v.videoThumbnails && v.videoThumbnails.length ? v.videoThumbnails[0].url : `https://i.ytimg.com/vi/${v.videoId}/mqdefault.jpg`,
           id:v.videoId
         }));
         return {items:items, host:new URL(host).host, type:'Invidious'};
       }
-    }catch(e){ console.log(`Invidious ${host} fail`, e); continue; }
+    }catch(e){ console.log(`Invidious ${host} fail`, e.message); continue; }
   }
-  throw new Error('Invidious all fail');
+  throw new Error('Invidious 전체 실패');
 }
 
 async function searchAll(q){
+  // 빈 검색어 방지
+  if(!q || q.trim().length===0) q='고양이';
+  console.log('searchAll query:', q);
+  // 먼저 Piped 시도
   try{
     return await searchPiped(q);
   }catch(e1){
-    console.log('Piped failed, trying Invidious', e1);
+    console.log('Piped failed, trying Invidious', e1.message);
     document.getElementById('statusText').textContent=`Piped 실패, Invidious로 전환...`;
     try{
       return await searchInvidious(q);
     }catch(e2){
-      throw new Error(`Piped: ${e1.message} / Invidious: ${e2.message}`);
+      throw new Error(`모두 실패: ${e1.message} / ${e2.message}`);
     }
   }
 }
@@ -204,11 +262,11 @@ function renderPage(){
   const list=document.getElementById('list'); list.innerHTML=''; document.getElementById('player').style.display='none'; document.getElementById('pagination').style.display='flex'; list.style.display='flex'; isPlayer=false; document.getElementById('hud').classList.remove('playing');
   const totalPages=Math.ceil(lastItems.length/ITEMS_PER_PAGE); const start=currentPage*ITEMS_PER_PAGE; const end=Math.min(start+ITEMS_PER_PAGE,lastItems.length);
   if(lastItems.length===0){
-    list.innerHTML=`<div class="center"><b>검색 결과 없음</b><br>다른 검색어로 시도해보세요<br><button onclick="doSearchHide()" style="background:#00ff88;color:#000;border:0;padding:12px 24px;border-radius:10px;font-weight:900;margin-top:10px">다시 검색</button></div>`;
+    list.innerHTML=`<div class="center"><b>검색 결과 없음</b><br>다른 검색어로 시도<br><button onclick="doSearchHide()" style="background:#00ff88;color:#000;border:0;padding:12px 24px;border-radius:10px;font-weight:900;margin-top:10px">다시 검색</button></div>`;
     return;
   }
   for(let idx=start; idx<end; idx++){
-    const v=lastItems[idx]; const id=v.url?.replace('/watch?v=','')||v.id||''; const title=v.title||'No title'; const ch=v.uploaderName||v.author||''; const thumb=v.thumbnail||(v.videoThumbnails? v.videoThumbnails[0].url : `https://i.ytimg.com/vi/${id}/mqdefault.jpg`);
+    const v=lastItems[idx]; const id=v.url?.replace('/watch?v=','')||v.id||''; const title=v.title||'No title'; const ch=v.uploaderName||v.author||''; const thumb=v.thumbnail||`https://i.ytimg.com/vi/${id}/mqdefault.jpg`;
     const btn=document.createElement('button'); btn.className='card-btn';
     btn.innerHTML=`<div class="num">${idx+1}</div><img class="thumb" src="${thumb}" loading="lazy"><div class="meta"><div class="title">${title}</div><div class="ch">${ch}</div></div>`;
     btn.onclick=()=>{ playVideo(id); };
@@ -234,10 +292,15 @@ function backToList(){document.getElementById('player').style.display='none'; do
 function doSearchHide(){
   commitComposing();
   let q=document.getElementById('q').value.trim();
-  if(!q) q='고양이';
-  console.log('Search query:', q);
+  if(!q){
+    q=committed.trim();
+  }
+  if(!q){
+    q='고양이';
+  }
+  console.log('Final search query:', q, 'committed:', committed, 'input value:', document.getElementById('q').value);
   hideKB();
-  document.getElementById('list').innerHTML=`<div class="center"><b>검색 중...</b><br>${q}<br><small style="color:#00ff88" id="searchDetail">서버 연결 중...</small></div>`;
+  document.getElementById('list').innerHTML=`<div class="center"><b>검색 중...</b><br>${q}<br><small style="color:#00ff88">서버 찾는 중...</small></div>`;
   document.getElementById('player').style.display='none'; 
   document.getElementById('list').style.display='flex';
   (async()=>{
@@ -249,11 +312,12 @@ function doSearchHide(){
       renderPage();
     }catch(e){
       console.error('All search failed', e);
-      document.getElementById('list').innerHTML=`<div class="center"><b>검색 실패</b><br>${q}<br><small style="color:#ff5555">${e.message}</small><br><br><button onclick="doSearchHide()" style="background:#00ff88;color:#000;border:0;padding:12px 24px;border-radius:10px;font-weight:900">다시 시도</button><br><br><small>1. 와이파이 확인<br>2. 검색어를 영어로 바꿔보세요<br>3. 'BTS' 같은 짧은 단어로 테스트</small></div>`;
-      document.getElementById('statusText').textContent=`검색 실패`;
+      document.getElementById('list').innerHTML=`<div class="center"><b>검색 실패</b><br>${q}<br><small style="color:#ff5555">${e.message}</small><br><br><button onclick="doSearchHide()" style="background:#00ff88;color:#000;border:0;padding:12px 24px;border-radius:10px;font-weight:900">다시 시도</button><br><br><small>팁: 'BTS' '고양이' 같은 짧은 단어로 테스트<br>와이파이 확인</small></div>`;
+      document.getElementById('statusText').textContent=`검색 실패: ${e.message}`;
     }
   })();
 }
+
 buildKeypad();
 setTimeout(()=>{ committed='고양이'; updateInput(); doSearchHide(); },800);
 </script>
