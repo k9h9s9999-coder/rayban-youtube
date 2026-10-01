@@ -3,94 +3,87 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=600, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>Ray-Ban YouTube V10 - Ray-Ban Scroll Fix</title>
+<title>Ray-Ban YouTube V11 - D-Pad Fixed Canvas</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{background:#000;color:#fff;font-family:-apple-system,sans-serif;width:600px;height:600px;overflow:hidden;display:flex;justify-content:center;align-items:center}
-.hud{width:600px;height:600px;background:#121212;display:flex;flex-direction:column;position:relative;border-radius:18px;overflow:hidden;border:2px solid #222}
-.header{height:42px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;background:#1a1a1a;border-bottom:1px solid #2a2a2a;flex-shrink:0}
-.search-row{display:flex;gap:6px;padding:8px;background:#1a1a1a;border-bottom:1px solid #2a2a2a;flex-shrink:0}
-.search-row input{flex:1;background:#0a0a0a;border:1px solid #333;border-radius:12px;padding:14px 12px;color:#fff;font-size:20px;outline:none}
-.search-row button{background:#fff;color:#000;border:0;border-radius:12px;padding:0 14px;font-weight:900;font-size:15px;min-width:60px}
-.search-row button.kb{background:#1e1e1e;color:#00ff88;border:1px solid #333;min-width:52px;font-size:20px}
-.status{height:24px;padding:0 12px;font-size:11px;color:#00ff88;display:flex;align-items:center;justify-content:space-between;background:#0f0f0f;flex-shrink:0}
-.content{flex:1;overflow:hidden;display:flex;flex-direction:column;position:relative;background:#121212;height:0;min-height:0}
-.list{
-  flex:1;
-  height:100%;
-  overflow-y:scroll;
-  overflow-x:hidden;
-  padding:8px;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  -webkit-overflow-scrolling:touch;
-  touch-action:auto;
-  overscroll-behavior:contain;
-  position:relative;
-  z-index:1;
-}
-.list::-webkit-scrollbar{width:6px}
-.list::-webkit-scrollbar-thumb{background:#00ff88;border-radius:3px}
-.list::-webkit-scrollbar-track{background:#1a1a1a}
-.card{display:flex;gap:10px;background:#1e1e1e;border-radius:14px;padding:10px;cursor:pointer;border:2px solid transparent;min-height:92px;align-items:center;flex-shrink:0;user-select:none}
-.card.focused{border-color:#00ff88;background:#2a2a2a;box-shadow:0 0 0 2px rgba(0,255,136,.2)}
-.thumb{width:130px;height:74px;border-radius:10px;background:#000;object-fit:cover;flex-shrink:0;pointer-events:none}
-.meta{flex:1;min-width:0;pointer-events:none}
-.title{font-size:14px;font-weight:700;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.ch{font-size:11px;color:#aaa;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.num{background:#2a2a2a;color:#00ff88;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;flex-shrink:0}
+.hud{width:600px;height:600px;background:#121212;display:flex;flex-direction:column;position:relative;border-radius:18px;overflow:hidden;border:2px solid #00ff88}
+.header{height:36px;display:flex;align-items:center;justify-content:space-between;padding:0 10px;background:#1a1a1a;border-bottom:1px solid #2a2a2a;flex-shrink:0}
+.search-row{display:flex;gap:4px;padding:6px;background:#1a1a1a;border-bottom:1px solid #2a2a2a;flex-shrink:0}
+.search-row input{flex:1;background:#0a0a0a;border:1px solid #333;border-radius:10px;padding:10px 10px;color:#fff;font-size:18px;outline:none}
+.search-row button{background:#fff;color:#000;border:0;border-radius:10px;padding:0 10px;font-weight:900;font-size:13px;min-width:50px}
+.search-row button.kb{background:#1e1e1e;color:#00ff88;border:1px solid #333;min-width:44px;font-size:18px}
+.status{height:22px;padding:0 10px;font-size:10px;color:#00ff88;display:flex;align-items:center;justify-content:space-between;background:#0f0f0f;flex-shrink:0}
+.content{flex:1;overflow:hidden;display:flex;flex-direction:column;position:relative;background:#121212}
+.list{flex:1;overflow:hidden;padding:6px;display:flex;flex-direction:column;gap:8px;position:relative}
+.card{display:flex;gap:8px;background:#1e1e1e;border-radius:12px;padding:8px;cursor:pointer;border:2px solid transparent;min-height:88px;align-items:center;flex-shrink:0;transition:all .15s}
+.card.focused{border-color:#00ff88;background:#2a2a2a;transform:scale(1.02);box-shadow:0 0 12px rgba(0,255,136,.4);z-index:2}
+.card.dim{opacity:.4;transform:scale(.96)}
+.thumb{width:110px;height:62px;border-radius:8px;background:#000;object-fit:cover;flex-shrink:0}
+.meta{flex:1;min-width:0}
+.title{font-size:13px;font-weight:700;line-height:1.2;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ch{font-size:10px;color:#aaa;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.num{background:#2a2a2a;color:#00ff88;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;flex-shrink:0}
+.card.focused .num{background:#00ff88;color:#000}
+.dpad{height:48px;display:flex;gap:6px;padding:6px;background:#0a0a0a;border-top:1px solid #222;flex-shrink:0}
+.dpad button{flex:1;background:#1e1e1e;border:1px solid #333;color:#fff;border-radius:10px;font-size:18px;font-weight:900}
+.dpad button:active{background:#00ff88;color:#000}
+.dpad button.big{flex:1.5;background:#00ff88;color:#000;border-color:#00ff88}
 .player{flex:1;display:flex;flex-direction:column;background:#000}
 .player iframe{flex:1;width:100%;border:0}
-.controls{display:flex;gap:6px;padding:8px;background:#1a1a1a;border-bottom:1px solid #2a2a2a;flex-shrink:0}
-.ctrl{flex:1;background:#2a2a2a;border:0;color:#fff;padding:14px 4px;border-radius:12px;font-size:13px;font-weight:800}
-.ctrl.big{flex:1.3;background:#fff;color:#000;font-size:15px}
-.keypad-wrap{display:none;flex-direction:column;background:#0a0a0a;border-top:1px solid #222;flex-shrink:0;max-height:260px;overflow-y:auto}
-.keypad-tabs{display:flex;gap:4px;padding:6px 6px 0 6px}
-.keypad-tabs button{flex:1;padding:8px;border-radius:8px;border:1px solid #333;background:#1a1a1a;color:#888;font-size:12px;font-weight:800}
+.controls{display:flex;gap:6px;padding:6px;background:#1a1a1a;border-bottom:1px solid #2a2a2a;flex-shrink:0}
+.ctrl{flex:1;background:#2a2a2a;border:0;color:#fff;padding:12px 4px;border-radius:10px;font-size:12px;font-weight:800}
+.ctrl.big{flex:1.3;background:#fff;color:#000;font-size:14px}
+.keypad-wrap{display:none;flex-direction:column;background:#0a0a0a;border-top:1px solid #222;flex-shrink:0;max-height:220px;overflow-y:auto}
+.keypad-tabs{display:flex;gap:4px;padding:4px 4px 0 4px}
+.keypad-tabs button{flex:1;padding:6px;border-radius:8px;border:1px solid #333;background:#1a1a1a;color:#888;font-size:11px;font-weight:800}
 .keypad-tabs button.active{background:#00ff88;color:#000;border-color:#00ff88}
 .keypad{display:grid;gap:3px;padding:6px}
 .keypad.kr{grid-template-columns:repeat(10,1fr)}
 .keypad.en{grid-template-columns:repeat(10,1fr)}
-.keypad button{background:#1e1e1e;border:0;color:#fff;padding:12px 2px;border-radius:8px;font-size:15px;font-weight:700;min-height:44px}
-.footer{height:18px;padding:0 10px;background:#000;display:flex;justify-content:space-between;align-items:center;font-size:9px;color:#555;flex-shrink:0}
+.keypad button{background:#1e1e1e;border:0;color:#fff;padding:10px 2px;border-radius:8px;font-size:14px;font-weight:700;min-height:40px}
+.footer{height:16px;padding:0 10px;background:#000;display:flex;justify-content:space-between;align-items:center;font-size:8px;color:#555;flex-shrink:0}
 .center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:#777;padding:20px;text-align:center}
-.swipe-area{position:absolute;left:0;right:0;top:0;bottom:0;pointer-events:none;z-index:10}
-.debug{position:absolute;left:4px;bottom:4px;background:rgba(0,255,136,.2);color:#00ff88;font-size:8px;padding:2px 4px;border-radius:4px;z-index:20}
+.info-box{background:#1a1a1a;border:1px solid #00ff88;border-radius:8px;padding:6px 8px;font-size:9px;color:#aaa;margin:4px 6px}
 </style>
 </head>
 <body>
 <div class="hud">
   <div class="header">
-    <div class="logo"><span style="width:26px;height:26px;background:#fff;color:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px">RB</span> YouTube <span style="font-size:10px;background:#00ff88;color:#000;padding:2px 6px;border-radius:4px;font-weight:800">V10 SCROLL FIX</span></div>
-    <div style="font-size:10px;color:#00ff88" id="scrollInfo">스크롤 OK</div>
+    <div class="logo">RB YouTube <span style="font-size:9px;background:#00ff88;color:#000;padding:2px 6px;border-radius:4px;font-weight:800">V11 D-PAD</span></div>
+    <div style="font-size:9px;color:#00ff88" id="pageInfo">1/5</div>
   </div>
   <div class="search-row">
-    <input id="q" placeholder="⌨️ 눌러야 키보드" value="" readonly>
+    <input id="q" placeholder="⌨️ 키보드" value="" readonly>
     <button id="kbBtn" class="kb" onclick="toggleKeypad()">⌨️</button>
     <button onclick="doSearch()">검색</button>
   </div>
-  <div id="status" class="status"><span id="statusText">V10: 리스트 안에서 위아래로 드래그하면 스크롤</span><span id="info">ready</span></div>
+  <div class="status"><span id="statusText">V11: 스크롤 없음 - 밴드로 이동</span><span id="info">ready</span></div>
+  <div class="info-box">💡 안경에서는 스크롤이 원래 안 돼요! 고정 600x600 캔버스. Neural Band로 위/아래 스와이프 → 초록 포커스 이동 → 핀치로 재생</div>
   <div class="content" id="content">
     <div id="list" class="list"></div>
     <div id="player" class="player" style="display:none"></div>
-    <div class="debug" id="debug">scrollTop:0</div>
+  </div>
+  <div class="dpad" id="dpad">
+    <button onclick="moveFocus(-1)">▲ 위</button>
+    <button class="big" onclick="playFocused()">▶ 재생</button>
+    <button onclick="moveFocus(1)">▼ 아래</button>
+    <button onclick="nextPage(1)">다음 ▶</button>
   </div>
   <div id="keypadWrap" class="keypad-wrap">
     <div class="keypad-tabs">
       <button id="tabKr" class="active" onclick="setLang('kr')">한글</button>
       <button id="tabEn" onclick="setLang('en')">ENG</button>
       <button onclick="clearInput()">지우기</button>
-      <button onclick="delKey()" style="background:#ff3b30;color:#fff">⌫</button>
       <button onclick="hideKeypad()" style="background:#333;color:#fff">▼ 닫기</button>
     </div>
     <div id="keypad" class="keypad kr"></div>
   </div>
-  <div class="footer"><span>V10 • 네이티브 스크롤 강제 • 안경 최적화</span><span id="count">0개</span></div>
+  <div class="footer"><span>V11 • D-PAD • 고정 캔버스 • 스크롤 없음</span><span id="count">0개</span></div>
 </div>
 
 <script>
-const INSTANCES = ["https://pipedapi.kavin.rocks","https://api.piped.private.coffee","https://pipedapi.adminforge.de","https://pipedapi.in.projectsegfau.lt","https://pipedapi.syncpundi.com","https://pipedapi.drgns.space","https://pipedapi.leptosinfra.com","https://api.piped.privacydev.net"];
+const INSTANCES = ["https://pipedapi.kavin.rocks","https://api.piped.private.coffee","https://pipedapi.adminforge.de","https://pipedapi.in.projectsegfau.lt","https://pipedapi.syncpundi.com"];
 const CHO = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
 const JUNG = ['ㅏ','ㅐ','ㅑ','ㅒ','ㅓ','ㅔ','ㅕ','ㅖ','ㅗ','ㅘ','ㅙ','ㅚ','ㅛ','ㅜ','ㅝ','ㅞ','ㅟ','ㅠ','ㅡ','ㅢ','ㅣ'];
 const JONG = ['', 'ㄱ','ㄲ','ㄳ','ㄴ','ㄵ','ㄶ','ㄷ','ㄹ','ㄺ','ㄻ','ㄼ','ㄽ','ㄾ','ㄿ','ㅀ','ㅁ','ㅂ','ㅄ','ㅅ','ㅆ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
@@ -122,14 +115,7 @@ function inputHangulClean(jamo){
   }
   updateInputField();
 }
-function delKey(){
-  if(getComposingChar()){
-    if(composing.jong>0){const jc=JONG[composing.jong]; if(DOUBLE_JONG_SPLIT[jc]){const first=DOUBLE_JONG_SPLIT[jc][0]; composing.jong=jongIdx(first);} else {composing.jong=0;}}
-    else if(composing.jung>=0){const jChar=JUNG[composing.jung]; let found=false; for(const [k,v] of Object.entries(DOUBLE_JUNG_COMBINE)){if(v===jChar){composing.jung=jungIdx(k[0]); found=true; break;}} if(!found) composing.jung=-1;}
-    else if(composing.cho>=0){const cChar=CHO[composing.cho]; let found=false; for(const [k,v] of Object.entries(DOUBLE_CHO_COMBINE)){if(v===cChar){composing.cho=choIdx(k[0]); found=true; break;}} if(!found) composing.cho=-1;}
-  } else {if(committed.length>0) committed=committed.slice(0,-1);}
-  updateInputField();
-}
+function delKey(){if(getComposingChar()){if(composing.jong>0){const jc=JONG[composing.jong]; if(DOUBLE_JONG_SPLIT[jc]){const first=DOUBLE_JONG_SPLIT[jc][0]; composing.jong=jongIdx(first);} else {composing.jong=0;}} else if(composing.jung>=0){const jChar=JUNG[composing.jung]; let found=false; for(const [k,v] of Object.entries(DOUBLE_JUNG_COMBINE)){if(v===jChar){composing.jung=jungIdx(k[0]); found=true; break;}} if(!found) composing.jung=-1;} else if(composing.cho>=0){const cChar=CHO[composing.cho]; let found=false; for(const [k,v] of Object.entries(DOUBLE_CHO_COMBINE)){if(v===cChar){composing.cho=choIdx(k[0]); found=true; break;}} if(!found) composing.cho=-1;}} else {if(committed.length>0) committed=committed.slice(0,-1);} updateInputField();}
 function clearInput(){committed=''; composing={cho:-1,jung:-1,jong:0}; updateInputField();}
 function typeKey(k){if(currentLang==='kr'){if(k===' ') inputHangulClean(' '); else inputHangulClean(k);} else {commitComposing(); committed+=k; updateInputField();}}
 let currentLang='kr';
@@ -137,58 +123,90 @@ function setLang(lang){currentLang=lang; document.getElementById('tabKr').classL
 function buildKeypad(){
   const kp=document.getElementById('keypad'); kp.innerHTML=''; kp.className='keypad '+currentLang;
   if(currentLang==='kr'){
-    const rows=[['ㅂ','ㅈ','ㄷ','ㄱ','ㅅ','ㅛ','ㅕ','ㅑ','ㅐ','ㅔ'],['ㅁ','ㄴ','ㅇ','ㄹ','ㅎ','ㅗ','ㅓ','ㅏ','ㅣ'],['ㅋ','ㅌ','ㅊ','ㅍ','ㅠ','ㅜ','ㅡ','DEL',' ']];
-    rows.forEach(row=>{row.forEach(k=>{const b=document.createElement('button'); if(k===' '){b.textContent='스페이스'; b.className='space'; b.style.gridColumn='span 3'; b.onclick=()=>typeKey(' ');} else if(k==='DEL'){b.textContent='⌫'; b.className='del'; b.onclick=()=>delKey();} else {b.textContent=k; b.onclick=()=>typeKey(k);} kp.appendChild(b);});});
-    const enter=document.createElement('button'); enter.textContent='검색'; enter.className='enter'; enter.style.gridColumn='span 2'; enter.onclick=()=>doSearch(); kp.appendChild(enter);
+    const rows=[['ㅂ','ㅈ','ㄷ','ㄱ','ㅅ','ㅛ','ㅕ','ㅑ','ㅐ','ㅔ'],['ㅁ','ㄴ','ㅇ','ㄹ','ㅎ','ㅗ','ㅓ','ㅏ','ㅣ'],['ㅋ','ㅌ','ㅊ','ㅍ','ㅠ','ㅜ','ㅡ']];
+    rows.forEach(row=>{row.forEach(k=>{const b=document.createElement('button'); b.textContent=k; b.onclick=()=>typeKey(k); kp.appendChild(b);});});
+    const space=document.createElement('button'); space.textContent='스페이스'; space.style.gridColumn='span 4'; space.onclick=()=>typeKey(' '); kp.appendChild(space);
+    const del=document.createElement('button'); del.textContent='⌫'; del.style.background='#ff3b30'; del.style.color='#fff'; del.style.gridColumn='span 2'; del.onclick=()=>delKey(); kp.appendChild(del);
+    const enter=document.createElement('button'); enter.textContent='검색'; enter.style.background='#00ff88'; enter.style.color='#000'; enter.style.gridColumn='span 4'; enter.onclick=()=>doSearch(); kp.appendChild(enter);
   } else {
-    const rows=[['q','w','e','r','t','y','u','i','o','p'],['a','s','d','f','g','h','j','k','l'],['z','x','c','v','b','n','m','DEL',' ']];
-    rows.forEach(row=>{row.forEach(k=>{const b=document.createElement('button'); if(k===' '){b.textContent='Space'; b.className='space'; b.style.gridColumn='span 3'; b.onclick=()=>typeKey(' ');} else if(k==='DEL'){b.textContent='⌫'; b.className='del'; b.onclick=()=>delKey();} else {b.textContent=k; b.onclick=()=>typeKey(k);} kp.appendChild(b);});});
-    const enter=document.createElement('button'); enter.textContent='Search'; enter.className='enter'; enter.style.gridColumn='span 2'; enter.onclick=()=>doSearch(); kp.appendChild(enter);
+    const rows=[['q','w','e','r','t','y','u','i','o','p'],['a','s','d','f','g','h','j','k','l'],['z','x','c','v','b','n','m']];
+    rows.forEach(row=>{row.forEach(k=>{const b=document.createElement('button'); b.textContent=k; b.onclick=()=>typeKey(k); kp.appendChild(b);});});
+    const space=document.createElement('button'); space.textContent='Space'; space.style.gridColumn='span 4'; space.onclick=()=>typeKey(' '); kp.appendChild(space);
+    const del=document.createElement('button'); del.textContent='⌫'; del.style.background='#ff3b30'; del.style.color='#fff'; del.style.gridColumn='span 2'; del.onclick=()=>delKey(); kp.appendChild(del);
+    const enter=document.createElement('button'); enter.textContent='Search'; enter.style.background='#00ff88'; enter.style.color='#000'; enter.style.gridColumn='span 4'; enter.onclick=()=>doSearch(); kp.appendChild(enter);
   }
 }
 function showKeypad(){document.getElementById('keypadWrap').style.display='flex'; document.getElementById('kbBtn').classList.add('active');}
 function hideKeypad(){document.getElementById('keypadWrap').style.display='none'; document.getElementById('kbBtn').classList.remove('active');}
 function toggleKeypad(){const w=document.getElementById('keypadWrap'); if(w.style.display==='none'||w.style.display===''){showKeypad();} else {hideKeypad();}}
 
-let lastItems=[], focusedIndex=-1, isPlayer=false;
+let lastItems=[], focusedIndex=0, currentPage=0;
+const ITEMS_PER_PAGE = 4;
+
 async function fetchTimeout(url,ms=6500){const c=new AbortController(); const t=setTimeout(()=>c.abort(),ms); try{const r=await fetch(url,{signal:c.signal}); clearTimeout(t); if(!r.ok) throw new Error(r.status); return await r.json();}catch(e){clearTimeout(t); throw e;}}
 async function searchPiped(q){for(let i=0;i<INSTANCES.length;i++){document.getElementById('info').textContent=`${i+1}/${INSTANCES.length}`; try{const d=await fetchTimeout(`${INSTANCES[i]}/search?q=${encodeURIComponent(q)}&filter=videos`,7000); if(d.items&&d.items.length) return {items:d.items, host:new URL(INSTANCES[i]).host};}catch(e){continue;}} throw new Error('all failed');}
 
-function renderList(items){
+function renderPage(){
   const list=document.getElementById('list');
   list.innerHTML='';
   document.getElementById('player').style.display='none';
   list.style.display='flex';
   isPlayer=false;
-  focusedIndex=-1;
-  items.forEach((v,idx)=>{
+  
+  const start = currentPage * ITEMS_PER_PAGE;
+  const end = Math.min(start + ITEMS_PER_PAGE, lastItems.length);
+  const pageItems = lastItems.slice(start, end);
+  
+  pageItems.forEach((v,idx)=>{
+    const globalIdx = start + idx;
     const id=v.url?.replace('/watch?v=','')||v.id||'';
     const title=v.title||'No title';
     const ch=v.uploaderName||v.author||'';
     const thumb=v.thumbnail||`https://i.ytimg.com/vi/${id}/mqdefault.jpg`;
     const div=document.createElement('div');
-    div.className='card';
-    div.id='card-'+idx;
-    div.dataset.idx=idx;
-    div.innerHTML=`<div class="num">${idx+1}</div><img class="thumb" src="${thumb}" onerror="this.src='https://i.ytimg.com/vi/${id}/mqdefault.jpg'"><div class="meta"><div class="title">${title}</div><div class="ch">${ch}</div></div>`;
-    div.addEventListener('click', ()=>{ playVideo(id,title,idx); });
+    div.className='card'+(globalIdx===focusedIndex?' focused':'');
+    if(globalIdx!==focusedIndex) div.classList.add('dim');
+    div.id='card-'+globalIdx;
+    div.innerHTML=`<div class="num">${globalIdx+1}</div><img class="thumb" src="${thumb}"><div class="meta"><div class="title">${title}</div><div class="ch">${ch}</div></div>`;
+    div.onclick=()=>{ focusedIndex=globalIdx; playFocused(); };
     list.appendChild(div);
   });
-  list.scrollTop=0;
-  document.getElementById('count').textContent=items.length+'개';
-  setTimeout(()=>{ focusCard(0); updateDebug(); },100);
+  
+  document.getElementById('pageInfo').textContent=`${currentPage+1}/${Math.ceil(lastItems.length/ITEMS_PER_PAGE)}`;
+  document.getElementById('count').textContent=lastItems.length+'개';
+  document.getElementById('statusText').textContent=`${focusedIndex+1}/${lastItems.length} - ▲▼로 이동 - 핀치/Enter로 재생`;
 }
 
-function focusCard(idx){
-  if(idx<0||idx>=lastItems.length) return;
-  document.querySelectorAll('.card').forEach(c=>c.classList.remove('focused'));
-  const el=document.getElementById('card-'+idx);
-  if(el){
-    el.classList.add('focused');
-    el.scrollIntoView({behavior:'smooth',block:'nearest'});
-    focusedIndex=idx;
-    document.getElementById('statusText').textContent=`${idx+1}/${lastItems.length} - 탭해서 재생 - 스크롤: ${document.getElementById('list').scrollTop}px`;
+function moveFocus(dir){
+  let newIdx = focusedIndex + dir;
+  if(newIdx < 0) newIdx = 0;
+  if(newIdx >= lastItems.length) newIdx = lastItems.length-1;
+  if(newIdx === focusedIndex) return;
+  
+  focusedIndex = newIdx;
+  const newPage = Math.floor(focusedIndex / ITEMS_PER_PAGE);
+  if(newPage !== currentPage){
+    currentPage = newPage;
   }
+  renderPage();
+}
+
+function nextPage(dir){
+  let newPage = currentPage + dir;
+  const maxPage = Math.ceil(lastItems.length / ITEMS_PER_PAGE) -1;
+  if(newPage < 0) newPage = 0;
+  if(newPage > maxPage) newPage = maxPage;
+  if(newPage === currentPage) return;
+  currentPage = newPage;
+  focusedIndex = currentPage * ITEMS_PER_PAGE;
+  renderPage();
+}
+
+function playFocused(){
+  const v = lastItems[focusedIndex];
+  if(!v) return;
+  const id=v.url?.replace('/watch?v=','')||v.id;
+  playVideo(id, v.title, focusedIndex);
 }
 
 function playVideo(id,title,idx){
@@ -197,57 +215,24 @@ function playVideo(id,title,idx){
   const player=document.getElementById('player'); player.style.display='flex'; isPlayer=true;
   player.innerHTML=`<div class="controls"><button class="ctrl" onclick="backToList()">← 목록</button><button class="ctrl big" onclick="toggleFullscreen()">⛶ 크게</button><button class="ctrl" onclick="nextVideo(1)">다음 →</button></div><iframe id="yt" src="https://www.youtube.com/embed/${id}?autoplay=1&playsinline=1" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe><div class="controls"><button class="ctrl" onclick="nextVideo(-1)">← 이전</button><button class="ctrl big" onclick="backToList()">✕ 닫기</button></div>`;
 }
-function backToList(){document.getElementById('player').style.display='none'; document.getElementById('list').style.display='flex'; isPlayer=false; if(focusedIndex>=0) setTimeout(()=>focusCard(focusedIndex),100);}
-function nextVideo(dir){if(!lastItems.length) return; let ni=focusedIndex+dir; if(ni<0) ni=lastItems.length-1; if(ni>=lastItems.length) ni=0; const v=lastItems[ni]; const id=v.url?.replace('/watch?v=','')||v.id; playVideo(id,v.title,ni); focusedIndex=ni;}
+function backToList(){document.getElementById('player').style.display='none'; document.getElementById('list').style.display='flex'; isPlayer=false; renderPage();}
+function nextVideo(dir){if(!lastItems.length) return; let ni=focusedIndex+dir; if(ni<0) ni=lastItems.length-1; if(ni>=lastItems.length) ni=0; focusedIndex=ni; currentPage=Math.floor(focusedIndex/ITEMS_PER_PAGE); const v=lastItems[ni]; const id=v.url?.replace('/watch?v=','')||v.id; playVideo(id,v.title,ni);}
+function toggleFullscreen(){const f=document.getElementById('yt'); if(f) f.requestFullscreen?.();}
 
-function updateDebug(){
-  const list=document.getElementById('list');
-  document.getElementById('debug').textContent=`scrollTop:${Math.round(list.scrollTop)} / ${list.scrollHeight}`;
-  document.getElementById('scrollInfo').textContent=`스크롤:${Math.round(list.scrollTop)}px`;
-}
-
-// === 안경 최적화 스크롤: 리스트 자체에서만 처리, document 전체 가로채지 않음 ===
-const listEl = document.getElementById('list');
-let touchStartY=0, touchStartTime=0, startScrollTop=0;
-
-listEl.addEventListener('touchstart', e=>{
-  if(isPlayer) return;
-  touchStartY = e.touches[0].clientY;
-  touchStartTime = Date.now();
-  startScrollTop = listEl.scrollTop;
-  // 키보드는 리스트 터치 시작하면 숨김
-  if(document.getElementById('keypadWrap').style.display!=='none'){
-    hideKeypad();
+// D-PAD / Neural Band: Arrow keys + Enter + Escape
+document.addEventListener('keydown', e=>{
+  if(isPlayer){
+    if(e.key==='Escape' || e.key==='Backspace'){ backToList(); e.preventDefault(); }
+    if(e.key==='ArrowRight'){ nextVideo(1); e.preventDefault(); }
+    if(e.key==='ArrowLeft'){ nextVideo(-1); e.preventDefault(); }
+    return;
   }
-}, {passive:true});
-
-listEl.addEventListener('touchmove', e=>{
-  if(isPlayer) return;
-  // 네이티브 스크롤 그대로 두기 - 아무것도 막지 않음
-}, {passive:true});
-
-listEl.addEventListener('touchend', e=>{
-  if(isPlayer) return;
-  const endY = e.changedTouches[0].clientY;
-  const diffY = touchStartY - endY;
-  const duration = Date.now() - touchStartTime;
-  const scrollMoved = Math.abs(listEl.scrollTop - startScrollTop);
-  
-  // 스크롤이 거의 안 움직였고, 빠르게 위아래로 쓸었으면 포커스 이동 (안경 제스처)
-  if(scrollMoved < 10 && Math.abs(diffY) > 70 && duration < 400){
-    if(diffY > 0){
-      focusCard(Math.min(focusedIndex+1, lastItems.length-1));
-    } else {
-      focusCard(Math.max(focusedIndex-1, 0));
-    }
-  }
-  updateDebug();
-}, {passive:true});
-
-listEl.addEventListener('scroll', ()=>{
-  updateDebug();
-  document.getElementById('statusText').textContent=`스크롤 중... ${Math.round(listEl.scrollTop)}px / ${lastItems.length}개`;
-}, {passive:true});
+  if(document.getElementById('keypadWrap').style.display!=='none') return;
+  if(e.key==='ArrowDown' || e.key==='ArrowRight'){ moveFocus(1); e.preventDefault(); }
+  if(e.key==='ArrowUp' || e.key==='ArrowLeft'){ moveFocus(-1); e.preventDefault(); }
+  if(e.key==='Enter'){ playFocused(); e.preventDefault(); }
+  if(e.key===' '){ nextPage(1); e.preventDefault(); }
+});
 
 async function doSearch(){
   commitComposing();
@@ -258,12 +243,11 @@ async function doSearch(){
   document.getElementById('player').style.display='none'; document.getElementById('list').style.display='flex';
   try{
     const res=await searchPiped(q);
-    lastItems=res.items.slice(0,25);
-    document.getElementById('statusText').textContent=`${q} - ${lastItems.length}개 - 리스트 안에서 드래그하면 스크롤`;
+    lastItems=res.items.slice(0,20);
+    focusedIndex=0; currentPage=0;
     document.getElementById('info').textContent=res.host+' ✓';
-    renderList(lastItems);
+    renderPage();
   }catch(e){
-    document.getElementById('statusText').textContent='검색 실패 - 재시도';
     document.getElementById('list').innerHTML=`<div class="center"><b>검색 실패</b><button onclick="doSearch()" style="background:#00ff88;color:#000;border:0;padding:10px 20px;border-radius:10px;font-weight:900">재시도</button></div>`;
   }
 }
