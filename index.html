@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta name="viewport" content="width=600, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>V20 Simple Final</title>
+<title>V21 Keyboard Fix</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{background:#000;color:#fff;font-family:-apple-system,sans-serif;width:600px;height:600px;overflow:hidden;display:flex;justify-content:center;align-items:center}
@@ -12,37 +12,39 @@ body{background:#000;color:#fff;font-family:-apple-system,sans-serif;width:600px
 .hud.big-mode{border-radius:0;border:0;background:#000}
 .hud.big-mode .header, .hud.big-mode .search-row, .hud.big-mode .status, .hud.big-mode .hint, .hud.big-mode .footer, .hud.big-mode .pagination, .hud.big-mode .controls{display:none !important}
 .hud.big-mode .content{flex:1;height:600px;background:#000}
-.hud.big-mode .player{height:600px;width:600px;background:#000}
+.hud.big-mode .player{height:600px;width:600px}
 .hud.big-mode .player iframe{height:600px !important;width:600px !important}
-.header{height:32px;display:flex;align-items:center;justify-content:space-between;padding:0 10px;background:#1a1a1a;border-bottom:1px solid #2a2a2a;flex-shrink:0}
-.search-row{display:flex;gap:6px;padding:8px;background:#1a1a1a;border-bottom:1px solid #2a2a2a;flex-shrink:0}
-.search-row input{flex:1;background:#0a0a0a;border:2px solid #00ff88;border-radius:10px;padding:12px 10px;color:#fff;font-size:16px;outline:none}
-.search-row input:focus{border-color:#00ff88;box-shadow:0 0 0 3px rgba(0,255,136,.3);background:#1a1a1a}
-.search-row button{background:#00ff88;color:#000;border:0;border-radius:10px;padding:0 16px;font-weight:900;font-size:14px;min-width:60px;height:44px;outline:none}
-.search-row button:focus{box-shadow:0 0 0 3px rgba(0,255,136,.5);transform:scale(1.05)}
-.status{height:20px;padding:0 10px;font-size:9px;color:#00ff88;display:flex;align-items:center;justify-content:space-between;background:#0f0f0f;flex-shrink:0}
+.header{height:30px;display:flex;align-items:center;justify-content:space-between;padding:0 10px;background:#1a1a1a;border-bottom:1px solid #2a2a2a;flex-shrink:0}
+.search-row{display:flex;gap:4px;padding:6px;background:#1a1a1a;border-bottom:1px solid #2a2a2a;flex-shrink:0}
+.search-row input{flex:1;background:#0a0a0a;border:2px solid #00ff88;border-radius:10px;padding:12px 10px;color:#fff;font-size:16px;outline:none;min-width:0}
+.search-row input:focus{border-color:#00ff88;box-shadow:0 0 0 3px rgba(0,255,136,.4);background:#000}
+.search-row button{background:#00ff88;color:#000;border:0;border-radius:10px;padding:0 10px;font-weight:900;font-size:12px;min-width:48px;height:44px;outline:none;flex-shrink:0}
+.search-row button:focus{box-shadow:0 0 0 3px rgba(0,255,136,.5)}
+.status{height:18px;padding:0 10px;font-size:9px;color:#00ff88;display:flex;align-items:center;justify-content:space-between;background:#0f0f0f;flex-shrink:0}
 .content{flex:1;overflow:hidden;display:flex;flex-direction:column;background:#121212}
 .list{flex:1;overflow:hidden;padding:4px 6px;display:flex;flex-direction:column;gap:4px}
-.card-btn{display:flex;gap:6px;align-items:center;background:#1e1e1e;border:2px solid transparent;border-radius:10px;padding:6px;width:100%;text-align:left;cursor:pointer;min-height:60px;transition:all .12s;outline:none;color:#fff}
-.card-btn:focus{border-color:#00ff88;background:#2a2a2a;transform:scale(1.02);box-shadow:0 0 0 3px rgba(0,255,136,.3)}
+.card-btn{display:flex;gap:6px;align-items:center;background:#1e1e1e;border:2px solid transparent;border-radius:10px;padding:6px;width:100%;text-align:left;cursor:pointer;min-height:58px;outline:none;color:#fff}
+.card-btn:focus{border-color:#00ff88;background:#2a2a2a;box-shadow:0 0 0 3px rgba(0,255,136,.3)}
 .thumb{width:88px;height:50px;border-radius:6px;background:#000;object-fit:cover;flex-shrink:0}
 .meta{flex:1;min-width:0}
-.title{font-size:11px;font-weight:700;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.title{font-size:11px;font-weight:700;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .ch{font-size:8px;color:#aaa;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .num{background:#2a2a2a;color:#00ff88;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:900;flex-shrink:0}
 .player{flex:1;display:flex;flex-direction:column;background:#000;position:relative}
-.player iframe{flex:1;width:100%;border:0;background:#000}
-.controls{display:flex;gap:6px;padding:6px;background:#1a1a1a;flex-shrink:0}
-.ctrl{flex:1;background:#2a2a2a;border:0;color:#fff;padding:12px 2px;border-radius:10px;font-size:11px;font-weight:800;outline:none}
-.ctrl:focus{border:2px solid #00ff88}
+.player iframe{flex:1;width:100%;border:0}
+.controls{display:flex;gap:4px;padding:6px;background:#1a1a1a;flex-shrink:0}
+.ctrl{flex:1;background:#2a2a2a;border:0;color:#fff;padding:10px 2px;border-radius:8px;font-size:11px;font-weight:800;outline:none}
 .ctrl.big{background:#fff;color:#000}
 .pagination{height:38px;display:flex;gap:6px;padding:4px 6px;background:#0a0a0a;border-top:1px solid #222;flex-shrink:0}
 .page-btn{flex:1;background:#1e1e1e;border:1px solid #333;color:#fff;border-radius:8px;font-size:11px;font-weight:800;outline:none;height:30px}
 .page-btn:focus{border-color:#00ff88;background:#00ff88;color:#000}
-.footer{height:14px;padding:0 8px;background:#000;display:flex;justify-content:space-between;align-items:center;font-size:7px;color:#555;flex-shrink:0}
-.center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:#777;padding:20px;text-align:center}
-.hint{background:#1a1a1a;color:#aaa;border:1px solid #333;border-radius:6px;padding:5px 8px;font-size:9px;margin:4px 6px;text-align:center}
-.version{position:absolute;top:2px;right:2px;background:#00ff88;color:#000;font-size:8px;font-weight:900;padding:2px 6px;border-radius:4px;z-index:99}
+.footer{height:14px;padding:0 8px;background:#000;display:flex;justify-content:space-between;font-size:7px;color:#555;flex-shrink:0}
+.center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:#777;padding:20px;text-align:center}
+.hint{background:#1a1a1a;color:#aaa;border:1px solid #333;border-radius:6px;padding:6px 8px;font-size:9px;margin:4px 6px;text-align:center;line-height:1.4}
+.version{position:absolute;top:2px;right:2px;background:#00ff88;color:#000;font-size:7px;font-weight:900;padding:2px 5px;border-radius:4px;z-index:99}
+.quick{display:flex;gap:4px;padding:4px 6px;background:#0f0f0f;border-top:1px solid #222;flex-shrink:0;overflow-x:auto}
+.quick button{background:#1e1e1e;border:1px solid #333;color:#00ff88;border-radius:16px;padding:6px 10px;font-size:10px;font-weight:800;white-space:nowrap;outline:none;flex-shrink:0}
+.quick button:focus{background:#00ff88;color:#000;border-color:#00ff88}
 .big-overlay{display:none;position:absolute;top:0;left:0;width:600px;height:600px;z-index:50;pointer-events:none}
 .hud.big-mode .big-overlay{display:flex;flex-direction:column;justify-content:space-between;pointer-events:auto;background:transparent}
 .big-top{height:50px;display:flex;justify-content:space-between;padding:8px;background:linear-gradient(to bottom, rgba(0,0,0,.8), transparent);opacity:0;transition:opacity .3s}
@@ -53,29 +55,60 @@ body{background:#000;color:#fff;font-family:-apple-system,sans-serif;width:600px
 </head>
 <body>
 <div class="hud" id="hud">
-<div class="version">V20 SIMPLE FINAL</div>
-<div class="header"><div>RB YouTube <span style="font-size:8px;background:#00ff88;color:#000;padding:2px 5px;border-radius:3px;font-weight:900">V20 심플 최종</span></div><div style="font-size:9px;color:#00ff88" id="pageInfo">1/2</div></div>
+<div class="version">V21 키보드 수정</div>
+<div class="header"><div>RB YouTube <span style="font-size:8px;background:#00ff88;color:#000;padding:2px 5px;border-radius:3px;font-weight:900">V21 키보드 수정</span></div><div style="font-size:9px;color:#00ff88" id="pageInfo">1/2</div></div>
 <div class="search-row">
-<input id="q" type="text" placeholder="검색어 입력 후 Enter" autocomplete="off" value="고양이">
+<input id="q" type="text" inputmode="text" enterkeyhint="search" autocomplete="off" spellcheck="false" tabindex="0" placeholder="여기 클릭하고 입력!" value="">
 <button id="searchBtn" tabindex="0" onclick="doSearch()">검색</button>
+<button tabindex="0" onclick="focusInput()" style="background:#1e1e1e;color:#00ff88;border:1px solid #00ff88;min-width:48px">⌨️</button>
 </div>
-<div class="status"><span id="statusText">V20: 그냥 기본 키보드만 - 클릭 잘 됨</span><span id="info">ready</span></div>
-<div class="hint">💡 입력창 클릭하면 핸드폰 키보드 뜸 / 안경은 밴드로 입력창 포커스 후 탭 / 검색어 입력 후 Enter</div>
+<div class="status"><span id="statusText">V21: 입력창 클릭하면 키보드 뜸</span><span id="info">ready</span></div>
+<div class="hint">💡 안경에서는 키보드가 안 떠요 (정상) → 핸드폰 크롬에서 같은 주소로 접속해서 검색어 입력하고 검색 누르면 안경에도 똑같이 뜸!<br>핸드폰에서 입력 안 되면 입력창을 길게 눌러보세요</div>
+<div class="quick" id="quick">
+<button tabindex="0" onclick="setQuery('고양이')">고양이</button>
+<button tabindex="0" onclick="setQuery('아이유')">아이유</button>
+<button tabindex="0" onclick="setQuery('뉴스')">뉴스</button>
+<button tabindex="0" onclick="setQuery('요리')">요리</button>
+<button tabindex="0" onclick="setQuery('게임')">게임</button>
+<button tabindex="0" onclick="setQuery('음악')">음악</button>
+<button tabindex="0" onclick="setQuery('브이로그')">브이로그</button>
+</div>
 <div class="content" id="content"><div id="list" class="list"></div><div id="player" class="player" style="display:none"></div></div>
 <div class="pagination" id="pagination">
 <button class="page-btn" id="prevBtn" tabindex="0" onclick="changePage(-1)">◀ 이전</button>
 <button class="page-btn" id="nextBtn" tabindex="0" onclick="changePage(1)">다음 10개 ▶</button>
 </div>
-<div class="footer"><span>V20 SIMPLE FINAL • 기본키보드 • 20개 검색</span><span id="count">0개</span></div>
+<div class="footer"><span>V21 • 클릭하면 키보드 뜸 • 20개 검색</span><span id="count">0개</span></div>
 <div class="big-overlay" id="bigOverlay" onclick="handleBigTap()">
 <div class="big-top"><button class="exit-big-btn" tabindex="0" onclick="toggleBigMode(); event.stopPropagation();">✕ 작게</button><button class="exit-big-btn" tabindex="0" onclick="backToList(); event.stopPropagation();">← 목록</button></div>
 <div class="big-bottom"><button class="exit-big-btn" tabindex="0" onclick="nextVideo(1); event.stopPropagation();">다음 ▶</button></div>
 </div>
 </div>
 <script>
-console.log('V20 SIMPLE FINAL - No custom keyboard');
+console.log('V21 Keyboard Fix');
 let lastItems=[], focusedIndex=0, currentPage=0, isPlayer=false, isBigMode=false;
 const ITEMS_PER_PAGE=10;
+
+function focusInput(){
+  const input=document.getElementById('q');
+  input.focus();
+  input.click();
+  // 모바일에서 키보드 강제 띄우기
+  setTimeout(()=>{
+    input.focus();
+    // iOS 대응
+    const event=new Event('touchstart', {bubbles:true});
+    input.dispatchEvent(event);
+  },100);
+  document.getElementById('statusText').textContent='V21: 입력창 포커스 - 키보드 뜨는지 확인';
+}
+
+function setQuery(text){
+  const input=document.getElementById('q');
+  input.value=text;
+  input.focus();
+  doSearch();
+}
 
 async function fetchTimeout(url,ms=7000){const c=new AbortController(); const t=setTimeout(()=>c.abort(),ms); try{const r=await fetch(url,{signal:c.signal}); clearTimeout(t); if(!r.ok) throw new Error(r.status); return await r.json();}catch(e){clearTimeout(t); throw e;}}
 async function searchPiped(q){
@@ -101,16 +134,15 @@ function renderPage(){
     btn.addEventListener('focus', ()=>{ focusedIndex=idx; });
     list.appendChild(btn);
   }
-  document.getElementById('pageInfo').textContent=`${currentPage+1}/${totalPages}`; document.getElementById('count').textContent=`${lastItems.length}개`; document.getElementById('statusText').textContent=`V20: ${lastItems.length}개 중 ${start+1}-${end} 보기`;
+  document.getElementById('pageInfo').textContent=`${currentPage+1}/${totalPages}`; document.getElementById('count').textContent=`${lastItems.length}개`; document.getElementById('statusText').textContent=`V21: ${lastItems.length}개 중 ${start+1}-${end}`;
   document.getElementById('prevBtn').disabled=currentPage===0; document.getElementById('nextBtn').disabled=currentPage>=totalPages-1;
-  setTimeout(()=>{ const first=document.getElementById('card-'+start); if(first) first.focus(); },100);
 }
 function changePage(dir){const totalPages=Math.ceil(lastItems.length/ITEMS_PER_PAGE); let newPage=currentPage+dir; if(newPage<0) newPage=0; if(newPage>=totalPages) newPage=totalPages-1; if(newPage===currentPage) return; currentPage=newPage; focusedIndex=currentPage*ITEMS_PER_PAGE; renderPage();}
 function playVideo(id){
   const list=document.getElementById('list'); list.style.display='none';
   const player=document.getElementById('player'); player.style.display='flex'; isPlayer=true;
   document.getElementById('pagination').style.display='none';
-  player.innerHTML=`<div class="controls"><button class="ctrl" tabindex="0" onclick="backToList()">← 목록 (Esc)</button><button class="ctrl big" tabindex="0" onclick="toggleBigMode()">⛶ 크게 - 영상만</button><button class="ctrl" tabindex="0" onclick="nextVideo(1)">다음 →</button></div><iframe id="ytFrame" src="https://www.youtube.com/embed/${id}?autoplay=1&playsinline=1" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe><div class="controls"><button class="ctrl" tabindex="0" onclick="backToList()">✕ 닫기</button><button class="ctrl big" tabindex="0" onclick="toggleBigMode()">⛶ 크게/작게</button></div>`;
+  player.innerHTML=`<div class="controls"><button class="ctrl" tabindex="0" onclick="backToList()">← 목록</button><button class="ctrl big" tabindex="0" onclick="toggleBigMode()">⛶ 크게 - 영상만</button><button class="ctrl" tabindex="0" onclick="nextVideo(1)">다음 →</button></div><iframe id="ytFrame" src="https://www.youtube.com/embed/${id}?autoplay=1&playsinline=1" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe><div class="controls"><button class="ctrl" tabindex="0" onclick="backToList()">✕ 닫기</button><button class="ctrl big" tabindex="0" onclick="toggleBigMode()">⛶ 크게/작게</button></div>`;
   setTimeout(()=>{ const b=player.querySelector('button'); if(b) b.focus(); },100);
 }
 function backToList(){document.getElementById('player').style.display='none'; document.getElementById('list').style.display='flex'; document.getElementById('pagination').style.display='flex'; isPlayer=false; isBigMode=false; document.getElementById('hud').classList.remove('big-mode'); renderPage();}
@@ -118,14 +150,19 @@ function nextVideo(dir){if(!lastItems.length) return; let ni=focusedIndex+dir; i
 function toggleBigMode(){const hud=document.getElementById('hud'); isBigMode=!isBigMode; if(isBigMode){ hud.classList.add('big-mode'); } else { hud.classList.remove('big-mode'); } }
 function handleBigTap(){const top=document.querySelector('.big-top'); const bottom=document.querySelector('.big-bottom'); if(top.style.opacity==='0' || top.style.opacity===''){ top.style.opacity='1'; bottom.style.opacity='1'; setTimeout(()=>{ top.style.opacity='0'; bottom.style.opacity='0'; },3000); } else { top.style.opacity='0'; bottom.style.opacity='0'; }}
 
-// Enter 키로 검색
-document.getElementById('q').addEventListener('keydown', e=>{ if(e.key==='Enter'){ doSearch(); e.preventDefault(); } });
+// 입력창 이벤트
+const inputEl=document.getElementById('q');
+inputEl.addEventListener('click', ()=>{ console.log('input clicked'); });
+inputEl.addEventListener('touchstart', (e)=>{ console.log('input touchstart'); }, {passive:true});
+inputEl.addEventListener('focus', ()=>{ document.getElementById('statusText').textContent='V21: 입력 중... Enter로 검색'; });
+inputEl.addEventListener('keydown', e=>{ if(e.key==='Enter'){ doSearch(); e.preventDefault(); } });
+
 document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ if(isBigMode){ toggleBigMode(); return; } if(isPlayer){ backToList(); return; } } });
 
 async function doSearch(){
   const q=document.getElementById('q').value.trim()||'고양이';
-  document.getElementById('statusText').textContent='V20 검색: '+q;
-  document.getElementById('list').innerHTML='<div class="center"><b>V20 검색 중...</b><br>'+q+'</div>';
+  document.getElementById('statusText').textContent='V21 검색: '+q;
+  document.getElementById('list').innerHTML='<div class="center"><b>V21 검색 중...</b><br>'+q+'</div>';
   document.getElementById('player').style.display='none'; document.getElementById('list').style.display='flex';
   try{
     const res=await searchPiped(q);
@@ -138,7 +175,12 @@ async function doSearch(){
   }
 }
 
-setTimeout(()=>{ doSearch(); }, 500);
+// 자동 검색
+setTimeout(()=>{ 
+  const input=document.getElementById('q');
+  if(!input.value) input.value='고양이';
+  doSearch(); 
+}, 600);
 </script>
 </body>
 </html>
