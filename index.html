@@ -4,228 +4,164 @@
 <meta charset="UTF-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta name="viewport" content="width=600, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>V16 Korean Voice Fix</title>
+<title>V17 Final - No Voice</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{background:#000;color:#fff;font-family:-apple-system,sans-serif;width:600px;height:600px;overflow:hidden;display:flex;justify-content:center;align-items:center}
-.hud{width:600px;height:600px;background:#121212;display:flex;flex-direction:column;border-radius:18px;border:3px solid #00ff88;position:relative;overflow:hidden}
-.header{height:30px;display:flex;align-items:center;justify-content:space-between;padding:0 10px;background:#1a1a1a;border-bottom:1px solid #2a2a2a;flex-shrink:0;font-size:12px}
-.search-row{display:flex;gap:4px;padding:6px;background:#1a1a1a;border-bottom:1px solid #2a2a2a;flex-shrink:0}
-.search-row input{flex:1;background:#0a0a0a;border:1px solid #333;border-radius:10px;padding:8px;color:#fff;font-size:15px;outline:none}
-.search-row button{border:0;border-radius:10px;padding:0 6px;font-weight:900;font-size:11px;min-width:44px;height:36px}
-.btn-kr{background:#00ff88;color:#000;border:1px solid #00ff88 !important;min-width:68px !important}
-.btn-en{background:#1e1e1e;color:#888;border:1px solid #333 !important;min-width:52px !important}
-.btn-kb{background:#1e1e1e;color:#00ff88;border:1px solid #333 !important}
-.btn-search{background:#fff;color:#000;min-width:44px}
-.voice-box{background:#0a1a0a;border:2px solid #00ff88;border-radius:10px;padding:10px;margin:6px;font-size:11px;color:#00ff88;display:none}
-.voice-box.eng{border-color:#ff3b30;color:#ffaa00;background:#1a0a0a}
-.status{height:18px;padding:0 10px;font-size:9px;color:#00ff88;display:flex;justify-content:space-between;background:#0f0f0f;flex-shrink:0}
+.hud{width:600px;height:600px;background:#121212;display:flex;flex-direction:column;position:relative;border-radius:18px;overflow:hidden;border:3px solid #00ff88}
+.hud.big-mode{border-radius:0;border:0}
+.hud.big-mode .header, .hud.big-mode .search-row, .hud.big-mode .status, .hud.big-mode .hint, .hud.big-mode .footer, .hud.big-mode .keypad-wrap{display:none !important}
+.header{height:32px;display:flex;align-items:center;justify-content:space-between;padding:0 10px;background:#1a1a1a;border-bottom:1px solid #2a2a2a;flex-shrink:0}
+.search-row{display:flex;gap:6px;padding:8px;background:#1a1a1a;border-bottom:1px solid #2a2a2a;flex-shrink:0}
+.search-row input{flex:1;background:#0a0a0a;border:1px solid #333;border-radius:12px;padding:10px;color:#fff;font-size:16px;outline:none}
+.search-row button{background:#fff;color:#000;border:0;border-radius:12px;padding:0 14px;font-weight:900;font-size:13px;min-width:56px;height:38px}
+.search-row button.kb{background:#1e1e1e;color:#00ff88;border:1px solid #333;min-width:50px;font-size:18px}
+.status{height:20px;padding:0 10px;font-size:10px;color:#00ff88;display:flex;align-items:center;justify-content:space-between;background:#0f0f0f;flex-shrink:0}
 .content{flex:1;overflow:hidden;display:flex;flex-direction:column;background:#121212}
 .list{flex:1;overflow:hidden;padding:6px;display:flex;flex-direction:column;gap:6px}
-.card-btn{display:flex;gap:8px;align-items:center;background:#1e1e1e;border:2px solid transparent;border-radius:12px;padding:8px;width:100%;text-align:left;min-height:80px;color:#fff;outline:none}
-.card-btn:focus{border-color:#00ff88;background:#2a2a2a;box-shadow:0 0 0 3px rgba(0,255,136,.3)}
-.thumb{width:100px;height:56px;border-radius:8px;background:#000;object-fit:cover;flex-shrink:0}
+.card-btn{display:flex;gap:8px;align-items:center;background:#1e1e1e;border:2px solid transparent;border-radius:12px;padding:8px;width:100%;text-align:left;cursor:pointer;min-height:82px;transition:all .12s;outline:none;color:#fff}
+.card-btn:focus{border-color:#00ff88;background:#2a2a2a;transform:scale(1.02);box-shadow:0 0 0 3px rgba(0,255,136,.3)}
+.card-btn:focus .num{background:#00ff88;color:#000}
+.thumb{width:110px;height:62px;border-radius:8px;background:#000;object-fit:cover;flex-shrink:0}
 .meta{flex:1;min-width:0}
-.title{font-size:12px;font-weight:700;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.ch{font-size:9px;color:#aaa;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.num{background:#2a2a2a;color:#00ff88;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:900;flex-shrink:0}
+.title{font-size:12px;font-weight:700;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ch{font-size:10px;color:#aaa;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.num{background:#2a2a2a;color:#00ff88;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;flex-shrink:0}
 .player{flex:1;display:flex;flex-direction:column;background:#000}
 .player iframe{flex:1;width:100%;border:0}
-.controls{display:flex;gap:4px;padding:6px;background:#1a1a1a;flex-shrink:0}
-.ctrl{flex:1;background:#2a2a2a;border:0;color:#fff;padding:10px 2px;border-radius:8px;font-size:11px;font-weight:800}
-.footer{height:14px;padding:0 8px;background:#000;display:flex;justify-content:space-between;font-size:7px;color:#555;flex-shrink:0}
-.center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:#777;padding:20px;text-align:center}
-.keypad-wrap{display:none;flex-direction:column;background:#0a0a0a;border-top:1px solid #222;flex-shrink:0;max-height:180px;overflow:auto}
+.controls{display:flex;gap:6px;padding:6px;background:#1a1a1a;flex-shrink:0}
+.ctrl{flex:1;background:#2a2a2a;border:0;color:#fff;padding:12px 4px;border-radius:10px;font-size:12px;font-weight:800}
+.ctrl.big{flex:1.3;background:#fff;color:#000}
+.ctrl.exit{background:#ff3b30;color:#fff}
+.keypad-wrap{display:none;flex-direction:column;background:#0a0a0a;border-top:1px solid #222;flex-shrink:0;max-height:220px;overflow-y:auto}
 .keypad-tabs{display:flex;gap:4px;padding:4px}
 .keypad-tabs button{flex:1;padding:6px;border-radius:8px;border:1px solid #333;background:#1a1a1a;color:#888;font-size:10px;font-weight:800}
 .keypad-tabs button.active{background:#00ff88;color:#000;border-color:#00ff88}
 .keypad{display:grid;gap:3px;padding:6px}
 .keypad.kr{grid-template-columns:repeat(10,1fr)}
-.keypad button{background:#1e1e1e;border:0;color:#fff;padding:8px 2px;border-radius:8px;font-size:12px;font-weight:700;min-height:34px}
-.version{position:absolute;top:2px;right:2px;background:#ff3b30;color:#fff;font-size:7px;font-weight:900;padding:2px 5px;border-radius:4px;z-index:99}
-.hint{background:#00ff88;color:#000;border-radius:6px;padding:5px 6px;font-size:9px;font-weight:800;margin:4px 6px;text-align:center}
+.keypad.en{grid-template-columns:repeat(10,1fr)}
+.keypad button{background:#1e1e1e;border:0;color:#fff;padding:10px 2px;border-radius:8px;font-size:14px;font-weight:700;min-height:40px}
+.footer{height:14px;padding:0 8px;background:#000;display:flex;justify-content:space-between;align-items:center;font-size:8px;color:#555;flex-shrink:0}
+.center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:#777;padding:20px;text-align:center}
+.hint{background:#00ff88;color:#000;border-radius:8px;padding:6px 8px;font-size:9px;font-weight:800;margin:4px 6px;text-align:center}
+.version{position:absolute;top:2px;right:2px;background:#00ff88;color:#000;font-size:8px;font-weight:900;padding:2px 6px;border-radius:4px;z-index:99}
 </style>
 </head>
 <body>
 <div class="hud" id="hud">
-<div class="version">V16 KOR FIX 05-14</div>
-<div class="header"><div>RB YouTube <span style="background:#00ff88;color:#000;padding:1px 5px;border-radius:3px;font-size:8px">V16 한글 강제</span></div><div id="pageInfo" style="font-size:8px;color:#00ff88"></div></div>
+<div class="version">V17 NO VOICE FINAL</div>
+<div class="header"><div>RB YouTube <span style="font-size:8px;background:#00ff88;color:#000;padding:2px 6px;border-radius:3px;font-weight:900">V17 FINAL</span></div><div style="font-size:8px;color:#00ff88" id="pageInfo"></div></div>
 <div class="search-row">
-<input id="q" placeholder="한국어 말하세요" readonly>
-<button id="btnKr" class="btn-kr" onclick="startVoice('ko-KR')">🇰🇷 한국어</button>
-<button id="btnEn" class="btn-en" onclick="startVoice('en-US')">🇺🇸 ENG</button>
-<button class="btn-kb" onclick="toggleKeypad()">⌨️</button>
-<button class="btn-search" onclick="doSearch()">검색</button>
+<input id="q" placeholder="검색어 입력" value="" readonly>
+<button id="kbBtn" class="kb" onclick="toggleKeypad()">⌨️</button>
+<button id="searchBtn" tabindex="0" onclick="doSearch()">검색</button>
 </div>
-<div class="status"><span id="statusText">V16: 한국어 강제 모드</span><span id="info">ready</span></div>
-<div class="hint">🇰🇷 버튼 = 무조건 한국어로 인식 / 영어로 나오면 자동 재시도</div>
-<div id="voiceBox" class="voice-box"></div>
-<div class="content"><div id="list" class="list"></div><div id="player" class="player" style="display:none"></div></div>
+<div class="status"><span id="statusText">V17 FINAL - 음성 제거 / 밴드 제스처 전용</span><span id="info">ready</span></div>
+<div class="hint">👆 밴드 위/아래 스와이프 = 이동 / 핀치 = 재생 / ⛶ = 크게</div>
+<div class="content" id="content"><div id="list" class="list"></div><div id="player" class="player" style="display:none"></div></div>
 <div id="keypadWrap" class="keypad-wrap"><div class="keypad-tabs"><button id="tabKr" class="active" onclick="setLang('kr')">한글</button><button id="tabEn" onclick="setLang('en')">ENG</button><button onclick="clearInput()">지우기</button><button onclick="hideKeypad()" style="background:#333;color:#fff">▼ 닫기</button></div><div id="keypad" class="keypad kr"></div></div>
-<div class="footer"><span>V16 • ko-KR 강제 + 영어 자동 감지</span><span id="count">0개</span></div>
+<div class="footer"><span>V17 FINAL • NO VOICE • D-PAD ONLY</span><span id="count">0개</span></div>
 </div>
 <script>
-console.log('V16 Korean Fix');
-let committed=''; let composing={cho:-1,jung:-1,jong:0};
+console.log('V17 NO VOICE FINAL');
 const CHO = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
 const JUNG = ['ㅏ','ㅐ','ㅑ','ㅒ','ㅓ','ㅔ','ㅕ','ㅖ','ㅗ','ㅘ','ㅙ','ㅚ','ㅛ','ㅜ','ㅝ','ㅞ','ㅟ','ㅠ','ㅡ','ㅢ','ㅣ'];
 const JONG = ['', 'ㄱ','ㄲ','ㄳ','ㄴ','ㄵ','ㄶ','ㄷ','ㄹ','ㄺ','ㄻ','ㄼ','ㄽ','ㄾ','ㄿ','ㅀ','ㅁ','ㅂ','ㅄ','ㅅ','ㅆ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
 function choIdx(c){return CHO.indexOf(c);} function jungIdx(j){return JUNG.indexOf(j);} function jongIdx(j){return JONG.indexOf(j);}
 function makeSyllable(cho,jung,jong){if(cho<0||jung<0) return null; return String.fromCharCode(0xAC00+cho*21*28+jung*28+jong);}
+let committed=''; let composing={cho:-1,jung:-1,jong:0};
 function getComposingChar(){if(composing.cho>=0&&composing.jung>=0){return makeSyllable(composing.cho,composing.jung,composing.jong);} if(composing.cho>=0&&composing.jung<0){return CHO[composing.cho];} if(composing.cho<0&&composing.jung>=0){return JUNG[composing.jung];} return '';}
 function commitComposing(){const ch=getComposingChar(); if(ch) committed+=ch; composing={cho:-1,jung:-1,jong:0};}
 function updateInputField(){document.getElementById('q').value=committed+getComposingChar();}
 function isConsonant(j){return CHO.includes(j);}
-function inputHangulClean(jamo){if(jamo===' '){commitComposing(); committed+=' '; updateInputField(); return;} const DC={'ㄱㄱ':'ㄲ','ㄷㄷ':'ㄸ','ㅂㅂ':'ㅃ','ㅅㅅ':'ㅆ','ㅈㅈ':'ㅉ'}; const DJC={'ㅗㅏ':'ㅘ','ㅗㅐ':'ㅙ','ㅗㅣ':'ㅚ','ㅜㅓ':'ㅝ','ㅜㅔ':'ㅞ','ㅜㅣ':'ㅟ','ㅡㅣ':'ㅢ'}; const DJOC={'ㄱㅅ':'ㄳ','ㄴㅈ':'ㄵ','ㄴㅎ':'ㄶ','ㄹㄱ':'ㄺ','ㄹㅁ':'ㄻ','ㄹㅂ':'ㄼ','ㄹㅅ':'ㄽ','ㄹㅌ':'ㄾ','ㄹㅍ':'ㄿ','ㄹㅎ':'ㅀ','ㅂㅅ':'ㅄ'}; const DJS={'ㄳ':['ㄱ','ㅅ'],'ㄵ':['ㄴ','ㅈ'],'ㄶ':['ㄴ','ㅎ'],'ㄺ':['ㄹ','ㄱ'],'ㄻ':['ㄹ','ㅁ'],'ㄼ':['ㄹ','ㅂ'],'ㄽ':['ㄹ','ㅅ'],'ㄾ':['ㄹ','ㅌ'],'ㄿ':['ㄹ','ㅍ'],'ㅀ':['ㄹ','ㅎ'],'ㅄ':['ㅂ','ㅅ']}; if(isConsonant(jamo)){const cIdx=choIdx(jamo); if(composing.cho<0&&composing.jung<0){composing.cho=cIdx;} else if(composing.cho>=0&&composing.jung<0){const prev=CHO[composing.cho]; const comb=DC[prev+jamo]; if(comb){composing.cho=choIdx(comb);} else {committed+=CHO[composing.cho]; composing.cho=cIdx;}} else if(composing.jung>=0&&composing.jong==0){const ji=jongIdx(jamo); if(ji>0){composing.jong=ji;} else {const syl=makeSyllable(composing.cho,composing.jung,0); committed+=syl; composing={cho:cIdx,jung:-1,jong:0};}} else if(composing.jong>0){const prevJ=JONG[composing.jong]; const comb=DJOC[prevJ+jamo]; if(comb){composing.jong=jongIdx(comb);} else {const syl=makeSyllable(composing.cho,composing.jung,composing.jong); committed+=syl; composing={cho:cIdx,jung:-1,jong:0};}}} else {const vIdx=jungIdx(jamo); if(composing.cho<0){composing.cho=choIdx('ㅇ'); composing.jung=vIdx;} else if(composing.jung<0){composing.jung=vIdx;} else if(composing.jong==0){const prevV=JUNG[composing.jung]; const comb=DJC[prevV+jamo]; if(comb){composing.jung=jungIdx(comb);} else {const syl=makeSyllable(composing.cho,composing.jung,0); committed+=syl; composing={cho:choIdx('ㅇ'),jung:vIdx,jong:0};}} else {const jongChar=JONG[composing.jong]; let rem=0; let nextC=jongChar; if(DJS[jongChar]){const p=DJS[jongChar]; rem=jongIdx(p[0]); nextC=p[1];} else {rem=0; nextC=jongChar;} const syl=makeSyllable(composing.cho,composing.jung,rem); committed+=syl; composing={cho:choIdx(nextC),jung:vIdx,jong:0};}} updateInputField();}
+function inputHangulClean(jamo){
+  if(jamo===' '){commitComposing(); committed+=' '; updateInputField(); return;}
+  const DC={'ㄱㄱ':'ㄲ','ㄷㄷ':'ㄸ','ㅂㅂ':'ㅃ','ㅅㅅ':'ㅆ','ㅈㅈ':'ㅉ'}; const DJC={'ㅗㅏ':'ㅘ','ㅗㅐ':'ㅙ','ㅗㅣ':'ㅚ','ㅜㅓ':'ㅝ','ㅜㅔ':'ㅞ','ㅜㅣ':'ㅟ','ㅡㅣ':'ㅢ'}; const DJOC={'ㄱㅅ':'ㄳ','ㄴㅈ':'ㄵ','ㄴㅎ':'ㄶ','ㄹㄱ':'ㄺ','ㄹㅁ':'ㄻ','ㄹㅂ':'ㄼ','ㄹㅅ':'ㄽ','ㄹㅌ':'ㄾ','ㄹㅍ':'ㄿ','ㄹㅎ':'ㅀ','ㅂㅅ':'ㅄ'}; const DJS={'ㄳ':['ㄱ','ㅅ'],'ㄵ':['ㄴ','ㅈ'],'ㄶ':['ㄴ','ㅎ'],'ㄺ':['ㄹ','ㄱ'],'ㄻ':['ㄹ','ㅁ'],'ㄼ':['ㄹ','ㅂ'],'ㄽ':['ㄹ','ㅅ'],'ㄾ':['ㄹ','ㅌ'],'ㄿ':['ㄹ','ㅍ'],'ㅀ':['ㄹ','ㅎ'],'ㅄ':['ㅂ','ㅅ']};
+  if(isConsonant(jamo)){
+    const cIdx=choIdx(jamo);
+    if(composing.cho<0&&composing.jung<0){composing.cho=cIdx;}
+    else if(composing.cho>=0&&composing.jung<0){const prev=CHO[composing.cho]; const comb=DC[prev+jamo]; if(comb){composing.cho=choIdx(comb);} else {committed+=CHO[composing.cho]; composing.cho=cIdx;}}
+    else if(composing.jung>=0&&composing.jong==0){const ji=jongIdx(jamo); if(ji>0){composing.jong=ji;} else {const syl=makeSyllable(composing.cho,composing.jung,0); committed+=syl; composing={cho:cIdx,jung:-1,jong:0};}}
+    else if(composing.jong>0){const prevJ=JONG[composing.jong]; const comb=DJOC[prevJ+jamo]; if(comb){composing.jong=jongIdx(comb);} else {const syl=makeSyllable(composing.cho,composing.jung,composing.jong); committed+=syl; composing={cho:cIdx,jung:-1,jong:0};}}
+  } else {
+    const vIdx=jungIdx(jamo);
+    if(composing.cho<0){composing.cho=choIdx('ㅇ'); composing.jung=vIdx;}
+    else if(composing.jung<0){composing.jung=vIdx;}
+    else if(composing.jong==0){const prevV=JUNG[composing.jung]; const comb=DJC[prevV+jamo]; if(comb){composing.jung=jungIdx(comb);} else {const syl=makeSyllable(composing.cho,composing.jung,0); committed+=syl; composing={cho:choIdx('ㅇ'),jung:vIdx,jong:0};}}
+    else {const jongChar=JONG[composing.jong]; let rem=0; let nextC=jongChar; if(DJS[jongChar]){const p=DJS[jongChar]; rem=jongIdx(p[0]); nextC=p[1];} else {rem=0; nextC=jongChar;} const syl=makeSyllable(composing.cho,composing.jung,rem); committed+=syl; composing={cho:choIdx(nextC),jung:vIdx,jong:0};}
+  }
+  updateInputField();
+}
 function delKey(){if(getComposingChar()){if(composing.jong>0){composing.jong=0;} else if(composing.jung>=0){composing.jung=-1;} else if(composing.cho>=0){composing.cho=-1;}} else {if(committed.length>0) committed=committed.slice(0,-1);} updateInputField();}
 function clearInput(){committed=''; composing={cho:-1,jung:-1,jong:0}; updateInputField();}
 function typeKey(k){if(currentLang==='kr'){if(k===' ') inputHangulClean(' '); else inputHangulClean(k);} else {commitComposing(); committed+=k; updateInputField();}}
 let currentLang='kr';
 function setLang(lang){currentLang=lang; document.getElementById('tabKr').classList.toggle('active',lang==='kr'); document.getElementById('tabEn').classList.toggle('active',lang==='en'); buildKeypad();}
-function buildKeypad(){const kp=document.getElementById('keypad'); kp.innerHTML=''; kp.className='keypad '+currentLang; if(currentLang==='kr'){const rows=[['ㅂ','ㅈ','ㄷ','ㄱ','ㅅ','ㅛ','ㅕ','ㅑ','ㅐ','ㅔ'],['ㅁ','ㄴ','ㅇ','ㄹ','ㅎ','ㅗ','ㅓ','ㅏ','ㅣ'],['ㅋ','ㅌ','ㅊ','ㅍ','ㅠ','ㅜ','ㅡ']]; rows.forEach(row=>{row.forEach(k=>{const b=document.createElement('button'); b.textContent=k; b.onclick=()=>typeKey(k); kp.appendChild(b);});}); const space=document.createElement('button'); space.textContent='스페이스'; space.style.gridColumn='span 4'; space.onclick=()=>typeKey(' '); kp.appendChild(space); const del=document.createElement('button'); del.textContent='⌫'; del.style.background='#ff3b30'; del.style.color='#fff'; del.style.gridColumn='span 2'; del.onclick=()=>delKey(); kp.appendChild(del); const enter=document.createElement('button'); enter.textContent='검색'; enter.style.background='#00ff88'; enter.style.color='#000'; enter.style.gridColumn='span 4'; enter.onclick=()=>doSearch(); kp.appendChild(enter);} else {const rows=[['q','w','e','r','t','y','u','i','o','p'],['a','s','d','f','g','h','j','k','l'],['z','x','c','v','b','n','m']]; rows.forEach(row=>{row.forEach(k=>{const b=document.createElement('button'); b.textContent=k; b.onclick=()=>typeKey(k); kp.appendChild(b);});}); const space=document.createElement('button'); space.textContent='Space'; space.style.gridColumn='span 4'; space.onclick=()=>typeKey(' '); kp.appendChild(space); const del=document.createElement('button'); del.textContent='⌫'; del.style.background='#ff3b30'; del.style.color='#fff'; del.style.gridColumn='span 2'; del.onclick=()=>delKey(); kp.appendChild(del); const enter=document.createElement('button'); enter.textContent='Search'; enter.style.background='#00ff88'; enter.style.color='#000'; enter.style.gridColumn='span 4'; enter.onclick=()=>doSearch(); kp.appendChild(enter);}}
+function buildKeypad(){
+  const kp=document.getElementById('keypad'); kp.innerHTML=''; kp.className='keypad '+currentLang;
+  if(currentLang==='kr'){
+    const rows=[['ㅂ','ㅈ','ㄷ','ㄱ','ㅅ','ㅛ','ㅕ','ㅑ','ㅐ','ㅔ'],['ㅁ','ㄴ','ㅇ','ㄹ','ㅎ','ㅗ','ㅓ','ㅏ','ㅣ'],['ㅋ','ㅌ','ㅊ','ㅍ','ㅠ','ㅜ','ㅡ']];
+    rows.forEach(row=>{row.forEach(k=>{const b=document.createElement('button'); b.textContent=k; b.onclick=()=>typeKey(k); kp.appendChild(b);});});
+    const space=document.createElement('button'); space.textContent='스페이스'; space.style.gridColumn='span 4'; space.onclick=()=>typeKey(' '); kp.appendChild(space);
+    const del=document.createElement('button'); del.textContent='⌫'; del.style.background='#ff3b30'; del.style.color='#fff'; del.style.gridColumn='span 2'; del.onclick=()=>delKey(); kp.appendChild(del);
+    const enter=document.createElement('button'); enter.textContent='검색'; enter.style.background='#00ff88'; enter.style.color='#000'; enter.style.gridColumn='span 4'; enter.onclick=()=>doSearch(); kp.appendChild(enter);
+  } else {
+    const rows=[['q','w','e','r','t','y','u','i','o','p'],['a','s','d','f','g','h','j','k','l'],['z','x','c','v','b','n','m']];
+    rows.forEach(row=>{row.forEach(k=>{const b=document.createElement('button'); b.textContent=k; b.onclick=()=>typeKey(k); kp.appendChild(b);});});
+    const space=document.createElement('button'); space.textContent='Space'; space.style.gridColumn='span 4'; space.onclick=()=>typeKey(' '); kp.appendChild(space);
+    const del=document.createElement('button'); del.textContent='⌫'; del.style.background='#ff3b30'; del.style.color='#fff'; del.style.gridColumn='span 2'; del.onclick=()=>delKey(); kp.appendChild(del);
+    const enter=document.createElement('button'); enter.textContent='Search'; enter.style.background='#00ff88'; enter.style.color='#000'; enter.style.gridColumn='span 4'; enter.onclick=()=>doSearch(); kp.appendChild(enter);
+  }
+}
 function showKeypad(){document.getElementById('keypadWrap').style.display='flex';}
 function hideKeypad(){document.getElementById('keypadWrap').style.display='none';}
 function toggleKeypad(){const w=document.getElementById('keypadWrap'); w.style.display=(w.style.display==='none'||w.style.display==='')?'flex':'none';}
 
-let lastItems=[], focusedIndex=0, currentPage=0, isPlayer=false;
+let lastItems=[], focusedIndex=0, currentPage=0, isPlayer=false, isBigMode=false;
 const ITEMS_PER_PAGE=5;
 async function fetchTimeout(url,ms=6500){const c=new AbortController(); const t=setTimeout(()=>c.abort(),ms); try{const r=await fetch(url,{signal:c.signal}); clearTimeout(t); if(!r.ok) throw new Error(r.status); return await r.json();}catch(e){clearTimeout(t); throw e;}}
-async function searchPiped(q){const INSTANCES=["https://pipedapi.kavin.rocks","https://api.piped.private.coffee"]; for(let i=0;i<INSTANCES.length;i++){document.getElementById('info').textContent=`${i+1}/${INSTANCES.length}`; try{const d=await fetchTimeout(`${INSTANCES[i]}/search?q=${encodeURIComponent(q)}&filter=videos`,7000); if(d.items&&d.items.length) return {items:d.items, host:new URL(INSTANCES[i]).host};}catch(e){continue;}} throw new Error('all failed');}
-function renderPage(){const list=document.getElementById('list'); list.innerHTML=''; document.getElementById('player').style.display='none'; list.style.display='flex'; isPlayer=false; const start=currentPage*ITEMS_PER_PAGE; const end=Math.min(start+ITEMS_PER_PAGE,lastItems.length); for(let idx=start; idx<end; idx++){const v=lastItems[idx]; const id=v.url?.replace('/watch?v=','')||v.id||''; const title=v.title||'No title'; const ch=v.uploaderName||''; const thumb=v.thumbnail||`https://i.ytimg.com/vi/${id}/mqdefault.jpg`; const btn=document.createElement('button'); btn.className='card-btn'; btn.tabIndex=0; btn.innerHTML=`<div class="num">${idx+1}</div><img class="thumb" src="${thumb}"><div class="meta"><div class="title">${title}</div><div class="ch">${ch}</div></div>`; btn.onclick=()=>{focusedIndex=idx; playVideo(id);}; btn.onfocus=()=>{focusedIndex=idx;}; list.appendChild(btn);} document.getElementById('pageInfo').textContent=`${currentPage+1}/${Math.ceil(lastItems.length/ITEMS_PER_PAGE)}`; document.getElementById('count').textContent=lastItems.length+'개'; setTimeout(()=>{const first=list.querySelector('button'); if(first) first.focus();},100);}
-function playVideo(id){const list=document.getElementById('list'); list.style.display='none'; hideKeypad(); const player=document.getElementById('player'); player.style.display='flex'; isPlayer=true; player.innerHTML=`<div class="controls"><button class="ctrl" tabindex="0" onclick="backToList()">← 목록</button><button class="ctrl" tabindex="0" onclick="toggleBig()">⛶ 크게</button><button class="ctrl" tabindex="0" onclick="nextVideo(1)">다음 →</button></div><iframe src="https://www.youtube.com/embed/${id}?autoplay=1&playsinline=1" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe><div class="controls"><button class="ctrl" tabindex="0" onclick="backToList()">✕ 닫기</button></div>`;}
-function backToList(){document.getElementById('player').style.display='none'; document.getElementById('list').style.display='flex'; isPlayer=false; renderPage();}
-function nextVideo(dir){if(!lastItems.length) return; let ni=focusedIndex+dir; if(ni<0) ni=lastItems.length-1; if(ni>=lastItems.length) ni=0; focusedIndex=ni; currentPage=Math.floor(ni/ITEMS_PER_PAGE); const v=lastItems[ni]; const id=v.url?.replace('/watch?v=','')||v.id; playVideo(id);}
-function toggleBig(){document.getElementById('hud').classList.toggle('big-mode');}
-
-// V16 핵심: 한국어 강제 + 영어 감지
-function isEnglishOnly(str){
-  // 한글 한 글자라도 있으면 한국어로 간주
-  const hasHangul = /[가-힣]/.test(str);
-  if(hasHangul) return false;
-  // 영어만 있으면 영어로 간주
-  return /^[a-zA-Z0-9\s\.,!?'"\-]+$/.test(str);
-}
-
-function startVoice(requestedLang){
-  const voiceBox=document.getElementById('voiceBox');
-  const statusText=document.getElementById('statusText');
-  const btnKr=document.getElementById('btnKr');
-  const btnEn=document.getElementById('btnEn');
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  
-  if(!SpeechRecognition){
-    statusText.textContent='V16: 안경은 마이크 차단됨';
-    voiceBox.style.display='block'; voiceBox.className='voice-box eng';
-    voiceBox.innerHTML='⚠️ 안경 브라우저 마이크 차단<br>핸드폰 크롬에서 사용하세요';
-    setTimeout(()=>voiceBox.style.display='none',4000);
-    return;
+async function searchPiped(q){const INSTANCES=["https://pipedapi.kavin.rocks","https://api.piped.private.coffee","https://pipedapi.adminforge.de"]; for(let i=0;i<INSTANCES.length;i++){document.getElementById('info').textContent=`${i+1}/${INSTANCES.length}`; try{const d=await fetchTimeout(`${INSTANCES[i]}/search?q=${encodeURIComponent(q)}&filter=videos`,7000); if(d.items&&d.items.length) return {items:d.items, host:new URL(INSTANCES[i]).host};}catch(e){continue;}} throw new Error('all failed');}
+function renderPage(){
+  const list=document.getElementById('list'); list.innerHTML=''; document.getElementById('player').style.display='none'; list.style.display='flex'; isPlayer=false; isBigMode=false; document.getElementById('hud').classList.remove('big-mode');
+  const start=currentPage*ITEMS_PER_PAGE; const end=Math.min(start+ITEMS_PER_PAGE,lastItems.length);
+  for(let idx=start; idx<end; idx++){
+    const v=lastItems[idx]; const id=v.url?.replace('/watch?v=','')||v.id||''; const title=v.title||'No title'; const ch=v.uploaderName||v.author||''; const thumb=v.thumbnail||`https://i.ytimg.com/vi/${id}/mqdefault.jpg`;
+    const btn=document.createElement('button'); btn.className='card-btn'; btn.id='card-'+idx; btn.setAttribute('tabindex','0');
+    btn.innerHTML=`<div class="num">${idx+1}</div><img class="thumb" src="${thumb}" loading="lazy"><div class="meta"><div class="title">${title}</div><div class="ch">${ch}</div></div>`;
+    btn.addEventListener('click', ()=>{ focusedIndex=idx; playVideo(id,title,idx); });
+    btn.addEventListener('focus', ()=>{ focusedIndex=idx; document.getElementById('statusText').textContent=`V17 ${idx+1}/${lastItems.length} - Enter 재생 / Esc 목록`; });
+    list.appendChild(btn);
   }
-
-  const lang = requestedLang || 'ko-KR';
-  const recog=new SpeechRecognition();
-  recog.lang = lang; // 강제!
-  recog.interimResults = true;
-  recog.maxAlternatives = 5; // 후보 5개까지
-  recog.continuous = false;
-
-  // 버튼 상태
-  if(lang==='ko-KR'){ btnKr.style.background='#00ff88'; btnKr.style.color='#000'; btnEn.style.background='#1e1e1e'; btnEn.style.color='#888'; }
-  else { btnEn.style.background='#00ff88'; btnEn.style.color='#000'; btnKr.style.background='#1e1e1e'; btnKr.style.color='#888'; }
-
-  voiceBox.style.display='block';
-  voiceBox.className='voice-box';
-  voiceBox.innerHTML=`🎤 <b>V16 ${lang==='ko-KR'?'한국어':'English'} 모드</b><br>lang=${lang} 강제 적용<br><small>말해보세요...</small>`;
-  statusText.textContent=`V16 🎤 ${lang} 듣는 중...`;
-
-  let finalTranscript='';
-  let allAlternatives=[];
-
-  recog.onresult=(e)=>{
-    let interim='';
-    allAlternatives=[];
-    for(let i=e.resultIndex; i<e.results.length; i++){
-      // 모든 후보 수집
-      for(let j=0;j<e.results[i].length;j++){
-        allAlternatives.push(e.results[i][j].transcript);
-      }
-      if(e.results[i].isFinal){
-        finalTranscript+=e.results[i][0].transcript;
-      } else {
-        interim+=e.results[i][0].transcript;
-      }
-    }
-    if(interim){
-      voiceBox.innerHTML=`🎤 듣는 중...<br><b style="color:#fff;font-size:13px">${interim}</b><br><small>후보: ${allAlternatives.slice(0,3).join(', ')}</small>`;
-      document.getElementById('q').value=interim;
-    }
-    if(finalTranscript){
-      // 영어만으로 인식됐는지 체크
-      if(lang==='ko-KR' && isEnglishOnly(finalTranscript)){
-        voiceBox.className='voice-box eng';
-        voiceBox.innerHTML=`⚠️ 영어로 인식됨: <b>${finalTranscript}</b><br>후보: ${allAlternatives.join(', ')}<br><br>🇰🇷 <b>한글로 다시 또박또박 말해보세요</b><br>"고-양-이" 처럼 천천히<br><small>자동 재시도 안 함 - 다시 버튼 누르기</small>`;
-        statusText.textContent=`V16 ⚠️ 영어로 인식됨: ${finalTranscript}`;
-        // 한글 후보가 있는지 찾기
-        const hangulCandidate = allAlternatives.find(t=>/[가-힣]/.test(t));
-        if(hangulCandidate){
-          voiceBox.innerHTML+=`<br><br>💡 한글 후보 발견: <b style="color:#00ff88">${hangulCandidate}</b><br><button onclick="useTranscript('${hangulCandidate}')" style="background:#00ff88;color:#000;border:0;padding:6px 12px;border-radius:6px;font-weight:900;margin-top:6px">이걸로 검색</button>`;
-        }
-      } else {
-        // 정상 한글 인식
-        committed=finalTranscript; composing={cho:-1,jung:-1,jong:0}; updateInputField();
-        voiceBox.className='voice-box';
-        voiceBox.innerHTML=`✅ <b style="color:#fff;font-size:14px">${finalTranscript}</b><br>인식 성공! (${lang})<br>검색 중...`;
-        statusText.textContent=`V16 ✅ "${finalTranscript}"`;
-      }
-    }
-  };
-
-  recog.onerror=(e)=>{
-    statusText.textContent=`V16 실패: ${e.error}`;
-    voiceBox.className='voice-box eng';
-    voiceBox.innerHTML=`❌ ${e.error}<br>크롬 마이크 권한 확인<br>설정 > 개인정보 > 마이크 허용`;
-  };
-
-  recog.onend=()=>{
-    if(finalTranscript && !isEnglishOnly(finalTranscript)){
-      setTimeout(()=>{ voiceBox.style.display='none'; doSearch(); },800);
-    } else if(finalTranscript && isEnglishOnly(finalTranscript) && lang==='ko-KR'){
-      // 영어로 인식됐으면 검색 안 하고 대기 - 사용자가 한글 후보 선택하거나 재시도
-      statusText.textContent=`V16 영어로 인식됨 - 다시 시도하세요`;
-    } else if(!finalTranscript){
-      voiceBox.innerHTML='❌ 인식 못함 - 조용한 곳에서 또박또박';
-      setTimeout(()=>voiceBox.style.display='none',3000);
-    }
-  };
-
-  try{ recog.start(); } catch(err){ statusText.textContent='시작 실패: '+err.message; }
+  document.getElementById('pageInfo').textContent=`${currentPage+1}/${Math.ceil(lastItems.length/ITEMS_PER_PAGE)}`; document.getElementById('count').textContent=lastItems.length+'개';
+  setTimeout(()=>{ const first=document.getElementById('card-'+start); if(first) first.focus(); },100);
 }
-
-function useTranscript(text){
-  committed=text; composing={cho:-1,jung:-1,jong:0}; updateInputField();
-  document.getElementById('voiceBox').style.display='none';
-  doSearch();
+function playVideo(id,title,idx){
+  const list=document.getElementById('list'); list.style.display='none'; hideKeypad();
+  const player=document.getElementById('player'); player.style.display='flex'; isPlayer=true;
+  player.innerHTML=`<div class="controls"><button class="ctrl" tabindex="0" onclick="backToList()">← 목록 (Esc)</button><button class="ctrl big" tabindex="0" onclick="toggleBigMode()">⛶ 크게</button><button class="ctrl" tabindex="0" onclick="nextVideo(1)">다음 →</button></div><iframe id="yt" src="https://www.youtube.com/embed/${id}?autoplay=1&playsinline=1" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe><div class="controls"><button class="ctrl" tabindex="0" onclick="nextVideo(-1)">← 이전</button><button class="ctrl big" tabindex="0" onclick="backToList()">✕ 닫기</button><button class="ctrl exit" tabindex="0" onclick="toggleBigMode()">⛶ 크게/작게</button></div>`;
+  setTimeout(()=>{ const b=player.querySelector('button'); if(b) b.focus(); },100);
 }
-
-document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ if(isPlayer){ backToList(); return; } if(document.getElementById('keypadWrap').style.display!=='none'){ hideKeypad(); return; } } });
-
+function backToList(){document.getElementById('player').style.display='none'; document.getElementById('list').style.display='flex'; isPlayer=false; isBigMode=false; document.getElementById('hud').classList.remove('big-mode'); renderPage();}
+function nextVideo(dir){if(!lastItems.length) return; let ni=focusedIndex+dir; if(ni<0) ni=lastItems.length-1; if(ni>=lastItems.length) ni=0; focusedIndex=ni; currentPage=Math.floor(ni/ITEMS_PER_PAGE); const v=lastItems[ni]; const id=v.url?.replace('/watch?v=','')||v.id; playVideo(id,v.title,ni);}
+function toggleBigMode(){const hud=document.getElementById('hud'); isBigMode=!isBigMode; if(isBigMode){ hud.classList.add('big-mode'); document.getElementById('statusText').textContent='V17 큰 화면 - Esc로 나가기'; } else { hud.classList.remove('big-mode'); } }
+document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ if(isBigMode){ toggleBigMode(); return; } if(isPlayer){ backToList(); return; } if(document.getElementById('keypadWrap').style.display!=='none'){ hideKeypad(); return; } } });
 async function doSearch(){
   commitComposing();
   const q=document.getElementById('q').value.trim()||'고양이';
   hideKeypad();
-  document.getElementById('statusText').textContent='V16 검색: '+q;
-  document.getElementById('list').innerHTML='<div class="center"><b>V16 검색 중...</b><br>'+q+'</div>';
+  document.getElementById('statusText').textContent='V17 검색: '+q;
+  document.getElementById('list').innerHTML='<div class="center"><b>V17 검색 중...</b><br>'+q+'</div>';
   document.getElementById('player').style.display='none'; document.getElementById('list').style.display='flex';
   try{
     const res=await searchPiped(q);
     lastItems=res.items.slice(0,20);
     focusedIndex=0; currentPage=0;
-    document.getElementById('info').textContent=res.host+' ✓';
+    document.getElementById('info').textContent=res.host+' ✓ V17';
     renderPage();
   }catch(e){
     document.getElementById('list').innerHTML=`<div class="center"><b>검색 실패</b><br><button tabindex="0" onclick="doSearch()" style="background:#00ff88;color:#000;border:0;padding:10px 20px;border-radius:10px;font-weight:900">재시도</button></div>`;
   }
 }
-
 buildKeypad(); hideKeypad();
 setTimeout(()=>{ document.getElementById('q').value='고양이'; doSearch(); }, 500);
 </script>
