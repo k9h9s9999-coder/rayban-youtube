@@ -6,7 +6,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=600, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>V42 No Border Gesture</title>
+<title>V43 Playback Like Others</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{background:#000;color:#fff;font-family:sans-serif;width:600px;height:600px;overflow:hidden;display:flex;justify-content:center;align-items:center}
@@ -54,49 +54,28 @@ body{background:#000;color:#fff;font-family:sans-serif;width:600px;height:600px;
 .keypad button.search{background:#00ff88;color:#000;border-color:#00ff88;font-weight:900;font-size:18px}
 .keypad button.space{background:#111;color:#00ff88;border-color:#00ff88;grid-column:span 4}
 
-/* 영상 재생 제스처 오버레이 - V42 신규 */
-.gesture-overlay{position:absolute;top:0;left:0;width:100%;height:100%;z-index:20;display:none;pointer-events:auto;background:transparent}
-.hud.playing .gesture-overlay{display:flex}
-.gesture-zone{flex:1;display:flex;align-items:center;justify-content:center;position:relative}
-.gesture-left{flex:0.8;background:linear-gradient(to right, rgba(0,0,0,0.3), transparent)}
-.gesture-center{flex:1.4}
-.gesture-right{flex:0.8;background:linear-gradient(to left, rgba(0,0,0,0.3), transparent)}
-.gesture-hint{position:absolute;background:rgba(0,0,0,0.85);color:#fff;padding:8px 14px;border-radius:20px;font-size:11px;font-weight:800;display:none;align-items:center;gap:6px;pointer-events:none;backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,0.2)}
-.gesture-hint.show{display:flex;animation:fadeIn 0.2s}
-@keyframes fadeIn{from{opacity:0;transform:scale(0.9)}to{opacity:1;transform:scale(1)}}
-.gesture-hint.volume{left:10px;top:50%;transform:translateY(-50%)}
-.gesture-hint.seek{bottom:80px;left:50%;transform:translateX(-50%)}
-.gesture-hint.playpause{top:50%;left:50%;transform:translate(-50%,-50%);font-size:24px;padding:16px 20px}
-.progress-bar{position:absolute;bottom:0;left:0;width:100%;height:4px;background:rgba(255,255,255,0.2);z-index:30}
-.progress-fill{height:100%;background:#00ff88;width:0%;transition:width 0.2s}
-.volume-bar{position:absolute;left:0;top:0;width:4px;height:100%;background:rgba(255,255,255,0.2);z-index:30}
-.volume-fill{width:100%;background:#00ff88;height:50%;position:absolute;bottom:0;transition:height 0.2s}
-.back-btn{position:absolute;top:12px;left:12px;background:rgba(0,0,0,0.7);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:20px;padding:8px 14px;font-size:11px;font-weight:700;z-index:25;display:none;backdrop-filter:blur(4px)}
-.hud.playing .back-btn{display:block}
+/* V43 - 다른 사람들 유튜브 웹앱처럼 재생 화면 */
+.playback-ui{position:absolute;top:0;left:0;width:100%;height:100%;z-index:20;display:none;pointer-events:none}
+.hud.playing .playback-ui{display:block}
+.back-btn-v43{position:absolute;top:10px;left:10px;background:rgba(0,0,0,0.6);color:#fff;border:1px solid rgba(255,255,255,0.2);border-radius:24px;padding:10px 16px;font-size:12px;font-weight:700;z-index:30;pointer-events:auto;backdrop-filter:blur(8px);display:flex;align-items:center;gap:6px;opacity:0;transition:opacity 0.3s}
+.back-btn-v43.show{opacity:1}
+.back-btn-v43:active{background:rgba(255,255,255,0.2)}
 </style>
 </head>
 <body>
 <div class="hud" id="hud">
-<div class="version">V42 제스처</div>
-<div class="header"><div>RB YouTube V42</div><div style="font-size:9px;color:#00ff88" id="pageInfo">V42 - 제스처</div></div>
+<div class="version">V43 재생 개선</div>
+<div class="header"><div>RB YouTube V43</div><div style="font-size:9px;color:#00ff88" id="pageInfo">V43</div></div>
 <div class="search-row">
 <input id="q" type="text" readonly placeholder="여기 누르면 키보드" onclick="showKB()">
 <button id="kbBtn" class="kb" onclick="toggleKB()">⌨️ 키보드</button>
 <button id="searchBtn" onclick="doSearchHide()">검색</button>
 </div>
-<div class="status"><span id="statusText">V42: 영상 재생 제스처 추가 - 녹색테두리 제거</span><span id="info">대기중</span></div>
+<div class="status"><span id="statusText">V43: 재생 화면 다른 웹앱처럼 깔끔하게</span><span id="info">대기중</span></div>
 <div class="content" id="content"><div id="list" class="list"></div><div id="player" class="player">
-<div id="playerDiv"></div>
-<div class="gesture-overlay" id="gestureOverlay">
-<button class="back-btn" onclick="backToList()">◀ 뒤로</button>
-<div class="volume-bar"><div class="volume-fill" id="volumeFill"></div></div>
-<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-<div class="gesture-zone gesture-left" id="gestureLeft"></div>
-<div class="gesture-zone gesture-center" id="gestureCenter"></div>
-<div class="gesture-zone gesture-right" id="gestureRight"></div>
-<div class="gesture-hint volume" id="volumeHint">🔊 50%</div>
-<div class="gesture-hint seek" id="seekHint">⏩ +10초</div>
-<div class="gesture-hint playpause" id="playHint">⏸️</div>
+<div id="playerDiv" style="width:100%;height:100%"></div>
+<div class="playback-ui" id="playbackUI">
+<button class="back-btn-v43" id="backBtnV43" onclick="backToList()">◀ 뒤로</button>
 </div>
 </div></div>
 <div class="pagination" id="pagination">
@@ -112,12 +91,10 @@ body{background:#000;color:#fff;font-family:sans-serif;width:600px;height:600px;
 </div>
 <div id="keypad" class="keypad"></div>
 </div>
-<div class="footer"><span>V42 제스처 재생</span><span id="count">0개</span></div>
+<div class="footer"><span>V43 재생 화면 개선</span><span id="count">0개</span></div>
 </div>
-
-<script src="https://www.youtube.com/iframe_api"></script>
 <script>
-console.log('V42 Gesture Control');
+console.log('V43 Playback Like Others');
 const CHO = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
 const JUNG = ['ㅏ','ㅐ','ㅑ','ㅒ','ㅓ','ㅔ','ㅕ','ㅖ','ㅗ','ㅘ','ㅙ','ㅚ','ㅛ','ㅜ','ㅝ','ㅞ','ㅟ','ㅠ','ㅡ','ㅢ','ㅣ'];
 const JONG = ['', 'ㄱ','ㄲ','ㄳ','ㄴ','ㄵ','ㄶ','ㄷ','ㄹ','ㄺ','ㄻ','ㄼ','ㄽ','ㄾ','ㄿ','ㅀ','ㅁ','ㅂ','ㅄ','ㅅ','ㅆ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
@@ -126,7 +103,7 @@ function makeSyllable(cho,jung,jong){if(cho<0||jung<0) return null; return Strin
 let committed=''; let composing={cho:-1,jung:-1,jong:0};
 function getComposingChar(){if(composing.cho>=0&&composing.jung>=0){return makeSyllable(composing.cho,composing.jung,composing.jong);} if(composing.cho>=0&&composing.jung<0){return CHO[composing.cho];} if(composing.cho<0&&composing.jung>=0){return JUNG[composing.jung];} return '';}
 function commitComposing(){const ch=getComposingChar(); if(ch) committed+=ch; composing={cho:-1,jung:-1,jong:0};}
-function updateInput(){const d=committed+getComposingChar(); const el=document.getElementById('q'); if(el) el.value=d; const st=document.getElementById('statusText'); if(st) st.textContent=d?`입력: ${d}`:`V42: 제스처 재생 - 위아래=볼륨, 좌우=탐색`;}
+function updateInput(){const d=committed+getComposingChar(); const el=document.getElementById('q'); if(el) el.value=d; const st=document.getElementById('statusText'); if(st) st.textContent=d?`입력: ${d}`:`V43: 재생 화면 다른 웹앱처럼 깔끔하게`;}
 function isConsonant(j){return CHO.includes(j);}
 function inputHangul(jamo){
   if(jamo===' '){commitComposing(); committed+=' '; updateInput(); return;}
@@ -154,7 +131,6 @@ function setLang(lang){currentLang=lang; const kr=document.getElementById('tabKr
 function toggleKB(){const w=document.getElementById('keypadWrap'); const btn=document.getElementById('kbBtn'); if(!w) return; if(w.classList.contains('hidden')){w.classList.remove('hidden'); w.style.display='flex'; if(btn){btn.textContent='⌨️ 닫기';} rebuildFocusable(); setTimeout(()=>{moveFocusToFirstKeypad()},100);} else {w.classList.add('hidden'); w.style.display='none'; if(btn){btn.textContent='⌨️ 키보드';} rebuildFocusable();}}
 function showKB(){const w=document.getElementById('keypadWrap'); const btn=document.getElementById('kbBtn'); if(!w) return; w.classList.remove('hidden'); w.style.display='flex'; if(btn) btn.textContent='⌨️ 닫기'; rebuildFocusable(); setTimeout(()=>{moveFocusToFirstKeypad()},100);}
 function hideKB(){const w=document.getElementById('keypadWrap'); const btn=document.getElementById('kbBtn'); if(!w) return; w.classList.add('hidden'); w.style.display='none'; if(btn) btn.textContent='⌨️ 키보드'; rebuildFocusable();}
-
 let focusableElements=[]; let focusIndex=0; let keypadRows=[]; let keypadRowStarts=[];
 function rebuildFocusable(){
   const visible = [];
@@ -270,66 +246,6 @@ async function searchInvidious(q){
 async function searchAll(q){if(!q || q.trim().length===0) q='고양이'; try{ return await searchPiped(q); }catch(e1){ try{ return await searchInvidious(q); }catch(e2){ throw new Error(`${e1.message} / ${e2.message}`); } }}
 function safeSetText(id, txt){const el=document.getElementById(id); if(el) el.textContent=txt;}
 
-// YouTube Player + 제스처 제어 V42
-let ytPlayer=null;
-let currentVolume=50;
-let isPaused=false;
-let currentTime=0;
-let duration=0;
-
-function onYouTubeIframeAPIReady(){
-  console.log('YT API Ready');
-}
-
-function createYTPlayer(videoId){
-  const playerDiv=document.getElementById('playerDiv');
-  if(!playerDiv) return;
-  playerDiv.innerHTML=`<div id="ytplayer"></div>`;
-  ytPlayer=new YT.Player('ytplayer', {
-    width:'600',
-    height:'600',
-    videoId:videoId,
-    playerVars:{
-      autoplay:1,
-      playsinline:1,
-      controls:1,
-      rel:0,
-      fs:1,
-      modestbranding:1,
-      enablejsapi:1,
-      origin:window.location.origin
-    },
-    events:{
-      'onReady': onPlayerReady,
-      'onStateChange': onPlayerStateChange
-    }
-  });
-}
-
-function onPlayerReady(event){
-  console.log('Player ready');
-  event.target.setVolume(currentVolume);
-  event.target.playVideo();
-  setInterval(updateProgress, 1000);
-}
-
-function onPlayerStateChange(event){
-  if(event.data==YT.PlayerState.PAUSED) isPaused=true;
-  else if(event.data==YT.PlayerState.PLAYING) isPaused=false;
-}
-
-function updateProgress(){
-  if(ytPlayer && ytPlayer.getCurrentTime){
-    try{
-      currentTime=ytPlayer.getCurrentTime();
-      duration=ytPlayer.getDuration();
-      const pct=duration>0 ? (currentTime/duration*100) : 0;
-      const fill=document.getElementById('progressFill');
-      if(fill) fill.style.width=pct+'%';
-    }catch(e){}
-  }
-}
-
 function renderPage(){
   try{
     const list=document.getElementById('list'); if(!list) return; list.innerHTML='';
@@ -358,6 +274,8 @@ function renderPage(){
   }catch(e){safeSetText('statusText', `렌더 오류: ${e.message}`);}
 }
 function changePage(dir){const totalPages=Math.ceil(lastItems.length/ITEMS_PER_PAGE); let np=currentPage+dir; if(np<0) np=0; if(np>=totalPages) np=totalPages-1; if(np===currentPage) return; currentPage=np; renderPage();}
+
+// V43 - 다른 애들 유튜브 웹앱처럼 깔끔한 재생
 function playVideo(id){
   const list=document.getElementById('list'); if(list) list.style.display='none';
   const pag=document.getElementById('pagination'); if(pag) pag.style.display='none';
@@ -366,29 +284,31 @@ function playVideo(id){
   player.style.display='flex';
   const hud=document.getElementById('hud'); if(hud) hud.classList.add('playing');
   isPlayer=true;
-  // V42: YouTube API로 재생 (제스처 제어 가능)
-  if(typeof YT!=='undefined' && YT.Player){
-    createYTPlayer(id);
-  } else {
-    // API 아직 로드 안 됐으면 iframe 직접
-    const playerDiv=document.getElementById('playerDiv');
-    if(playerDiv) playerDiv.innerHTML=`<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&playsinline=1&fs=1&rel=0&controls=1&enablejsapi=1&origin=${window.location.origin}" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen style="width:600px;height:600px;border:0"></iframe>`;
-    // 2초 후 YT API로 전환 시도
-    setTimeout(()=>{ if(typeof YT!=='undefined' && YT.Player){ createYTPlayer(id); } },2000);
+  // 다른 사람들 웹앱처럼 심플한 유튜브 임베드 (컨트롤 그대로)
+  const playerDiv=document.getElementById('playerDiv');
+  if(playerDiv){
+    playerDiv.innerHTML=`<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&playsinline=1&fs=1&rel=0&controls=1&modestbranding=1&iv_load_policy=3" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen style="width:600px;height:600px;border:0"></iframe>`;
   }
-  // 제스처 초기화
-  currentVolume=50;
-  safeSetText('info','재생중 - 제스처: 좌우=탐색, 상하=볼륨, 더블탭=일시정지');
+  safeSetText('info','재생중');
+  // 뒤로 버튼 3초 후 자동 숨김, 탭하면 다시 보임
+  const backBtn=document.getElementById('backBtnV43');
+  if(backBtn){
+    backBtn.classList.add('show');
+    setTimeout(()=>{ backBtn.classList.remove('show'); }, 3000);
+  }
 }
+
 function backToList(){
-  if(ytPlayer){ try{ ytPlayer.stopVideo(); ytPlayer.destroy(); }catch(e){} ytPlayer=null; }
   const hud=document.getElementById('hud'); if(hud) hud.classList.remove('playing');
   const player=document.getElementById('player'); if(player) player.style.display='none';
   const list=document.getElementById('list'); if(list) list.style.display='flex';
   const pag=document.getElementById('pagination'); if(pag) pag.style.display='flex';
   isPlayer=false;
+  const playerDiv=document.getElementById('playerDiv');
+  if(playerDiv) playerDiv.innerHTML='';
   renderPage();
 }
+
 function doSearchHide(){
   commitComposing();
   let q=document.getElementById('q')?.value?.trim() || committed.trim() || '고양이';
@@ -411,114 +331,44 @@ function doSearchHide(){
   })();
 }
 
-// 리스트 네비게이션
 document.addEventListener('keydown', (e)=>{
-  if(isPlayer) return; // 재생중에는 제스처가 처리
+  if(isPlayer){
+    if(e.key==='Escape' || e.key==='Backspace'){ e.preventDefault(); backToList(); }
+    return;
+  }
   if(e.key==='ArrowDown'){ e.preventDefault(); moveFocusGrid(1,0); }
   else if(e.key==='ArrowUp'){ e.preventDefault(); moveFocusGrid(-1,0); }
   else if(e.key==='ArrowRight'){ e.preventDefault(); moveFocusGrid(0,1); }
   else if(e.key==='ArrowLeft'){ e.preventDefault(); moveFocusGrid(0,-1); }
   else if(e.key==='Escape'){
-    if(isPlayer){ backToList(); }
-    else {
-      const kw=document.getElementById('keypadWrap');
-      if(kw && !kw.classList.contains('hidden')) hideKB();
-    }
+    const kw=document.getElementById('keypadWrap');
+    if(kw && !kw.classList.contains('hidden')) hideKB();
   }
 });
 
-// 재생 중 제스처 제어 V42
-let gestureStartX=0, gestureStartY=0, gestureStartTime=0;
-let lastTapTime=0;
-
-function showHint(id, text, duration=1500){
-  const el=document.getElementById(id);
-  if(!el) return;
-  el.textContent=text;
-  el.classList.add('show');
-  setTimeout(()=>{ el.classList.remove('show'); }, duration);
-}
-
-function handleGestureStart(x,y){
-  gestureStartX=x; gestureStartY=y; gestureStartTime=Date.now();
-}
-
-function handleGestureEnd(x,y){
-  const diffX=x-gestureStartX;
-  const diffY=y-gestureStartY;
-  const diffTime=Date.now()-gestureStartTime;
-  const absX=Math.abs(diffX);
-  const absY=Math.abs(diffY);
-  
-  if(!isPlayer) return;
-  
-  // 더블탭 감지 (300ms 이내 같은 위치)
-  const now=Date.now();
-  if(diffTime<300 && absX<20 && absY<20){
-    if(now-lastTapTime<400){
-      // 더블탭 - 재생/일시정지
-      if(ytPlayer){
-        try{
-          if(isPaused){ ytPlayer.playVideo(); showHint('playHint','▶️ 재생',1000); }
-          else { ytPlayer.pauseVideo(); showHint('playHint','⏸️ 일시정지',1000); }
-        }catch(e){ console.log('playpause fail', e); }
+// 재생중 탭하면 뒤로 버튼 보이게 (다른 웹앱들처럼)
+const playerEl=document.getElementById('player');
+if(playerEl){
+  playerEl.addEventListener('click', ()=>{
+    if(isPlayer){
+      const backBtn=document.getElementById('backBtnV43');
+      if(backBtn){
+        backBtn.classList.add('show');
+        setTimeout(()=>{ backBtn.classList.remove('show'); }, 3000);
       }
-      lastTapTime=0;
-      return;
     }
-    lastTapTime=now;
-    // 싱글탭은 무시 (YouTube 컨트롤 방해 안 하게)
-    return;
-  }
-  
-  // 스와이프 제스처
-  if(absX>50 || absY>50){
-    if(absX>absY){
-      // 좌우 스와이프 - 탐색 (seek)
-      if(!ytPlayer) return;
-      const seekAmount = diffX>0 ? 10 : -10; // 오른쪽 10초 앞으로, 왼쪽 10초 뒤로
-      try{
-        const newTime=Math.max(0, (ytPlayer.getCurrentTime()||0)+seekAmount);
-        ytPlayer.seekTo(newTime, true);
-        showHint('seekHint', seekAmount>0 ? `⏩ +${seekAmount}초` : `⏪ ${seekAmount}초`, 1200);
-      }catch(e){ console.log('seek fail', e); }
-    } else {
-      // 상하 스와이프 - 볼륨
-      if(!ytPlayer) return;
-      const volChange = diffY<0 ? 10 : -10; // 위로 10% 업, 아래로 10% 다운
-      currentVolume=Math.max(0, Math.min(100, currentVolume+volChange));
-      try{
-        ytPlayer.setVolume(currentVolume);
-        const volFill=document.getElementById('volumeFill');
-        if(volFill) volFill.style.height=currentVolume+'%';
-        showHint('volumeHint', `🔊 ${currentVolume}%`, 1200);
-      }catch(e){ console.log('volume fail', e); }
-    }
-  }
-}
-
-// 제스처 오버레이 이벤트
-const overlay=document.getElementById('gestureOverlay');
-if(overlay){
-  overlay.addEventListener('touchstart', (e)=>{
-    if(e.touches.length===1){
-      handleGestureStart(e.touches[0].clientX, e.touches[0].clientY);
+  });
+  playerEl.addEventListener('touchstart', ()=>{
+    if(isPlayer){
+      const backBtn=document.getElementById('backBtnV43');
+      if(backBtn){
+        backBtn.classList.add('show');
+        setTimeout(()=>{ backBtn.classList.remove('show'); }, 3000);
+      }
     }
   }, {passive:true});
-  overlay.addEventListener('touchend', (e)=>{
-    if(e.changedTouches.length===1){
-      handleGestureEnd(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
-    }
-  }, {passive:true});
-  overlay.addEventListener('mousedown', (e)=>{
-    handleGestureStart(e.clientX, e.clientY);
-  });
-  overlay.addEventListener('mouseup', (e)=>{
-    handleGestureEnd(e.clientX, e.clientY);
-  });
 }
 
-// 리스트 터치 스와이프 (재생중 아닐 때)
 let touchStartY=0, touchStartX=0;
 document.addEventListener('touchstart', (e)=>{
   if(isPlayer) return;
@@ -529,17 +379,8 @@ document.addEventListener('touchend', (e)=>{
   if(isPlayer) return;
   const diffY=e.changedTouches[0].clientY - touchStartY;
   const diffX=e.changedTouches[0].clientX - touchStartX;
-  if(Math.abs(diffY)>Math.abs(diffX)){
-    if(Math.abs(diffY)>50){
-      if(diffY>0) moveFocusGrid(-1,0);
-      else moveFocusGrid(1,0);
-    }
-  } else {
-    if(Math.abs(diffX)>50){
-      if(diffX>0) moveFocusGrid(0,-1);
-      else moveFocusGrid(0,1);
-    }
-  }
+  if(Math.abs(diffY)>Math.abs(diffX)){ if(Math.abs(diffY)>50){ if(diffY>0) moveFocusGrid(-1,0); else moveFocusGrid(1,0); } }
+  else { if(Math.abs(diffX)>50){ if(diffX>0) moveFocusGrid(0,-1); else moveFocusGrid(0,1); } }
 }, {passive:true});
 
 buildKeypad();
