@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta name="viewport" content="width=600, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>V34 무조건 뜨는 키보드</title>
+<title>V35 Search Fixed</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#000;color:#fff;font-family:sans-serif;width:600px;height:600px;overflow:hidden;display:flex;justify-content:center;align-items:center}
@@ -18,10 +18,11 @@ body{background:#000;color:#fff;font-family:sans-serif;width:600px;height:600px;
 .search-row input{flex:1;background:#111;border:3px solid #00ff88;border-radius:12px;padding:14px 12px;color:#fff;font-size:18px;outline:none}
 .search-row button{background:#00ff88;color:#000;border:0;border-radius:12px;padding:0 14px;font-weight:900;font-size:15px;min-width:70px;height:50px}
 .search-row button.kb{background:#222;color:#00ff88;border:3px solid #00ff88;min-width:90px}
-.status{height:20px;padding:0 10px;font-size:10px;color:#00ff88;display:flex;align-items:center;background:#0f0f0f;flex-shrink:0}
+.status{height:20px;padding:0 10px;font-size:10px;color:#00ff88;display:flex;align-items:center;justify-content:space-between;background:#0f0f0f;flex-shrink:0}
 .content{flex:1;overflow:hidden;display:flex;flex-direction:column;background:#121212;min-height:0}
 .list{flex:1;overflow:hidden;padding:6px;display:flex;flex-direction:column;gap:6px}
 .card-btn{display:flex;gap:8px;align-items:center;background:#1e1e1e;border:2px solid transparent;border-radius:10px;padding:8px;width:100%;text-align:left;min-height:54px;color:#fff}
+.card-btn:focus{border-color:#00ff88;background:#2a2a2a;box-shadow:0 0 0 3px rgba(0,255,136,.5)}
 .thumb{width:80px;height:44px;border-radius:6px;background:#000;object-fit:cover;flex-shrink:0}
 .meta{flex:1;min-width:0}
 .title{font-size:11px;font-weight:700;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
@@ -33,10 +34,8 @@ body{background:#000;color:#fff;font-family:sans-serif;width:600px;height:600px;
 .page-btn{flex:1;background:#1e1e1e;border:1px solid #333;color:#fff;border-radius:8px;font-size:12px;font-weight:800;height:32px}
 .footer{height:10px;background:#000}
 .center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:#666;padding:20px;text-align:center}
-.version{position:absolute;top:2px;right:2px;background:#ff0044;color:#fff;font-size:12px;font-weight:900;padding:4px 8px;border-radius:6px;z-index:99;animation:blink 0.5s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0.5}}
-/* 키보드 - V34 제일 단순 */
-.keypad-wrap{display:flex;flex-direction:column;background:#000;border-top:4px solid #ff0044;flex-shrink:0;height:280px;overflow:hidden}
+.version{position:absolute;top:2px;right:2px;background:#00ff88;color:#000;font-size:9px;font-weight:900;padding:3px 6px;border-radius:4px;z-index:99}
+.keypad-wrap{display:flex;flex-direction:column;background:#000;border-top:4px solid #00ff88;flex-shrink:0;height:280px;overflow:hidden}
 .keypad-wrap.hidden{display:none !important}
 .keypad-tabs{display:flex;gap:4px;padding:6px;background:#111;flex-shrink:0}
 .keypad-tabs button{flex:1;padding:10px;border-radius:8px;border:1px solid #333;background:#1e1e1e;color:#888;font-size:11px;font-weight:800;min-height:36px}
@@ -51,14 +50,14 @@ body{background:#000;color:#fff;font-family:sans-serif;width:600px;height:600px;
 </head>
 <body>
 <div class="hud" id="hud">
-<div class="version">V34 키보드 테스트</div>
-<div class="header"><div>RB YouTube V34</div><div style="font-size:9px;color:#ff0044" id="pageInfo">V34</div></div>
+<div class="version">V35 검색 수정</div>
+<div class="header"><div>RB YouTube V35</div><div style="font-size:9px;color:#00ff88" id="pageInfo">V35</div></div>
 <div class="search-row">
-<input id="q" type="text" readonly placeholder="여기 누르면 키보드 떠야함!" onclick="showKB()">
+<input id="q" type="text" readonly placeholder="여기 누르면 키보드" onclick="showKB()">
 <button id="kbBtn" class="kb" onclick="toggleKB()">⌨️ 키보드</button>
 <button id="searchBtn" onclick="doSearchHide()">검색</button>
 </div>
-<div class="status"><span id="statusText">V34: 검색창 누르면 키보드 떠야함 - 안뜨면 알려주세요</span><span id="info"></span></div>
+<div class="status"><span id="statusText">V35: 검색 서버 6개로 늘림</span><span id="info"></span></div>
 <div class="content" id="content"><div id="list" class="list"></div><div id="player" class="player"></div></div>
 <div class="pagination" id="pagination">
 <button class="page-btn" onclick="changePage(-1)">◀ 이전</button>
@@ -76,8 +75,7 @@ body{background:#000;color:#fff;font-family:sans-serif;width:600px;height:600px;
 <div class="footer"></div>
 </div>
 <script>
-// V34 - 제일 단순한 토글, 무조건 뜨게
-console.log('V34 START');
+console.log('V35 Search Fixed');
 const CHO = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
 const JUNG = ['ㅏ','ㅐ','ㅑ','ㅒ','ㅓ','ㅔ','ㅕ','ㅖ','ㅗ','ㅘ','ㅙ','ㅚ','ㅛ','ㅜ','ㅝ','ㅞ','ㅟ','ㅠ','ㅡ','ㅢ','ㅣ'];
 const JONG = ['', 'ㄱ','ㄲ','ㄳ','ㄴ','ㄵ','ㄶ','ㄷ','ㄹ','ㄺ','ㄻ','ㄼ','ㄽ','ㄾ','ㄿ','ㅀ','ㅁ','ㅂ','ㅄ','ㅅ','ㅆ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
@@ -86,7 +84,7 @@ function makeSyllable(cho,jung,jong){if(cho<0||jung<0) return null; return Strin
 let committed=''; let composing={cho:-1,jung:-1,jong:0};
 function getComposingChar(){if(composing.cho>=0&&composing.jung>=0){return makeSyllable(composing.cho,composing.jung,composing.jong);} if(composing.cho>=0&&composing.jung<0){return CHO[composing.cho];} if(composing.cho<0&&composing.jung>=0){return JUNG[composing.jung];} return '';}
 function commitComposing(){const ch=getComposingChar(); if(ch) committed+=ch; composing={cho:-1,jung:-1,jong:0};}
-function updateInput(){const d=committed+getComposingChar(); document.getElementById('q').value=d; document.getElementById('statusText').textContent=d?`입력: ${d}`:`V34: 키보드 떠야함 - ${document.getElementById('keypadWrap').classList.contains('hidden')?'숨김':'보임'}`;}
+function updateInput(){const d=committed+getComposingChar(); document.getElementById('q').value=d; document.getElementById('statusText').textContent=d?`입력: ${d}`:`V35: 검색 서버 6개 - 검색 누르면 키보드 사라짐`;}
 function isConsonant(j){return CHO.includes(j);}
 function inputHangul(jamo){
   if(jamo===' '){commitComposing(); committed+=' '; updateInput(); return;}
@@ -112,80 +110,53 @@ function typeKey(k){if(currentLang==='kr'){if(k===' ') inputHangul(' '); else in
 
 let currentLang='kr';
 function setLang(lang){currentLang=lang; document.getElementById('tabKr').classList.toggle('active',lang==='kr'); document.getElementById('tabEn').classList.toggle('active',lang==='en'); buildKeypad();}
-
-// V34 핵심 - 제일 단순한 3줄 토글
-function toggleKB(){
-  const w=document.getElementById('keypadWrap');
-  console.log('TOGGLE CLICK - hidden?', w.classList.contains('hidden'));
-  document.getElementById('statusText').textContent='버튼 눌림! 토글 중...';
-  if(w.classList.contains('hidden')){
-    w.classList.remove('hidden');
-    w.style.display='flex';
-    document.getElementById('kbBtn').textContent='⌨️ 닫기';
-    document.getElementById('kbBtn').classList.add('active');
-    document.getElementById('statusText').textContent='키보드 뜸! V34';
-  } else {
-    w.classList.add('hidden');
-    w.style.display='none';
-    document.getElementById('kbBtn').textContent='⌨️ 키보드';
-    document.getElementById('kbBtn').classList.remove('active');
-    document.getElementById('statusText').textContent='키보드 숨김';
-  }
-  console.log('After toggle hidden?', w.classList.contains('hidden'));
-}
-function showKB(){
-  console.log('SHOW CLICK - 검색창 눌림');
-  const w=document.getElementById('keypadWrap');
-  w.classList.remove('hidden');
-  w.style.display='flex';
-  document.getElementById('kbBtn').textContent='⌨️ 닫기';
-  document.getElementById('kbBtn').classList.add('active');
-  document.getElementById('statusText').textContent='V34: 검색창 눌러서 키보드 뜸!';
-}
-function hideKB(){
-  console.log('HIDE CLICK');
-  const w=document.getElementById('keypadWrap');
-  w.classList.add('hidden');
-  w.style.display='none';
-  document.getElementById('kbBtn').textContent='⌨️ 키보드';
-  document.getElementById('kbBtn').classList.remove('active');
-  document.getElementById('statusText').textContent='키보드 숨김';
-}
-
+function toggleKB(){const w=document.getElementById('keypadWrap'); if(w.classList.contains('hidden')){w.classList.remove('hidden'); w.style.display='flex'; document.getElementById('kbBtn').textContent='⌨️ 닫기'; document.getElementById('kbBtn').classList.add('active');} else {w.classList.add('hidden'); w.style.display='none'; document.getElementById('kbBtn').textContent='⌨️ 키보드'; document.getElementById('kbBtn').classList.remove('active');}}
+function showKB(){const w=document.getElementById('keypadWrap'); w.classList.remove('hidden'); w.style.display='flex'; document.getElementById('kbBtn').textContent='⌨️ 닫기'; document.getElementById('kbBtn').classList.add('active');}
+function hideKB(){const w=document.getElementById('keypadWrap'); w.classList.add('hidden'); w.style.display='none'; document.getElementById('kbBtn').textContent='⌨️ 키보드'; document.getElementById('kbBtn').classList.remove('active');}
 function buildKeypad(){
-  const kp=document.getElementById('keypad');
-  kp.innerHTML='';
-  kp.className='keypad '+currentLang;
-  const mk=(label, cls, fn)=>{
-    const b=document.createElement('button');
-    b.textContent=label;
-    b.className=cls||'';
-    b.onclick=fn;
-    kp.appendChild(b);
-  };
+  const kp=document.getElementById('keypad'); kp.innerHTML=''; kp.className='keypad '+currentLang;
+  const mk=(label, cls, fn)=>{const b=document.createElement('button'); b.textContent=label; b.className=cls||''; b.onclick=fn; kp.appendChild(b);};
   if(currentLang==='kr'){
     [['ㅂ','ㅈ','ㄷ','ㄱ','ㅅ','ㅛ','ㅕ','ㅑ','ㅐ','ㅔ'],['ㅁ','ㄴ','ㅇ','ㄹ','ㅎ','ㅗ','ㅓ','ㅏ','ㅣ'],['ㅋ','ㅌ','ㅊ','ㅍ','ㅠ','ㅜ','ㅡ']].forEach(r=>r.forEach(k=>mk(k,'',()=>typeKey(k))));
-    mk('스페이스','space',()=>typeKey(' '));
-    mk('⌫','del',()=>delKey());
-    mk('입력','search',()=>doSearchHide());
+    mk('스페이스','space',()=>typeKey(' ')); mk('⌫','del',()=>delKey()); mk('입력','search',()=>doSearchHide());
   } else {
     [['q','w','e','r','t','y','u','i','o','p'],['a','s','d','f','g','h','j','k','l'],['z','x','c','v','b','n','m']].forEach(r=>r.forEach(k=>mk(k,'',()=>typeKey(k))));
-    mk('Space','space',()=>typeKey(' '));
-    mk('⌫','del',()=>delKey());
-    mk('입력','search',()=>doSearchHide());
+    mk('Space','space',()=>typeKey(' ')); mk('⌫','del',()=>delKey()); mk('입력','search',()=>doSearchHide());
   }
 }
-
 let lastItems=[], currentPage=0, isPlayer=false;
 const ITEMS_PER_PAGE=10;
-async function fetchTimeout(url,ms=7000){const c=new AbortController(); const t=setTimeout(()=>c.abort(),ms); try{const r=await fetch(url,{signal:c.signal}); clearTimeout(t); if(!r.ok) throw new Error(r.status); return await r.json();}catch(e){clearTimeout(t); throw e;}}
+async function fetchTimeout(url,ms=10000){const c=new AbortController(); const t=setTimeout(()=>c.abort(),ms); try{const r=await fetch(url,{signal:c.signal}); clearTimeout(t); if(!r.ok) throw new Error(r.status); return await r.json();}catch(e){clearTimeout(t); throw e;}}
 async function searchPiped(q){
-  const INSTANCES=["https://pipedapi.kavin.rocks","https://api.piped.private.coffee"];
+  const INSTANCES=[
+    "https://pipedapi.kavin.rocks",
+    "https://api.piped.private.coffee",
+    "https://piped-api.lunar.icu",
+    "https://pipedapi.moomoo.me",
+    "https://api.piped.privacydev.net",
+    "https://pipedapi.syncpundit.io"
+  ];
+  let lastErr=null;
   for(let i=0;i<INSTANCES.length;i++){
+    const host=INSTANCES[i];
+    document.getElementById('statusText').textContent=`검색 중... 서버 ${i+1}/${INSTANCES.length} 시도: ${new URL(host).hostname}`;
     document.getElementById('info').textContent=`${i+1}/${INSTANCES.length}`;
-    try{const d=await fetchTimeout(`${INSTANCES[i]}/search?q=${encodeURIComponent(q)}&filter=videos`,8000); if(d.items&&d.items.length) return {items:d.items, host:new URL(INSTANCES[i]).host};}catch(e){continue;}
+    console.log(`Trying ${host}/search?q=${q}`);
+    try{
+      const d=await fetchTimeout(`${host}/search?q=${encodeURIComponent(q)}&filter=videos`, 10000);
+      if(d.items && d.items.length>0){
+        console.log(`Success with ${host}, ${d.items.length} items`);
+        return {items:d.items, host:new URL(host).host};
+      } else {
+        console.log(`No items from ${host}`);
+      }
+    }catch(e){
+      console.log(`Failed ${host}:`, e);
+      lastErr=e;
+      continue;
+    }
   }
-  throw new Error('all failed');
+  throw lastErr || new Error('모든 서버 실패');
 }
 function renderPage(){
   const list=document.getElementById('list'); list.innerHTML=''; document.getElementById('player').style.display='none'; document.getElementById('pagination').style.display='flex'; list.style.display='flex'; isPlayer=false; document.getElementById('hud').classList.remove('playing');
@@ -197,7 +168,9 @@ function renderPage(){
     btn.onclick=()=>{ playVideo(id); };
     list.appendChild(btn);
   }
-  document.getElementById('pageInfo').textContent=`${currentPage+1}/${totalPages}`; document.getElementById('count').textContent=`${lastItems.length}개`;
+  document.getElementById('pageInfo').textContent=`${currentPage+1}/${totalPages}`; 
+  document.getElementById('count').textContent=`${lastItems.length}개`;
+  document.getElementById('statusText').textContent=`검색 완료: ${lastItems.length}개 찾음 - 영상 선택하세요`;
 }
 function changePage(dir){const totalPages=Math.ceil(lastItems.length/ITEMS_PER_PAGE); let np=currentPage+dir; if(np<0) np=0; if(np>=totalPages) np=totalPages-1; if(np===currentPage) return; currentPage=np; renderPage();}
 function playVideo(id){
@@ -213,9 +186,10 @@ function playVideo(id){
 function backToList(){document.getElementById('player').style.display='none'; document.getElementById('list').style.display='flex'; document.getElementById('pagination').style.display='flex'; isPlayer=false; document.getElementById('hud').classList.remove('playing'); renderPage();}
 function doSearchHide(){
   commitComposing();
-  const q=document.getElementById('q').value.trim()||'고양이';
+  const q=document.getElementById('q').value.trim()||document.getElementById('q').placeholder||'고양이';
+  console.log('Searching for:', q);
   hideKB();
-  document.getElementById('list').innerHTML='<div class="center"><b>검색 중...</b><br>'+q+'</div>';
+  document.getElementById('list').innerHTML=`<div class="center"><b>검색 중...</b><br>${q}<br><small style="color:#00ff88">서버 찾는 중...</small></div>`;
   document.getElementById('player').style.display='none'; document.getElementById('list').style.display='flex';
   (async()=>{
     try{
@@ -225,12 +199,14 @@ function doSearchHide(){
       document.getElementById('info').textContent=res.host+' ✓';
       renderPage();
     }catch(e){
-      document.getElementById('list').innerHTML=`<div class="center"><b>실패</b><br><button onclick="doSearchHide()" style="background:#00ff88;color:#000;border:0;padding:10px 20px;border-radius:10px;font-weight:900">재시도</button></div>`;
+      console.error('Search failed', e);
+      document.getElementById('list').innerHTML=`<div class="center"><b>검색 실패</b><br>${q}<br><small>${e.message||e}</small><br><br><button onclick="doSearchHide()" style="background:#00ff88;color:#000;border:0;padding:12px 24px;border-radius:10px;font-weight:900">다시 시도</button><br><br><small>인터넷 연결 확인해보세요</small></div>`;
+      document.getElementById('statusText').textContent=`검색 실패 - 다시 시도 눌러주세요`;
     }
   })();
 }
 buildKeypad();
-setTimeout(()=>{ committed='고양이'; updateInput(); doSearchHide(); },600);
+setTimeout(()=>{ committed='고양이'; updateInput(); doSearchHide(); },800);
 </script>
 </body>
 </html>
