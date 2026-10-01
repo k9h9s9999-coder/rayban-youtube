@@ -3,16 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=600, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>Ray-Ban YouTube V11 - D-Pad Fixed Canvas</title>
+<title>Ray-Ban YouTube V12 - Big + Voice</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{background:#000;color:#fff;font-family:-apple-system,sans-serif;width:600px;height:600px;overflow:hidden;display:flex;justify-content:center;align-items:center}
-.hud{width:600px;height:600px;background:#121212;display:flex;flex-direction:column;position:relative;border-radius:18px;overflow:hidden;border:2px solid #00ff88}
+.hud{width:600px;height:600px;background:#121212;display:flex;flex-direction:column;position:relative;border-radius:18px;overflow:hidden;border:2px solid #00ff88;transition:all .2s}
+.hud.big-mode{border-radius:0;border:0;width:600px;height:600px}
+.hud.big-mode .header, .hud.big-mode .search-row, .hud.big-mode .status, .hud.big-mode .info-box, .hud.big-mode .dpad, .hud.big-mode .footer, .hud.big-mode .keypad-wrap{display:none !important}
+.hud.big-mode .content{flex:1;height:100%}
+.hud.big-mode .player{height:100%}
+.hud.big-mode .player iframe{height:100%}
 .header{height:36px;display:flex;align-items:center;justify-content:space-between;padding:0 10px;background:#1a1a1a;border-bottom:1px solid #2a2a2a;flex-shrink:0}
 .search-row{display:flex;gap:4px;padding:6px;background:#1a1a1a;border-bottom:1px solid #2a2a2a;flex-shrink:0}
 .search-row input{flex:1;background:#0a0a0a;border:1px solid #333;border-radius:10px;padding:10px 10px;color:#fff;font-size:18px;outline:none}
 .search-row button{background:#fff;color:#000;border:0;border-radius:10px;padding:0 10px;font-weight:900;font-size:13px;min-width:50px}
 .search-row button.kb{background:#1e1e1e;color:#00ff88;border:1px solid #333;min-width:44px;font-size:18px}
+.search-row button.voice{background:#1e1e1e;color:#ff3b30;border:1px solid #333;min-width:44px;font-size:18px}
+.search-row button.voice.listening{background:#ff3b30;color:#fff;animation:pulse 1s infinite}
+@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.1)}100%{transform:scale(1)}}
 .status{height:22px;padding:0 10px;font-size:10px;color:#00ff88;display:flex;align-items:center;justify-content:space-between;background:#0f0f0f;flex-shrink:0}
 .content{flex:1;overflow:hidden;display:flex;flex-direction:column;position:relative;background:#121212}
 .list{flex:1;overflow:hidden;padding:6px;display:flex;flex-direction:column;gap:8px;position:relative}
@@ -29,11 +37,12 @@ body{background:#000;color:#fff;font-family:-apple-system,sans-serif;width:600px
 .dpad button{flex:1;background:#1e1e1e;border:1px solid #333;color:#fff;border-radius:10px;font-size:18px;font-weight:900}
 .dpad button:active{background:#00ff88;color:#000}
 .dpad button.big{flex:1.5;background:#00ff88;color:#000;border-color:#00ff88}
-.player{flex:1;display:flex;flex-direction:column;background:#000}
-.player iframe{flex:1;width:100%;border:0}
+.player{flex:1;display:flex;flex-direction:column;background:#000;position:relative}
+.player iframe{flex:1;width:100%;border:0;background:#000}
 .controls{display:flex;gap:6px;padding:6px;background:#1a1a1a;border-bottom:1px solid #2a2a2a;flex-shrink:0}
 .ctrl{flex:1;background:#2a2a2a;border:0;color:#fff;padding:12px 4px;border-radius:10px;font-size:12px;font-weight:800}
 .ctrl.big{flex:1.3;background:#fff;color:#000;font-size:14px}
+.ctrl.exit{flex:1.3;background:#ff3b30;color:#fff}
 .keypad-wrap{display:none;flex-direction:column;background:#0a0a0a;border-top:1px solid #222;flex-shrink:0;max-height:220px;overflow-y:auto}
 .keypad-tabs{display:flex;gap:4px;padding:4px 4px 0 4px}
 .keypad-tabs button{flex:1;padding:6px;border-radius:8px;border:1px solid #333;background:#1a1a1a;color:#888;font-size:11px;font-weight:800}
@@ -44,30 +53,37 @@ body{background:#000;color:#fff;font-family:-apple-system,sans-serif;width:600px
 .keypad button{background:#1e1e1e;border:0;color:#fff;padding:10px 2px;border-radius:8px;font-size:14px;font-weight:700;min-height:40px}
 .footer{height:16px;padding:0 10px;background:#000;display:flex;justify-content:space-between;align-items:center;font-size:8px;color:#555;flex-shrink:0}
 .center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:#777;padding:20px;text-align:center}
-.info-box{background:#1a1a1a;border:1px solid #00ff88;border-radius:8px;padding:6px 8px;font-size:9px;color:#aaa;margin:4px 6px}
+.info-box{background:#1a1a1a;border:1px solid #00ff88;border-radius:8px;padding:6px 8px;font-size:9px;color:#aaa;margin:4px 6px;line-height:1.3}
+.voice-help{background:#1a1a1a;border:1px solid #ff3b30;border-radius:8px;padding:8px;margin:4px 6px;font-size:10px;color:#aaa;display:none}
 </style>
 </head>
 <body>
-<div class="hud">
+<div class="hud" id="hud">
   <div class="header">
-    <div class="logo">RB YouTube <span style="font-size:9px;background:#00ff88;color:#000;padding:2px 6px;border-radius:4px;font-weight:800">V11 D-PAD</span></div>
+    <div class="logo">RB YouTube <span style="font-size:9px;background:#00ff88;color:#000;padding:2px 6px;border-radius:4px;font-weight:800">V12 BIG+VOICE</span></div>
     <div style="font-size:9px;color:#00ff88" id="pageInfo">1/5</div>
   </div>
   <div class="search-row">
-    <input id="q" placeholder="⌨️ 키보드" value="" readonly>
+    <input id="q" placeholder="⌨️ 키보드 / 🎤 음성" value="" readonly>
+    <button id="voiceBtn" class="voice" onclick="startVoice()">🎤</button>
     <button id="kbBtn" class="kb" onclick="toggleKeypad()">⌨️</button>
     <button onclick="doSearch()">검색</button>
   </div>
-  <div class="status"><span id="statusText">V11: 스크롤 없음 - 밴드로 이동</span><span id="info">ready</span></div>
-  <div class="info-box">💡 안경에서는 스크롤이 원래 안 돼요! 고정 600x600 캔버스. Neural Band로 위/아래 스와이프 → 초록 포커스 이동 → 핀치로 재생</div>
+  <div class="status"><span id="statusText">V12: 밴드 ▲▼ 이동, 핀치 재생, 🎤 음성검색</span><span id="info">ready</span></div>
+  <div class="info-box">💡 크게 보기: 영상 재생 후 <b>⛶ 크게</b> 누르면 전체화면처럼 600x600 꽉 채움 (안경 브라우저는 일반 전체화면 API가 막혀있어서 이렇게 만듦)</div>
+  <div id="voiceHelp" class="voice-help">
+    <b style="color:#ff3b30">🎤 음성검색 안내</b><br>
+    핸드폰 크롬: 🎤 누르면 음성 인식 됨<br>
+    안경 브라우저: 웹에서 마이크가 막혀있어서 안 됨 → 대신 <b>"Hey Meta, search cats on YouTube"</b> 라고 말하거나 핸드폰에서 음성검색 후 안경에서 보기
+  </div>
   <div class="content" id="content">
     <div id="list" class="list"></div>
     <div id="player" class="player" style="display:none"></div>
   </div>
   <div class="dpad" id="dpad">
-    <button onclick="moveFocus(-1)">▲ 위</button>
+    <button onclick="moveFocus(-1)">▲</button>
     <button class="big" onclick="playFocused()">▶ 재생</button>
-    <button onclick="moveFocus(1)">▼ 아래</button>
+    <button onclick="moveFocus(1)">▼</button>
     <button onclick="nextPage(1)">다음 ▶</button>
   </div>
   <div id="keypadWrap" class="keypad-wrap">
@@ -79,7 +95,7 @@ body{background:#000;color:#fff;font-family:-apple-system,sans-serif;width:600px
     </div>
     <div id="keypad" class="keypad kr"></div>
   </div>
-  <div class="footer"><span>V11 • D-PAD • 고정 캔버스 • 스크롤 없음</span><span id="count">0개</span></div>
+  <div class="footer"><span>V12 • BIG MODE • VOICE SEARCH</span><span id="count">0개</span></div>
 </div>
 
 <script>
@@ -138,9 +154,9 @@ function buildKeypad(){
 }
 function showKeypad(){document.getElementById('keypadWrap').style.display='flex'; document.getElementById('kbBtn').classList.add('active');}
 function hideKeypad(){document.getElementById('keypadWrap').style.display='none'; document.getElementById('kbBtn').classList.remove('active');}
-function toggleKeypad(){const w=document.getElementById('keypadWrap'); if(w.style.display==='none'||w.style.display===''){showKeypad();} else {hideKeypad();}}
+function toggleKeypad(){const w=document.getElementById('keypadWrap'); if(w.style.display==='none'||w.style.display===''){showKeypad(); document.getElementById('voiceHelp').style.display='none';} else {hideKeypad();}}
 
-let lastItems=[], focusedIndex=0, currentPage=0;
+let lastItems=[], focusedIndex=0, currentPage=0, isPlayer=false, isBigMode=false;
 const ITEMS_PER_PAGE = 4;
 
 async function fetchTimeout(url,ms=6500){const c=new AbortController(); const t=setTimeout(()=>c.abort(),ms); try{const r=await fetch(url,{signal:c.signal}); clearTimeout(t); if(!r.ok) throw new Error(r.status); return await r.json();}catch(e){clearTimeout(t); throw e;}}
@@ -151,7 +167,8 @@ function renderPage(){
   list.innerHTML='';
   document.getElementById('player').style.display='none';
   list.style.display='flex';
-  isPlayer=false;
+  isPlayer=false; isBigMode=false;
+  document.getElementById('hud').classList.remove('big-mode');
   
   const start = currentPage * ITEMS_PER_PAGE;
   const end = Math.min(start + ITEMS_PER_PAGE, lastItems.length);
@@ -174,7 +191,7 @@ function renderPage(){
   
   document.getElementById('pageInfo').textContent=`${currentPage+1}/${Math.ceil(lastItems.length/ITEMS_PER_PAGE)}`;
   document.getElementById('count').textContent=lastItems.length+'개';
-  document.getElementById('statusText').textContent=`${focusedIndex+1}/${lastItems.length} - ▲▼로 이동 - 핀치/Enter로 재생`;
+  document.getElementById('statusText').textContent=`${focusedIndex+1}/${lastItems.length} - 밴드 ▲▼ - 🎤 음성검색 가능`;
 }
 
 function moveFocus(dir){
@@ -182,15 +199,11 @@ function moveFocus(dir){
   if(newIdx < 0) newIdx = 0;
   if(newIdx >= lastItems.length) newIdx = lastItems.length-1;
   if(newIdx === focusedIndex) return;
-  
   focusedIndex = newIdx;
   const newPage = Math.floor(focusedIndex / ITEMS_PER_PAGE);
-  if(newPage !== currentPage){
-    currentPage = newPage;
-  }
+  if(newPage !== currentPage){ currentPage = newPage; }
   renderPage();
 }
-
 function nextPage(dir){
   let newPage = currentPage + dir;
   const maxPage = Math.ceil(lastItems.length / ITEMS_PER_PAGE) -1;
@@ -201,37 +214,102 @@ function nextPage(dir){
   focusedIndex = currentPage * ITEMS_PER_PAGE;
   renderPage();
 }
-
 function playFocused(){
   const v = lastItems[focusedIndex];
   if(!v) return;
   const id=v.url?.replace('/watch?v=','')||v.id;
   playVideo(id, v.title, focusedIndex);
 }
-
 function playVideo(id,title,idx){
   const list=document.getElementById('list'); list.style.display='none';
   hideKeypad();
-  const player=document.getElementById('player'); player.style.display='flex'; isPlayer=true;
-  player.innerHTML=`<div class="controls"><button class="ctrl" onclick="backToList()">← 목록</button><button class="ctrl big" onclick="toggleFullscreen()">⛶ 크게</button><button class="ctrl" onclick="nextVideo(1)">다음 →</button></div><iframe id="yt" src="https://www.youtube.com/embed/${id}?autoplay=1&playsinline=1" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe><div class="controls"><button class="ctrl" onclick="nextVideo(-1)">← 이전</button><button class="ctrl big" onclick="backToList()">✕ 닫기</button></div>`;
+  const player=document.getElementById('player'); player.style.display='flex'; isPlayer=true; isBigMode=false;
+  document.getElementById('hud').classList.remove('big-mode');
+  player.innerHTML=`
+    <div class="controls">
+      <button class="ctrl" onclick="backToList()">← 목록</button>
+      <button class="ctrl big" onclick="toggleBigMode()">⛶ 크게</button>
+      <button class="ctrl" onclick="nextVideo(1)">다음 →</button>
+    </div>
+    <iframe id="yt" src="https://www.youtube.com/embed/${id}?autoplay=1&playsinline=1&enablejsapi=1" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>
+    <div class="controls">
+      <button class="ctrl" onclick="nextVideo(-1)">← 이전</button>
+      <button class="ctrl big" onclick="backToList()">✕ 닫기</button>
+      <button class="ctrl exit" onclick="toggleBigMode()">⛶ 크게</button>
+    </div>`;
 }
-function backToList(){document.getElementById('player').style.display='none'; document.getElementById('list').style.display='flex'; isPlayer=false; renderPage();}
+function backToList(){document.getElementById('player').style.display='none'; document.getElementById('list').style.display='flex'; isPlayer=false; isBigMode=false; document.getElementById('hud').classList.remove('big-mode'); renderPage();}
 function nextVideo(dir){if(!lastItems.length) return; let ni=focusedIndex+dir; if(ni<0) ni=lastItems.length-1; if(ni>=lastItems.length) ni=0; focusedIndex=ni; currentPage=Math.floor(focusedIndex/ITEMS_PER_PAGE); const v=lastItems[ni]; const id=v.url?.replace('/watch?v=','')||v.id; playVideo(id,v.title,ni);}
-function toggleFullscreen(){const f=document.getElementById('yt'); if(f) f.requestFullscreen?.();}
 
-// D-PAD / Neural Band: Arrow keys + Enter + Escape
-document.addEventListener('keydown', e=>{
-  if(isPlayer){
-    if(e.key==='Escape' || e.key==='Backspace'){ backToList(); e.preventDefault(); }
-    if(e.key==='ArrowRight'){ nextVideo(1); e.preventDefault(); }
-    if(e.key==='ArrowLeft'){ nextVideo(-1); e.preventDefault(); }
+function toggleBigMode(){
+  const hud=document.getElementById('hud');
+  isBigMode = !isBigMode;
+  if(isBigMode){
+    hud.classList.add('big-mode');
+    document.getElementById('statusText').textContent='큰 화면 모드 - 뒤로가기(Escape)로 나가기';
+  } else {
+    hud.classList.remove('big-mode');
+    document.getElementById('statusText').textContent='일반 모드';
+  }
+}
+
+// 음성 검색
+function startVoice(){
+  const voiceBtn=document.getElementById('voiceBtn');
+  const help=document.getElementById('voiceHelp');
+  
+  // Web Speech API 확인
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SpeechRecognition){
+    help.style.display='block';
+    document.getElementById('statusText').textContent='안경 브라우저는 마이크가 막혀있음 - 핸드폰에서 🎤 사용';
+    // 3초 후 안내 숨김
+    setTimeout(()=>help.style.display='none', 5000);
     return;
   }
+  
+  const recog = new SpeechRecognition();
+  recog.lang='ko-KR';
+  recog.interimResults=false;
+  recog.maxAlternatives=1;
+  
+  voiceBtn.classList.add('listening');
+  voiceBtn.textContent='🔴';
+  document.getElementById('statusText').textContent='듣는 중... 말해보세요!';
+  help.style.display='block';
+  help.innerHTML='<b style="color:#00ff88">🎤 듣는 중...</b> 예: "고양이", "아이유", "뉴스"';
+  
+  recog.onresult = (e)=>{
+    const text = e.results[0][0].transcript;
+    committed=text;
+    composing={cho:-1,jung:-1,jong:0};
+    updateInputField();
+    document.getElementById('statusText').textContent=`음성 인식: "${text}" - 검색 중...`;
+    setTimeout(()=>doSearch(), 300);
+  };
+  recog.onerror = (e)=>{
+    document.getElementById('statusText').textContent='음성 인식 실패: '+e.error;
+    help.innerHTML='<b style="color:#ff3b30">🎤 실패</b> 다시 시도하거나 키보드 사용<br>안경: "Hey Meta, search cats" 라고 말해보세요';
+  };
+  recog.onend = ()=>{
+    voiceBtn.classList.remove('listening');
+    voiceBtn.textContent='🎤';
+    setTimeout(()=>help.style.display='none', 3000);
+  };
+  recog.start();
+}
+
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape'){
+    if(isBigMode){ toggleBigMode(); e.preventDefault(); return; }
+    if(isPlayer){ backToList(); e.preventDefault(); return; }
+    if(document.getElementById('keypadWrap').style.display!=='none'){ hideKeypad(); e.preventDefault(); return; }
+  }
+  if(isPlayer) return;
   if(document.getElementById('keypadWrap').style.display!=='none') return;
   if(e.key==='ArrowDown' || e.key==='ArrowRight'){ moveFocus(1); e.preventDefault(); }
   if(e.key==='ArrowUp' || e.key==='ArrowLeft'){ moveFocus(-1); e.preventDefault(); }
   if(e.key==='Enter'){ playFocused(); e.preventDefault(); }
-  if(e.key===' '){ nextPage(1); e.preventDefault(); }
 });
 
 async function doSearch(){
