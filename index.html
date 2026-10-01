@@ -6,7 +6,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=600, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>V43 Playback Like Others</title>
+<title>V44 Herald Style Playback</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{background:#000;color:#fff;font-family:sans-serif;width:600px;height:600px;overflow:hidden;display:flex;justify-content:center;align-items:center}
@@ -54,28 +54,57 @@ body{background:#000;color:#fff;font-family:sans-serif;width:600px;height:600px;
 .keypad button.search{background:#00ff88;color:#000;border-color:#00ff88;font-weight:900;font-size:18px}
 .keypad button.space{background:#111;color:#00ff88;border-color:#00ff88;grid-column:span 4}
 
-/* V43 - 다른 사람들 유튜브 웹앱처럼 재생 화면 */
-.playback-ui{position:absolute;top:0;left:0;width:100%;height:100%;z-index:20;display:none;pointer-events:none}
-.hud.playing .playback-ui{display:block}
-.back-btn-v43{position:absolute;top:10px;left:10px;background:rgba(0,0,0,0.6);color:#fff;border:1px solid rgba(255,255,255,0.2);border-radius:24px;padding:10px 16px;font-size:12px;font-weight:700;z-index:30;pointer-events:auto;backdrop-filter:blur(8px);display:flex;align-items:center;gap:6px;opacity:0;transition:opacity 0.3s}
-.back-btn-v43.show{opacity:1}
-.back-btn-v43:active{background:rgba(255,255,255,0.2)}
+/* V44 Herald Style Playback - herald.ascents.gg/a/youtube 처럼 */
+.herald-playback{position:absolute;top:0;left:0;width:600px;height:600px;z-index:30;display:none;background:#000;flex-direction:column}
+.hud.playing .herald-playback{display:flex}
+.herald-video{flex:1;width:600px;height:540px;background:#000;display:flex;align-items:center;justify-content:center;position:relative}
+.herald-video iframe{width:600px;height:540px;border:0;background:#000}
+.herald-topbar{height:48px;background:rgba(0,0,0,0.9);display:flex;align-items:center;padding:0 12px;gap:12px;backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.1);flex-shrink:0}
+.herald-back{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.2);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;backdrop-filter:blur(8px)}
+.herald-back:active{background:rgba(255,255,255,0.3)}
+.herald-title{flex:1;font-size:13px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.herald-bottom{height:60px;background:rgba(0,0,0,0.9);display:flex;align-items:center;padding:0 16px;gap:12px;backdrop-filter:blur(12px);border-top:1px solid rgba(255,255,255,0.1);flex-shrink:0}
+.herald-progress-wrap{flex:1;height:4px;background:rgba(255,255,255,0.2);border-radius:2px;overflow:hidden;position:relative}
+.herald-progress-fill{height:100%;background:#fff;width:0%;border-radius:2px;transition:width 0.3s}
+.herald-time{font-size:10px;color:rgba(255,255,255,0.7);min-width:70px;text-align:right;font-variant-numeric:tabular-nums}
+.herald-center-hint{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.8);color:#fff;padding:20px 28px;border-radius:28px;font-size:32px;font-weight:900;display:none;align-items:center;justify-content:center;gap:12px;backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.15);z-index:40;pointer-events:none}
+.herald-center-hint.show{display:flex;animation:heraldPop 0.3s}
+@keyframes heraldPop{0%{transform:translate(-50%,-50%) scale(0.8);opacity:0}100%{transform:translate(-50%,-50%) scale(1);opacity:1}}
+.herald-side-hint{position:absolute;top:50%;background:rgba(0,0,0,0.8);color:#fff;padding:10px 16px;border-radius:20px;font-size:12px;font-weight:700;display:none;align-items:center;gap:8px;backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.15);z-index:40;pointer-events:none}
+.herald-side-hint.show{display:flex;animation:heraldSide 0.3s}
+.herald-side-hint.left{left:16px;transform:translateY(-50%)}
+.herald-side-hint.right{right:16px;transform:translateY(-50%)}
+@keyframes heraldSide{0%{opacity:0;transform:translateY(-50%) scale(0.9)}100%{opacity:1;transform:translateY(-50%) scale(1)}}
+.herald-dpad-hint{position:absolute;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.7);color:rgba(255,255,255,0.8);padding:6px 12px;border-radius:16px;font-size:9px;display:flex;gap:12px;z-index:35;pointer-events:none;border:1px solid rgba(255,255,255,0.1)}
 </style>
 </head>
 <body>
 <div class="hud" id="hud">
-<div class="version">V43 재생 개선</div>
-<div class="header"><div>RB YouTube V43</div><div style="font-size:9px;color:#00ff88" id="pageInfo">V43</div></div>
+<div class="version">V44 Herald 스타일</div>
+<div class="header"><div>RB YouTube V44</div><div style="font-size:9px;color:#00ff88" id="pageInfo">V44 Herald</div></div>
 <div class="search-row">
 <input id="q" type="text" readonly placeholder="여기 누르면 키보드" onclick="showKB()">
 <button id="kbBtn" class="kb" onclick="toggleKB()">⌨️ 키보드</button>
 <button id="searchBtn" onclick="doSearchHide()">검색</button>
 </div>
-<div class="status"><span id="statusText">V43: 재생 화면 다른 웹앱처럼 깔끔하게</span><span id="info">대기중</span></div>
+<div class="status"><span id="statusText">V44: Herald처럼 재생 - Swipe + Dpad</span><span id="info">대기중</span></div>
 <div class="content" id="content"><div id="list" class="list"></div><div id="player" class="player">
 <div id="playerDiv" style="width:100%;height:100%"></div>
-<div class="playback-ui" id="playbackUI">
-<button class="back-btn-v43" id="backBtnV43" onclick="backToList()">◀ 뒤로</button>
+<!-- Herald 스타일 재생 UI -->
+<div class="herald-playback" id="heraldPlayback">
+<div class="herald-topbar">
+<button class="herald-back" onclick="backToList()">‹</button>
+<div class="herald-title" id="heraldTitle">YouTube</div>
+</div>
+<div class="herald-video" id="heraldVideo"></div>
+<div class="herald-bottom">
+<div class="herald-progress-wrap"><div class="herald-progress-fill" id="heraldProgress"></div></div>
+<div class="herald-time" id="heraldTime">0:00 / 0:00</div>
+</div>
+<div class="herald-center-hint" id="heraldCenterHint">▶️</div>
+<div class="herald-side-hint left" id="heraldLeftHint">⏪ -10s</div>
+<div class="herald-side-hint right" id="heraldRightHint">+10s ⏩</div>
+<div class="herald-dpad-hint"><span>‹ › 탐색</span><span>^ v 볼륨</span><span>탭 재생</span></div>
 </div>
 </div></div>
 <div class="pagination" id="pagination">
@@ -91,10 +120,11 @@ body{background:#000;color:#fff;font-family:sans-serif;width:600px;height:600px;
 </div>
 <div id="keypad" class="keypad"></div>
 </div>
-<div class="footer"><span>V43 재생 화면 개선</span><span id="count">0개</span></div>
+<div class="footer"><span>V44 Herald 재생</span><span id="count">0개</span></div>
 </div>
+<script src="https://www.youtube.com/iframe_api"></script>
 <script>
-console.log('V43 Playback Like Others');
+console.log('V44 Herald Style');
 const CHO = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
 const JUNG = ['ㅏ','ㅐ','ㅑ','ㅒ','ㅓ','ㅔ','ㅕ','ㅖ','ㅗ','ㅘ','ㅙ','ㅚ','ㅛ','ㅜ','ㅝ','ㅞ','ㅟ','ㅠ','ㅡ','ㅢ','ㅣ'];
 const JONG = ['', 'ㄱ','ㄲ','ㄳ','ㄴ','ㄵ','ㄶ','ㄷ','ㄹ','ㄺ','ㄻ','ㄼ','ㄽ','ㄾ','ㄿ','ㅀ','ㅁ','ㅂ','ㅄ','ㅅ','ㅆ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
@@ -103,7 +133,7 @@ function makeSyllable(cho,jung,jong){if(cho<0||jung<0) return null; return Strin
 let committed=''; let composing={cho:-1,jung:-1,jong:0};
 function getComposingChar(){if(composing.cho>=0&&composing.jung>=0){return makeSyllable(composing.cho,composing.jung,composing.jong);} if(composing.cho>=0&&composing.jung<0){return CHO[composing.cho];} if(composing.cho<0&&composing.jung>=0){return JUNG[composing.jung];} return '';}
 function commitComposing(){const ch=getComposingChar(); if(ch) committed+=ch; composing={cho:-1,jung:-1,jong:0};}
-function updateInput(){const d=committed+getComposingChar(); const el=document.getElementById('q'); if(el) el.value=d; const st=document.getElementById('statusText'); if(st) st.textContent=d?`입력: ${d}`:`V43: 재생 화면 다른 웹앱처럼 깔끔하게`;}
+function updateInput(){const d=committed+getComposingChar(); const el=document.getElementById('q'); if(el) el.value=d; const st=document.getElementById('statusText'); if(st) st.textContent=d?`입력: ${d}`:`V44: Herald처럼 - Dpad + Swipe 재생`;}
 function isConsonant(j){return CHO.includes(j);}
 function inputHangul(jamo){
   if(jamo===' '){commitComposing(); committed+=' '; updateInput(); return;}
@@ -246,6 +276,110 @@ async function searchInvidious(q){
 async function searchAll(q){if(!q || q.trim().length===0) q='고양이'; try{ return await searchPiped(q); }catch(e1){ try{ return await searchInvidious(q); }catch(e2){ throw new Error(`${e1.message} / ${e2.message}`); } }}
 function safeSetText(id, txt){const el=document.getElementById(id); if(el) el.textContent=txt;}
 
+// V44 Herald 스타일 재생 - herald.ascents.gg/a/youtube 처럼
+let ytPlayer=null;
+let currentVideoId='';
+let currentVideoTitle='';
+let isPaused=false;
+let progressInterval=null;
+
+function onYouTubeIframeAPIReady(){
+  console.log('YT API Ready V44');
+}
+
+function createHeraldPlayer(videoId, title){
+  currentVideoId=videoId;
+  currentVideoTitle=title || 'YouTube';
+  const heraldVideo=document.getElementById('heraldVideo');
+  const heraldTitle=document.getElementById('heraldTitle');
+  if(heraldTitle) heraldTitle.textContent=currentVideoTitle;
+  if(!heraldVideo) return;
+  
+  heraldVideo.innerHTML=`<div id="yt-herald"></div>`;
+  
+  // Herald처럼 컨트롤 없이 깔끔하게, Dpad로 조작
+  ytPlayer=new YT.Player('yt-herald', {
+    width:'600',
+    height:'540',
+    videoId:videoId,
+    playerVars:{
+      autoplay:1,
+      playsinline:1,
+      controls:0, // Herald처럼 컨트롤 숨김
+      rel:0,
+      fs:0,
+      modestbranding:1,
+      iv_load_policy:3,
+      disablekb:1,
+      enablejsapi:1,
+      origin:window.location.origin
+    },
+    events:{
+      'onReady': onHeraldReady,
+      'onStateChange': onHeraldStateChange
+    }
+  });
+}
+
+function onHeraldReady(event){
+  console.log('Herald Player Ready');
+  event.target.playVideo();
+  event.target.setVolume(100);
+  startProgressTracking();
+  showCenterHint('▶️', 800);
+}
+
+function onHeraldStateChange(event){
+  if(event.data==YT.PlayerState.PAUSED){ isPaused=true; showCenterHint('⏸️', 800); }
+  else if(event.data==YT.PlayerState.PLAYING){ isPaused=false; showCenterHint('▶️', 600); }
+  else if(event.data==YT.PlayerState.ENDED){ showCenterHint('🔁 재시작', 1500); }
+}
+
+function startProgressTracking(){
+  if(progressInterval) clearInterval(progressInterval);
+  progressInterval=setInterval(()=>{
+    if(ytPlayer && ytPlayer.getCurrentTime && ytPlayer.getDuration){
+      try{
+        const ct=ytPlayer.getCurrentTime();
+        const dur=ytPlayer.getDuration();
+        if(dur>0){
+          const pct=(ct/dur*100);
+          const fill=document.getElementById('heraldProgress');
+          if(fill) fill.style.width=pct+'%';
+          const timeEl=document.getElementById('heraldTime');
+          if(timeEl){
+            const cm=Math.floor(ct/60); const cs=Math.floor(ct%60);
+            const dm=Math.floor(dur/60); const ds=Math.floor(dur%60);
+            timeEl.textContent=`${cm}:${cs.toString().padStart(2,'0')} / ${dm}:${ds.toString().padStart(2,'0')}`;
+          }
+        }
+      }catch(e){}
+    }
+  }, 500);
+}
+
+function formatTime(s){
+  const m=Math.floor(s/60); const sec=Math.floor(s%60);
+  return `${m}:${sec.toString().padStart(2,'0')}`;
+}
+
+function showCenterHint(text, dur=1000){
+  const el=document.getElementById('heraldCenterHint');
+  if(!el) return;
+  el.textContent=text;
+  el.classList.add('show');
+  setTimeout(()=>{ el.classList.remove('show'); }, dur);
+}
+
+function showSideHint(side, text, dur=1000){
+  const id=side==='left' ? 'heraldLeftHint' : 'heraldRightHint';
+  const el=document.getElementById(id);
+  if(!el) return;
+  el.textContent=text;
+  el.classList.add('show');
+  setTimeout(()=>{ el.classList.remove('show'); }, dur);
+}
+
 function renderPage(){
   try{
     const list=document.getElementById('list'); if(!list) return; list.innerHTML='';
@@ -263,20 +397,19 @@ function renderPage(){
       const v=lastItems[idx]; const id=v.url?.replace('/watch?v=','')||v.id||''; const title=v.title||'No title'; const ch=v.uploaderName||v.author||''; const thumb=v.thumbnail||`https://i.ytimg.com/vi/${id}/mqdefault.jpg`;
       const btn=document.createElement('button'); btn.className='card-btn'; btn.tabIndex=0;
       btn.innerHTML=`<div class="num">${idx+1}</div><img class="thumb" src="${thumb}" loading="lazy"><div class="meta"><div class="title">${title}</div><div class="ch">${ch}</div></div>`;
-      btn.onclick=()=>{ playVideo(id); };
+      btn.onclick=()=>{ playVideo(id, title); };
       list.appendChild(btn);
     }
     safeSetText('pageInfo', `${currentPage+1}/${totalPages}`);
     safeSetText('count', `${lastItems.length}개`);
-    safeSetText('statusText', `검색 완료: ${lastItems.length}개 - 스와이프로 이동`);
+    safeSetText('statusText', `검색 완료: ${lastItems.length}개 - Herald처럼 재생`);
     rebuildFocusable();
     setTimeout(()=>{moveFocusToFirstCard();},200);
   }catch(e){safeSetText('statusText', `렌더 오류: ${e.message}`);}
 }
 function changePage(dir){const totalPages=Math.ceil(lastItems.length/ITEMS_PER_PAGE); let np=currentPage+dir; if(np<0) np=0; if(np>=totalPages) np=totalPages-1; if(np===currentPage) return; currentPage=np; renderPage();}
 
-// V43 - 다른 애들 유튜브 웹앱처럼 깔끔한 재생
-function playVideo(id){
+function playVideo(id, title){
   const list=document.getElementById('list'); if(list) list.style.display='none';
   const pag=document.getElementById('pagination'); if(pag) pag.style.display='none';
   const kw=document.getElementById('keypadWrap'); if(kw){kw.classList.add('hidden'); kw.style.display='none';}
@@ -284,28 +417,32 @@ function playVideo(id){
   player.style.display='flex';
   const hud=document.getElementById('hud'); if(hud) hud.classList.add('playing');
   isPlayer=true;
-  // 다른 사람들 웹앱처럼 심플한 유튜브 임베드 (컨트롤 그대로)
-  const playerDiv=document.getElementById('playerDiv');
-  if(playerDiv){
-    playerDiv.innerHTML=`<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&playsinline=1&fs=1&rel=0&controls=1&modestbranding=1&iv_load_policy=3" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen style="width:600px;height:600px;border:0"></iframe>`;
+  
+  if(typeof YT!=='undefined' && YT.Player){
+    createHeraldPlayer(id, title);
+  } else {
+    // YT API 아직 안 됐으면 직접 iframe (Herald처럼 컨트롤 없이)
+    const heraldVideo=document.getElementById('heraldVideo');
+    const heraldTitle=document.getElementById('heraldTitle');
+    if(heraldTitle) heraldTitle.textContent=title||'YouTube';
+    if(heraldVideo){
+      heraldVideo.innerHTML=`<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&playsinline=1&fs=0&rel=0&controls=0&modestbranding=1&iv_load_policy=3&enablejsapi=1&origin=${window.location.origin}" allow="autoplay; encrypted-media; fullscreen" allowfullscreen style="width:600px;height:540px;border:0"></iframe>`;
+    }
+    setTimeout(()=>{ if(typeof YT!=='undefined' && YT.Player){ createHeraldPlayer(id, title); } },2000);
   }
-  safeSetText('info','재생중');
-  // 뒤로 버튼 3초 후 자동 숨김, 탭하면 다시 보임
-  const backBtn=document.getElementById('backBtnV43');
-  if(backBtn){
-    backBtn.classList.add('show');
-    setTimeout(()=>{ backBtn.classList.remove('show'); }, 3000);
-  }
+  safeSetText('info','Herald 스타일 재생 - Swipe + Dpad');
 }
 
 function backToList(){
+  if(ytPlayer){ try{ ytPlayer.stopVideo(); ytPlayer.destroy(); }catch(e){} ytPlayer=null; }
+  if(progressInterval){ clearInterval(progressInterval); progressInterval=null; }
   const hud=document.getElementById('hud'); if(hud) hud.classList.remove('playing');
   const player=document.getElementById('player'); if(player) player.style.display='none';
   const list=document.getElementById('list'); if(list) list.style.display='flex';
   const pag=document.getElementById('pagination'); if(pag) pag.style.display='flex';
   isPlayer=false;
-  const playerDiv=document.getElementById('playerDiv');
-  if(playerDiv) playerDiv.innerHTML='';
+  const heraldVideo=document.getElementById('heraldVideo');
+  if(heraldVideo) heraldVideo.innerHTML='';
   renderPage();
 }
 
@@ -331,9 +468,33 @@ function doSearchHide(){
   })();
 }
 
+// V44 Herald 스타일 - 리스트 네비게이션
 document.addEventListener('keydown', (e)=>{
   if(isPlayer){
-    if(e.key==='Escape' || e.key==='Backspace'){ e.preventDefault(); backToList(); }
+    // Herald처럼 Dpad로 재생 제어
+    if(e.key==='ArrowLeft' || e.key==='a'){
+      e.preventDefault();
+      if(ytPlayer){ try{ const nt=Math.max(0, ytPlayer.getCurrentTime()-10); ytPlayer.seekTo(nt,true); showSideHint('left','⏪ -10s'); }catch(err){} }
+    } else if(e.key==='ArrowRight' || e.key==='d'){
+      e.preventDefault();
+      if(ytPlayer){ try{ const nt=ytPlayer.getCurrentTime()+10; ytPlayer.seekTo(nt,true); showSideHint('right','+10s ⏩'); }catch(err){} }
+    } else if(e.key==='ArrowUp' || e.key==='w'){
+      e.preventDefault();
+      if(ytPlayer){ try{ const v=Math.min(100, ytPlayer.getVolume()+10); ytPlayer.setVolume(v); showSideHint('right',`🔊 ${v}%`); }catch(err){} }
+    } else if(e.key==='ArrowDown' || e.key==='s'){
+      e.preventDefault();
+      if(ytPlayer){ try{ const v=Math.max(0, ytPlayer.getVolume()-10); ytPlayer.setVolume(v); showSideHint('left',`🔉 ${v}%`); }catch(err){} }
+    } else if(e.key==='Enter' || e.key===' '){
+      e.preventDefault();
+      if(ytPlayer){
+        try{
+          if(isPaused){ ytPlayer.playVideo(); showCenterHint('▶️'); }
+          else { ytPlayer.pauseVideo(); showCenterHint('⏸️'); }
+        }catch(err){}
+      }
+    } else if(e.key==='Escape' || e.key==='Backspace'){
+      e.preventDefault(); backToList();
+    }
     return;
   }
   if(e.key==='ArrowDown'){ e.preventDefault(); moveFocusGrid(1,0); }
@@ -346,29 +507,59 @@ document.addEventListener('keydown', (e)=>{
   }
 });
 
-// 재생중 탭하면 뒤로 버튼 보이게 (다른 웹앱들처럼)
-const playerEl=document.getElementById('player');
-if(playerEl){
-  playerEl.addEventListener('click', ()=>{
-    if(isPlayer){
-      const backBtn=document.getElementById('backBtnV43');
-      if(backBtn){
-        backBtn.classList.add('show');
-        setTimeout(()=>{ backBtn.classList.remove('show'); }, 3000);
+// Herald 스타일 - Swipe 제스처로 재생 제어
+let hStartX=0, hStartY=0, hStartTime=0;
+function heraldGestureStart(x,y){ hStartX=x; hStartY=y; hStartTime=Date.now(); }
+function heraldGestureEnd(x,y){
+  const dx=x-hStartX; const dy=y-hStartY; const dt=Date.now()-hStartTime;
+  const ax=Math.abs(dx); const ay=Math.abs(dy);
+  if(!isPlayer) return;
+  
+  // 탭 (Index tap) - Herald처럼 재생/일시정지
+  if(dt<300 && ax<20 && ay<20){
+    if(ytPlayer){
+      try{
+        if(isPaused){ ytPlayer.playVideo(); showCenterHint('▶️'); }
+        else { ytPlayer.pauseVideo(); showCenterHint('⏸️'); }
+      }catch(e){}
+    }
+    return;
+  }
+  
+  if(ax>60 || ay>60){
+    if(ax>ay){
+      // 좌우 스와이프 - 탐색 (Herald: Swipe)
+      if(ytPlayer){
+        const seek=dx>0 ? 10 : -10;
+        try{
+          const nt=Math.max(0, ytPlayer.getCurrentTime()+seek);
+          ytPlayer.seekTo(nt,true);
+          showSideHint(seek>0?'right':'left', seek>0?`+${seek}s ⏩`:`⏪ ${seek}s`);
+        }catch(e){}
+      }
+    } else {
+      // 상하 스와이프 - 볼륨
+      if(ytPlayer){
+        const volChange=dy<0 ? 10 : -10;
+        try{
+          const nv=Math.max(0, Math.min(100, ytPlayer.getVolume()+volChange));
+          ytPlayer.setVolume(nv);
+          showSideHint(volChange>0?'right':'left', `🔊 ${nv}%`);
+        }catch(e){}
       }
     }
-  });
-  playerEl.addEventListener('touchstart', ()=>{
-    if(isPlayer){
-      const backBtn=document.getElementById('backBtnV43');
-      if(backBtn){
-        backBtn.classList.add('show');
-        setTimeout(()=>{ backBtn.classList.remove('show'); }, 3000);
-      }
-    }
-  }, {passive:true});
+  }
 }
 
+const heraldPlayback=document.getElementById('heraldPlayback');
+if(heraldPlayback){
+  heraldPlayback.addEventListener('touchstart', (e)=>{ if(e.touches.length===1) heraldGestureStart(e.touches[0].clientX, e.touches[0].clientY); }, {passive:true});
+  heraldPlayback.addEventListener('touchend', (e)=>{ if(e.changedTouches.length===1) heraldGestureEnd(e.changedTouches[0].clientX, e.changedTouches[0].clientY); }, {passive:true});
+  heraldPlayback.addEventListener('mousedown', (e)=>{ heraldGestureStart(e.clientX, e.clientY); });
+  heraldPlayback.addEventListener('mouseup', (e)=>{ heraldGestureEnd(e.clientX, e.clientY); });
+}
+
+// 리스트 스와이프
 let touchStartY=0, touchStartX=0;
 document.addEventListener('touchstart', (e)=>{
   if(isPlayer) return;
