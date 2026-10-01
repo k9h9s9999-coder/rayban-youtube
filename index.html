@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=600, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>Ray-Ban Swipe Fix Scroll</title>
+<title>Ray-Ban YouTube V9 Fixed Scroll</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{background:#000;color:#fff;font-family:-apple-system,sans-serif;width:600px;height:600px;overflow:hidden;display:flex;justify-content:center;align-items:center}
@@ -12,17 +12,16 @@ body{background:#000;color:#fff;font-family:-apple-system,sans-serif;width:600px
 .logo{font-weight:900;font-size:15px;display:flex;align-items:center;gap:6px}
 .badge{font-size:10px;background:#00ff88;color:#000;padding:2px 6px;border-radius:4px;font-weight:800}
 .search-row{display:flex;gap:6px;padding:8px;background:#1a1a1a;border-bottom:1px solid #2a2a2a;flex-shrink:0}
-.search-row input{flex:1;background:#0a0a0a;border:1px solid #333;border-radius:12px;padding:14px 12px;color:#fff;font-size:20px;outline:none;pointer-events:auto}
-.search-row input:focus{border-color:#333}
+.search-row input{flex:1;background:#0a0a0a;border:1px solid #333;border-radius:12px;padding:14px 12px;color:#fff;font-size:20px;outline:none}
 .search-row button{background:#fff;color:#000;border:0;border-radius:12px;padding:0 14px;font-weight:900;font-size:15px;min-width:60px}
 .search-row button.kb{background:#1e1e1e;color:#00ff88;border:1px solid #333;min-width:52px;font-size:20px}
 .search-row button.kb.active{background:#00ff88;color:#000;border-color:#00ff88}
 .status{height:24px;padding:0 12px;font-size:11px;color:#00ff88;display:flex;align-items:center;justify-content:space-between;background:#0f0f0f;flex-shrink:0}
-.content{flex:1;overflow:hidden;display:flex;flex-direction:column;position:relative;background:#121212}
-.list{flex:1;overflow-y:auto;overflow-x:hidden;padding:8px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;touch-action:pan-y}
+.content{flex:1;overflow:hidden;display:flex;flex-direction:column;position:relative;background:#121212;min-height:0}
+.list{flex:1;overflow-y:auto;overflow-x:hidden;padding:8px;display:flex;flex-direction:column;gap:10px;scroll-behavior:auto;-webkit-overflow-scrolling:touch;touch-action:pan-y;min-height:0;overscroll-behavior:contain}
 .list::-webkit-scrollbar{display:none}
-.card{display:flex;gap:10px;background:#1e1e1e;border-radius:14px;padding:10px;cursor:pointer;border:2px solid transparent;min-height:92px;align-items:center;transition:all .15s ease;position:relative}
-.card.focused{border-color:#00ff88;background:#2a2a2a;box-shadow:0 0 0 2px rgba(0,255,136,.2);transform:scale(1.02);z-index:2}
+.card{display:flex;gap:10px;background:#1e1e1e;border-radius:14px;padding:10px;cursor:pointer;border:2px solid transparent;min-height:92px;align-items:center;transition:all .15s ease;position:relative;flex-shrink:0}
+.card.focused{border-color:#00ff88;background:#2a2a2a;box-shadow:0 0 0 2px rgba(0,255,136,.2);transform:scale(1.01);z-index:2}
 .thumb{width:130px;height:74px;border-radius:10px;background:#000;object-fit:cover;flex-shrink:0}
 .meta{flex:1;min-width:0}
 .title{font-size:14px;font-weight:700;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
@@ -35,7 +34,7 @@ body{background:#000;color:#fff;font-family:-apple-system,sans-serif;width:600px
 .controls{display:flex;gap:6px;padding:8px;background:#1a1a1a;border-bottom:1px solid #2a2a2a;flex-shrink:0}
 .ctrl{flex:1;background:#2a2a2a;border:0;color:#fff;padding:14px 4px;border-radius:12px;font-size:13px;font-weight:800}
 .ctrl.big{flex:1.3;background:#fff;color:#000;font-size:15px}
-.keypad-wrap{display:none;flex-direction:column;background:#0a0a0a;border-top:1px solid #222;flex-shrink:0}
+.keypad-wrap{display:none;flex-direction:column;background:#0a0a0a;border-top:1px solid #222;flex-shrink:0;max-height:260px;overflow-y:auto}
 .keypad-tabs{display:flex;gap:4px;padding:6px 6px 0 6px}
 .keypad-tabs button{flex:1;padding:8px;border-radius:8px;border:1px solid #333;background:#1a1a1a;color:#888;font-size:12px;font-weight:800}
 .keypad-tabs button.active{background:#00ff88;color:#000;border-color:#00ff88}
@@ -50,22 +49,22 @@ body{background:#000;color:#fff;font-family:-apple-system,sans-serif;width:600px
 .footer{height:18px;padding:0 10px;background:#000;display:flex;justify-content:space-between;align-items:center;font-size:9px;color:#555;flex-shrink:0}
 .center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:#777;padding:20px;text-align:center}
 .center b{color:#fff;font-size:16px}
-.swipe-indicator{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:3px;height:60px;background:rgba(255,255,255,.1);border-radius:3px;pointer-events:none}
-.swipe-indicator .bar{width:100%;background:#00ff88;border-radius:3px;transition:all .2s}
+.swipe-indicator{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:3px;height:60px;background:rgba(255,255,255,.1);border-radius:3px;pointer-events:none;z-index:5}
+.swipe-indicator .bar{width:100%;background:#00ff88;border-radius:3px;transition:all .15s}
 </style>
 </head>
 <body>
 <div class="hud">
   <div class="header">
-    <div class="logo"><span style="width:26px;height:26px;background:#fff;color:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px">RB</span> YouTube <span class="badge">V8</span></div>
-    <div style="font-size:10px;color:#888">스크롤 시 키보드 안뜸</div>
+    <div class="logo"><span style="width:26px;height:26px;background:#fff;color:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px">RB</span> YouTube <span class="badge">V9</span></div>
+    <div style="font-size:10px;color:#00ff88">스크롤 수정 완료</div>
   </div>
   <div class="search-row">
     <input id="q" placeholder="⌨️ 눌러야 키보드 열림" value="" readonly>
     <button id="kbBtn" class="kb" onclick="toggleKeypad()">⌨️</button>
     <button onclick="doSearch()">검색</button>
   </div>
-  <div id="status" class="status"><span id="statusText">스와이프로 이동 • 탭해서 재생 • ⌨️로만 키보드</span><span id="info" style="color:#666">ready</span></div>
+  <div id="status" class="status"><span id="statusText">위아래로 쓸어 넘기면 스크롤 • 탭해서 재생</span><span id="info" style="color:#666">ready</span></div>
   <div class="content">
     <div id="list" class="list"></div>
     <div id="player" class="player" style="display:none"></div>
@@ -81,7 +80,7 @@ body{background:#000;color:#fff;font-family:-apple-system,sans-serif;width:600px
     </div>
     <div id="keypad" class="keypad kr"></div>
   </div>
-  <div class="footer"><span>V8 FIX • 스크롤=키보드숨김 • ⌨️만 키보드열림</span><span>KR</span></div>
+  <div class="footer"><span>V9 FIX • 네이티브 스크롤 • 스와이프 초록 포커스</span><span>KR</span></div>
 </div>
 
 <script>
@@ -103,7 +102,7 @@ const DOUBLE_JONG_SPLIT = {'ㄳ':['ㄱ','ㅅ'],'ㄵ':['ㄴ','ㅈ'],'ㄶ':['ㄴ',
 const DOUBLE_JONG_COMBINE = {'ㄱㅅ':'ㄳ','ㄴㅈ':'ㄵ','ㄴㅎ':'ㄶ','ㄹㄱ':'ㄺ','ㄹㅁ':'ㄻ','ㄹㅂ':'ㄼ','ㄹㅅ':'ㄽ','ㄹㅌ':'ㄾ','ㄹㅍ':'ㄿ','ㄹㅎ':'ㅀ','ㅂㅅ':'ㅄ'};
 const DOUBLE_JUNG_COMBINE = {'ㅗㅏ':'ㅘ','ㅗㅐ':'ㅙ','ㅗㅣ':'ㅚ','ㅜㅓ':'ㅝ','ㅜㅔ':'ㅞ','ㅜㅣ':'ㅟ','ㅡㅣ':'ㅢ'};
 const DOUBLE_CHO_COMBINE = {'ㄱㄱ':'ㄲ','ㄷㄷ':'ㄸ','ㅂㅂ':'ㅃ','ㅅㅅ':'ㅆ','ㅈㅈ':'ㅉ'};
-function isConsonant(j){return CHO.includes(j);} function isVowel(j){return ['ㅏ','ㅐ','ㅑ','ㅒ','ㅓ','ㅔ','ㅕ','ㅖ','ㅗ','ㅛ','ㅜ','ㅠ','ㅡ','ㅣ'].includes(j);}
+function isConsonant(j){return CHO.includes(j);} 
 let committed=''; let composing={cho:-1,jung:-1,jong:0};
 function choIdx(c){return CHO.indexOf(c);} function jungIdx(j){return JUNG.indexOf(j);} function jongIdx(j){return JONG.indexOf(j);}
 function makeSyllable(cho,jung,jong){if(cho<0||jung<0) return null; return String.fromCharCode(0xAC00+cho*21*28+jung*28+jong);}
@@ -153,9 +152,8 @@ function buildKeypad(){
   }
 }
 
-let isScrolling=false;
-function showKeypad(){document.getElementById('keypadWrap').style.display='flex'; document.getElementById('kbBtn').classList.add('active'); document.getElementById('statusText').textContent='입력 중... 검색 누르면 키보드 사라짐';}
-function hideKeypad(){document.getElementById('keypadWrap').style.display='none'; document.getElementById('kbBtn').classList.remove('active'); if(!isPlayer) document.getElementById('statusText').textContent='스와이프로 이동 • 탭해서 재생 • ⌨️로만 키보드';}
+function showKeypad(){document.getElementById('keypadWrap').style.display='flex'; document.getElementById('kbBtn').classList.add('active'); document.getElementById('statusText').textContent='입력 중...';}
+function hideKeypad(){document.getElementById('keypadWrap').style.display='none'; document.getElementById('kbBtn').classList.remove('active'); if(!isPlayer) document.getElementById('statusText').textContent='위아래로 쓸어 넘기면 스크롤 • 탭해서 재생';}
 function toggleKeypad(){const w=document.getElementById('keypadWrap'); if(w.style.display==='none'||w.style.display===''){showKeypad();} else {hideKeypad();}}
 
 let lastItems=[], focusedIndex=-1, isPlayer=false;
@@ -163,26 +161,30 @@ async function fetchTimeout(url,ms=6500){const c=new AbortController(); const t=
 async function searchPiped(q){for(let i=0;i<INSTANCES.length;i++){document.getElementById('info').textContent=`${i+1}/${INSTANCES.length}`; try{const d=await fetchTimeout(`${INSTANCES[i]}/search?q=${encodeURIComponent(q)}&filter=videos`,7000); if(d.items&&d.items.length) return {items:d.items, host:new URL(INSTANCES[i]).host};}catch(e){continue;}} throw new Error('all failed');}
 function renderList(items){
   const list=document.getElementById('list'); list.innerHTML=''; document.getElementById('player').style.display='none'; list.style.display='flex'; isPlayer=false; focusedIndex=-1;
-  items.forEach((v,idx)=>{const id=v.url?.replace('/watch?v=','')||v.id||''; const title=v.title||'No title'; const ch=v.uploaderName||v.author||''; const thumb=v.thumbnail||`https://i.ytimg.com/vi/${id}/mqdefault.jpg`; const div=document.createElement('div'); div.className='card'; div.id='card-'+idx; div.dataset.idx=idx; div.innerHTML=`<div class="num">${idx+1}</div><img class="thumb" src="${thumb}" onerror="this.src='https://i.ytimg.com/vi/${id}/mqdefault.jpg'"><div class="meta"><div class="title">${title}</div><div class="ch">${ch}</div></div><div class="hint">탭 ▶</div>`; div.onclick=()=>playVideo(id,title,idx); list.appendChild(div);});
-  setTimeout(()=>focusCard(0),100);
+  items.forEach((v,idx)=>{const id=v.url?.replace('/watch?v=','')||v.id||''; const title=v.title||'No title'; const ch=v.uploaderName||v.author||''; const thumb=v.thumbnail||`https://i.ytimg.com/vi/${id}/mqdefault.jpg`; const div=document.createElement('div'); div.className='card'; div.id='card-'+idx; div.dataset.idx=idx; div.innerHTML=`<div class="num">${idx+1}</div><img class="thumb" src="${thumb}" onerror="this.src='https://i.ytimg.com/vi/${id}/mqdefault.jpg'"><div class="meta"><div class="title">${title}</div><div class="ch">${ch}</div></div><div class="hint">탭 ▶</div>`; div.onclick=()=>{ if(!isScrolling) playVideo(id,title,idx); }; list.appendChild(div);});
+  list.scrollTop=0;
+  setTimeout(()=>focusCard(0,false),100);
 }
-function focusCard(idx){if(idx<0||idx>=lastItems.length) return; document.querySelectorAll('.card').forEach(c=>c.classList.remove('focused')); const el=document.getElementById('card-'+idx); if(el){el.classList.add('focused'); el.scrollIntoView({behavior:'smooth',block:'center'}); focusedIndex=idx; document.getElementById('statusText').textContent=`${idx+1}/${lastItems.length} - 스와이프로 이동 • 탭해서 재생`;} updateScrollBar();}
+function focusCard(idx, doScroll=true){if(idx<0||idx>=lastItems.length) return; document.querySelectorAll('.card').forEach(c=>c.classList.remove('focused')); const el=document.getElementById('card-'+idx); if(el){el.classList.add('focused'); if(doScroll) el.scrollIntoView({behavior:'smooth',block:'nearest'}); focusedIndex=idx; document.getElementById('statusText').textContent=`${idx+1}/${lastItems.length} - 스크롤 가능 • 탭해서 재생`;} updateScrollBar();}
 function playVideo(id,title,idx){
   const list=document.getElementById('list'); list.style.display='none'; hideKeypad(); const player=document.getElementById('player'); player.style.display='flex'; isPlayer=true;
   player.innerHTML=`<div class="controls"><button class="ctrl" onclick="backToList()">← 목록</button><button class="ctrl big" onclick="toggleFullscreen()">⛶ 크게</button><button class="ctrl" onclick="nextVideo(1)">다음 →</button></div><iframe id="yt" src="https://www.youtube.com/embed/${id}?autoplay=1&playsinline=1&enablejsapi=1&origin=https://k9h9s9999-coder.github.io" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe><div class="controls"><button class="ctrl" onclick="nextVideo(-1)">← 이전</button><button class="ctrl big" onclick="backToList()">✕ 닫기</button><button class="ctrl" onclick="copyLink('${id}')">복사</button></div>`;
   document.getElementById('statusText').textContent=`${idx+1}/${lastItems.length} - ${title.slice(0,28)}`;
 }
-function backToList(){document.getElementById('player').style.display='none'; document.getElementById('list').style.display='flex'; isPlayer=false; if(focusedIndex>=0) setTimeout(()=>focusCard(focusedIndex),100);}
+function backToList(){document.getElementById('player').style.display='none'; document.getElementById('list').style.display='flex'; isPlayer=false; if(focusedIndex>=0) setTimeout(()=>focusCard(focusedIndex,false),100);}
 function nextVideo(dir){if(!lastItems.length) return; let ni=focusedIndex+dir; if(ni<0) ni=lastItems.length-1; if(ni>=lastItems.length) ni=0; const v=lastItems[ni]; const id=v.url?.replace('/watch?v=','')||v.id; playVideo(id,v.title,ni); focusedIndex=ni;}
 function updateScrollBar(){const list=document.getElementById('list'); if(!list) return; const scrollTop=list.scrollTop; const scrollHeight=list.scrollHeight - list.clientHeight; const pct = scrollHeight>0 ? scrollTop/scrollHeight : 0; const bar=document.getElementById('scrollBar'); if(bar){ bar.style.marginTop=(pct*60)+'%'; }}
 
-let touchStartY=0, touchStartTime=0, lastTouchY=0;
+let touchStartY=0, touchStartTime=0, isScrolling=false;
 const listEl = ()=>document.getElementById('list');
+
 document.addEventListener('touchstart', e=>{
   if(isPlayer) return;
   if(e.target.closest('.keypad-wrap')) return;
-  touchStartY=e.touches[0].clientY; lastTouchY=touchStartY; touchStartTime=Date.now(); isScrolling=false;
-  // 스크롤 시작하면 키보드 무조건 숨김
+  touchStartY=e.touches[0].clientY;
+  touchStartTime=Date.now();
+  isScrolling=false;
+  // 스크롤 시작하면 키보드 숨김 - 네이티브 스크롤은 그대로 둠
   if(document.getElementById('keypadWrap').style.display!=='none'){
     hideKeypad();
   }
@@ -192,34 +194,36 @@ document.addEventListener('touchmove', e=>{
   if(isPlayer) return;
   if(e.target.closest('.keypad-wrap')) return;
   const curY=e.touches[0].clientY;
-  const diff=lastTouchY-curY;
-  if(Math.abs(curY-touchStartY)>10) isScrolling=true;
-  if(Math.abs(diff)>2){
-    const list=listEl();
-    if(list) list.scrollTop+=diff*0.9;
+  if(Math.abs(curY - touchStartY) > 10){
+    isScrolling=true;
   }
-  lastTouchY=curY;
 },{passive:true});
 
 document.addEventListener('touchend', e=>{
   if(isPlayer) return;
-  if(e.target.closest('.keypad-wrap') || e.target.closest('.card')) return;
-  if(isScrolling){
-    // 스크롤이었으면 키보드 절대 안띄움
+  if(e.target.closest('.keypad-wrap')) return;
+  // 카드 위에서 스크롤했으면 클릭 방지
+  if(e.target.closest('.card') && isScrolling){
     isScrolling=false;
     updateScrollBar();
     return;
   }
+  if(isScrolling){
+    isScrolling=false;
+    updateScrollBar();
+    return;
+  }
+  // 스크롤이 아니고 스와이프면 포커스 이동
   const endY=e.changedTouches[0].clientY;
   const diffY=touchStartY-endY;
   const duration=Date.now()-touchStartTime;
-  if(Math.abs(diffY)>60 && duration<400){
+  if(Math.abs(diffY)>60 && duration<500){
     if(diffY>0){focusCard(Math.min(focusedIndex+1, lastItems.length-1));} else {focusCard(Math.max(focusedIndex-1, 0));}
   }
   updateScrollBar();
 },{passive:true});
 
-document.getElementById('list').addEventListener('scroll', ()=>{ updateScrollBar(); if(!isPlayer && document.getElementById('keypadWrap').style.display!=='none'){ hideKeypad(); } }, {passive:true});
+listEl().addEventListener('scroll', ()=>{ updateScrollBar(); if(!isPlayer && document.getElementById('keypadWrap').style.display!=='none'){ hideKeypad(); } }, {passive:true});
 
 function copyLink(id){navigator.clipboard.writeText('https://youtu.be/'+id); document.getElementById('statusText').textContent='링크 복사됨!';}
 function toggleFullscreen(){const f=document.getElementById('yt'); if(f) f.requestFullscreen?.();}
@@ -233,7 +237,7 @@ async function doSearch(){
   try{
     const res=await searchPiped(q);
     lastItems=res.items.slice(0,20);
-    document.getElementById('statusText').textContent=`${q} - ${lastItems.length}개 - 스와이프로 선택`;
+    document.getElementById('statusText').textContent=`${q} - ${lastItems.length}개 - 위아래로 스크롤`;
     document.getElementById('info').textContent=res.host+' ✓';
     renderList(lastItems);
   }catch(e){
