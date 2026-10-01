@@ -2,136 +2,123 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta name="viewport" content="width=600, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>Ray-Ban YouTube V12 - Big + Voice</title>
+<title>V19 - 진짜 영상만</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{background:#000;color:#fff;font-family:-apple-system,sans-serif;width:600px;height:600px;overflow:hidden;display:flex;justify-content:center;align-items:center}
-.hud{width:600px;height:600px;background:#121212;display:flex;flex-direction:column;position:relative;border-radius:18px;overflow:hidden;border:2px solid #00ff88;transition:all .2s}
-.hud.big-mode{border-radius:0;border:0;width:600px;height:600px}
-.hud.big-mode .header, .hud.big-mode .search-row, .hud.big-mode .status, .hud.big-mode .info-box, .hud.big-mode .dpad, .hud.big-mode .footer, .hud.big-mode .keypad-wrap{display:none !important}
-.hud.big-mode .content{flex:1;height:100%}
-.hud.big-mode .player{height:100%}
-.hud.big-mode .player iframe{height:100%}
-.header{height:36px;display:flex;align-items:center;justify-content:space-between;padding:0 10px;background:#1a1a1a;border-bottom:1px solid #2a2a2a;flex-shrink:0}
-.search-row{display:flex;gap:4px;padding:6px;background:#1a1a1a;border-bottom:1px solid #2a2a2a;flex-shrink:0}
-.search-row input{flex:1;background:#0a0a0a;border:1px solid #333;border-radius:10px;padding:10px 10px;color:#fff;font-size:18px;outline:none}
-.search-row button{background:#fff;color:#000;border:0;border-radius:10px;padding:0 10px;font-weight:900;font-size:13px;min-width:50px}
-.search-row button.kb{background:#1e1e1e;color:#00ff88;border:1px solid #333;min-width:44px;font-size:18px}
-.search-row button.voice{background:#1e1e1e;color:#ff3b30;border:1px solid #333;min-width:44px;font-size:18px}
-.search-row button.voice.listening{background:#ff3b30;color:#fff;animation:pulse 1s infinite}
-@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.1)}100%{transform:scale(1)}}
-.status{height:22px;padding:0 10px;font-size:10px;color:#00ff88;display:flex;align-items:center;justify-content:space-between;background:#0f0f0f;flex-shrink:0}
-.content{flex:1;overflow:hidden;display:flex;flex-direction:column;position:relative;background:#121212}
-.list{flex:1;overflow:hidden;padding:6px;display:flex;flex-direction:column;gap:8px;position:relative}
-.card{display:flex;gap:8px;background:#1e1e1e;border-radius:12px;padding:8px;cursor:pointer;border:2px solid transparent;min-height:88px;align-items:center;flex-shrink:0;transition:all .15s}
-.card.focused{border-color:#00ff88;background:#2a2a2a;transform:scale(1.02);box-shadow:0 0 12px rgba(0,255,136,.4);z-index:2}
-.card.dim{opacity:.4;transform:scale(.96)}
-.thumb{width:110px;height:62px;border-radius:8px;background:#000;object-fit:cover;flex-shrink:0}
+.hud{width:600px;height:600px;background:#000;display:flex;flex-direction:column;position:relative;border-radius:18px;overflow:hidden;border:3px solid #00ff88}
+.hud.big-mode{border-radius:0;border:0;background:#000}
+.hud.big-mode .header, .hud.big-mode .search-row, .hud.big-mode .status, .hud.big-mode .hint, .hud.big-mode .footer, .hud.big-mode .keypad-wrap, .hud.big-mode .pagination, .hud.big-mode .controls{display:none !important}
+.hud.big-mode .content{flex:1;height:600px;background:#000}
+.hud.big-mode .player{height:600px;width:600px;background:#000}
+.hud.big-mode .player iframe{height:600px !important;width:600px !important;border:0;background:#000}
+.header{height:30px;display:flex;align-items:center;justify-content:space-between;padding:0 10px;background:#1a1a1a;border-bottom:1px solid #2a2a2a;flex-shrink:0}
+.search-row{display:flex;gap:6px;padding:6px;background:#1a1a1a;border-bottom:1px solid #2a2a2a;flex-shrink:0}
+.search-row input{flex:1;background:#0a0a0a;border:1px solid #333;border-radius:10px;padding:10px;color:#fff;font-size:15px;outline:none}
+.search-row button{background:#fff;color:#000;border:0;border-radius:10px;padding:0 12px;font-weight:900;font-size:12px;min-width:54px;height:36px}
+.search-row button.kb{background:#1e1e1e;color:#00ff88;border:1px solid #333;min-width:48px;font-size:18px}
+.status{height:18px;padding:0 10px;font-size:9px;color:#00ff88;display:flex;align-items:center;justify-content:space-between;background:#0f0f0f;flex-shrink:0}
+.content{flex:1;overflow:hidden;display:flex;flex-direction:column;background:#121212}
+.list{flex:1;overflow:hidden;padding:4px 6px;display:flex;flex-direction:column;gap:4px}
+.card-btn{display:flex;gap:6px;align-items:center;background:#1e1e1e;border:2px solid transparent;border-radius:10px;padding:6px;width:100%;text-align:left;cursor:pointer;min-height:58px;transition:all .12s;outline:none;color:#fff}
+.card-btn:focus{border-color:#00ff88;background:#2a2a2a;transform:scale(1.02);box-shadow:0 0 0 3px rgba(0,255,136,.3)}
+.card-btn:focus .num{background:#00ff88;color:#000}
+.thumb{width:88px;height:50px;border-radius:6px;background:#000;object-fit:cover;flex-shrink:0}
 .meta{flex:1;min-width:0}
-.title{font-size:13px;font-weight:700;line-height:1.2;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.ch{font-size:10px;color:#aaa;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.num{background:#2a2a2a;color:#00ff88;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;flex-shrink:0}
-.card.focused .num{background:#00ff88;color:#000}
-.dpad{height:48px;display:flex;gap:6px;padding:6px;background:#0a0a0a;border-top:1px solid #222;flex-shrink:0}
-.dpad button{flex:1;background:#1e1e1e;border:1px solid #333;color:#fff;border-radius:10px;font-size:18px;font-weight:900}
-.dpad button:active{background:#00ff88;color:#000}
-.dpad button.big{flex:1.5;background:#00ff88;color:#000;border-color:#00ff88}
+.title{font-size:11px;font-weight:700;line-height:1.2;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ch{font-size:8px;color:#aaa;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.num{background:#2a2a2a;color:#00ff88;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:900;flex-shrink:0}
 .player{flex:1;display:flex;flex-direction:column;background:#000;position:relative}
 .player iframe{flex:1;width:100%;border:0;background:#000}
-.controls{display:flex;gap:6px;padding:6px;background:#1a1a1a;border-bottom:1px solid #2a2a2a;flex-shrink:0}
-.ctrl{flex:1;background:#2a2a2a;border:0;color:#fff;padding:12px 4px;border-radius:10px;font-size:12px;font-weight:800}
-.ctrl.big{flex:1.3;background:#fff;color:#000;font-size:14px}
-.ctrl.exit{flex:1.3;background:#ff3b30;color:#fff}
-.keypad-wrap{display:none;flex-direction:column;background:#0a0a0a;border-top:1px solid #222;flex-shrink:0;max-height:220px;overflow-y:auto}
-.keypad-tabs{display:flex;gap:4px;padding:4px 4px 0 4px}
-.keypad-tabs button{flex:1;padding:6px;border-radius:8px;border:1px solid #333;background:#1a1a1a;color:#888;font-size:11px;font-weight:800}
+.controls{display:flex;gap:4px;padding:6px;background:#1a1a1a;flex-shrink:0}
+.ctrl{flex:1;background:#2a2a2a;border:0;color:#fff;padding:10px 2px;border-radius:8px;font-size:11px;font-weight:800}
+.ctrl.big{background:#fff;color:#000;flex:1.2}
+.ctrl.exit{background:#ff3b30;color:#fff}
+.pagination{height:36px;display:flex;gap:6px;padding:4px 6px;background:#0a0a0a;border-top:1px solid #222;flex-shrink:0}
+.page-btn{flex:1;background:#1e1e1e;border:1px solid #333;color:#fff;border-radius:8px;font-size:11px;font-weight:800;outline:none}
+.page-btn:focus{border-color:#00ff88;background:#00ff88;color:#000}
+.keypad-wrap{display:none;flex-direction:column;background:#0a0a0a;border-top:1px solid #222;flex-shrink:0;max-height:200px;overflow-y:auto}
+.keypad-tabs{display:flex;gap:4px;padding:4px}
+.keypad-tabs button{flex:1;padding:6px;border-radius:8px;border:1px solid #333;background:#1a1a1a;color:#888;font-size:10px;font-weight:800}
 .keypad-tabs button.active{background:#00ff88;color:#000;border-color:#00ff88}
 .keypad{display:grid;gap:3px;padding:6px}
 .keypad.kr{grid-template-columns:repeat(10,1fr)}
-.keypad.en{grid-template-columns:repeat(10,1fr)}
-.keypad button{background:#1e1e1e;border:0;color:#fff;padding:10px 2px;border-radius:8px;font-size:14px;font-weight:700;min-height:40px}
-.footer{height:16px;padding:0 10px;background:#000;display:flex;justify-content:space-between;align-items:center;font-size:8px;color:#555;flex-shrink:0}
-.center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:#777;padding:20px;text-align:center}
-.info-box{background:#1a1a1a;border:1px solid #00ff88;border-radius:8px;padding:6px 8px;font-size:9px;color:#aaa;margin:4px 6px;line-height:1.3}
-.voice-help{background:#1a1a1a;border:1px solid #ff3b30;border-radius:8px;padding:8px;margin:4px 6px;font-size:10px;color:#aaa;display:none}
+.keypad button{background:#1e1e1e;border:0;color:#fff;padding:8px 2px;border-radius:8px;font-size:12px;font-weight:700;min-height:36px}
+.footer{height:14px;padding:0 8px;background:#000;display:flex;justify-content:space-between;align-items:center;font-size:7px;color:#555;flex-shrink:0}
+.center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:#777;padding:20px;text-align:center}
+.hint{background:#00ff88;color:#000;border-radius:6px;padding:4px 6px;font-size:9px;font-weight:800;margin:3px 6px;text-align:center}
+.version{position:absolute;top:2px;right:2px;background:#00ff88;color:#000;font-size:7px;font-weight:900;padding:2px 5px;border-radius:4px;z-index:99}
+.big-overlay{display:none;position:absolute;top:0;left:0;width:600px;height:600px;z-index:50;pointer-events:none}
+.hud.big-mode .big-overlay{display:flex;flex-direction:column;justify-content:space-between;pointer-events:auto;background:transparent}
+.big-top{height:50px;display:flex;justify-content:space-between;padding:8px;background:linear-gradient(to bottom, rgba(0,0,0,.8), transparent);opacity:0;transition:opacity .3s}
+.big-bottom{height:50px;display:flex;justify-content:center;align-items:center;padding:8px;background:linear-gradient(to top, rgba(0,0,0,.8), transparent);opacity:0;transition:opacity .3s}
+.hud.big-mode .big-top, .hud.big-mode .big-bottom{opacity:1}
+.exit-big-btn{background:rgba(0,0,0,.7);color:#fff;border:1px solid #fff;border-radius:20px;padding:6px 14px;font-size:11px;font-weight:800;backdrop-filter:blur(10px)}
+.tap-hint{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.8);color:#00ff88;border:1px solid #00ff88;border-radius:12px;padding:12px 16px;font-size:11px;font-weight:800;text-align:center;opacity:0;pointer-events:none;transition:opacity .3s;z-index:60}
+.hud.big-mode .tap-hint{opacity:1;animation:fadeOut 3s forwards 2s}
+@keyframes fadeOut{0%{opacity:1}100%{opacity:0}}
 </style>
 </head>
 <body>
 <div class="hud" id="hud">
-  <div class="header">
-    <div class="logo">RB YouTube <span style="font-size:9px;background:#00ff88;color:#000;padding:2px 6px;border-radius:4px;font-weight:800">V12 BIG+VOICE</span></div>
-    <div style="font-size:9px;color:#00ff88" id="pageInfo">1/5</div>
-  </div>
-  <div class="search-row">
-    <input id="q" placeholder="⌨️ 키보드 / 🎤 음성" value="" readonly>
-    <button id="voiceBtn" class="voice" onclick="startVoice()">🎤</button>
-    <button id="kbBtn" class="kb" onclick="toggleKeypad()">⌨️</button>
-    <button onclick="doSearch()">검색</button>
-  </div>
-  <div class="status"><span id="statusText">V12: 밴드 ▲▼ 이동, 핀치 재생, 🎤 음성검색</span><span id="info">ready</span></div>
-  <div class="info-box">💡 크게 보기: 영상 재생 후 <b>⛶ 크게</b> 누르면 전체화면처럼 600x600 꽉 채움 (안경 브라우저는 일반 전체화면 API가 막혀있어서 이렇게 만듦)</div>
-  <div id="voiceHelp" class="voice-help">
-    <b style="color:#ff3b30">🎤 음성검색 안내</b><br>
-    핸드폰 크롬: 🎤 누르면 음성 인식 됨<br>
-    안경 브라우저: 웹에서 마이크가 막혀있어서 안 됨 → 대신 <b>"Hey Meta, search cats on YouTube"</b> 라고 말하거나 핸드폰에서 음성검색 후 안경에서 보기
-  </div>
-  <div class="content" id="content">
-    <div id="list" class="list"></div>
-    <div id="player" class="player" style="display:none"></div>
-  </div>
-  <div class="dpad" id="dpad">
-    <button onclick="moveFocus(-1)">▲</button>
-    <button class="big" onclick="playFocused()">▶ 재생</button>
-    <button onclick="moveFocus(1)">▼</button>
-    <button onclick="nextPage(1)">다음 ▶</button>
-  </div>
-  <div id="keypadWrap" class="keypad-wrap">
-    <div class="keypad-tabs">
-      <button id="tabKr" class="active" onclick="setLang('kr')">한글</button>
-      <button id="tabEn" onclick="setLang('en')">ENG</button>
-      <button onclick="clearInput()">지우기</button>
-      <button onclick="hideKeypad()" style="background:#333;color:#fff">▼ 닫기</button>
-    </div>
-    <div id="keypad" class="keypad kr"></div>
-  </div>
-  <div class="footer"><span>V12 • BIG MODE • VOICE SEARCH</span><span id="count">0개</span></div>
+<div class="version">V19 영상만</div>
+<div class="header"><div>RB YouTube <span style="font-size:8px;background:#00ff88;color:#000;padding:2px 5px;border-radius:3px;font-weight:900">V19 영상만</span></div><div style="font-size:9px;color:#00ff88" id="pageInfo">1/2</div></div>
+<div class="search-row">
+<input id="q" placeholder="검색어" readonly>
+<button class="kb" onclick="toggleKeypad()">⌨️</button>
+<button onclick="doSearch()">검색</button>
+</div>
+<div class="status"><span id="statusText">V19: 크게 누르면 진짜 영상만 꽉 채움</span><span id="info">ready</span></div>
+<div class="hint">⛶ 크게 = 영상만 600x600 꽉 채움 / 다시 Esc 또는 화면 탭하면 버튼 나옴</div>
+<div class="content" id="content"><div id="list" class="list"></div><div id="player" class="player" style="display:none"></div></div>
+<div class="pagination" id="pagination">
+<button class="page-btn" id="prevBtn" tabindex="0" onclick="changePage(-1)">◀ 이전</button>
+<button class="page-btn" id="nextBtn" tabindex="0" onclick="changePage(1)">다음 10개 ▶</button>
+</div>
+<div id="keypadWrap" class="keypad-wrap"><div class="keypad-tabs"><button id="tabKr" class="active" onclick="setLang('kr')">한글</button><button id="tabEn" onclick="setLang('en')">ENG</button><button onclick="clearInput()">지우기</button><button onclick="hideKeypad()" style="background:#333;color:#fff">▼ 닫기</button></div><div id="keypad" class="keypad kr"></div></div>
+<div class="footer"><span>V19 • 영상만 보기 • 20개 검색</span><span id="count">0개</span></div>
+
+<!-- 크게 모드 전용 오버레이 -->
+<div class="big-overlay" id="bigOverlay" onclick="handleBigTap()">
+<div class="big-top"><button class="exit-big-btn" tabindex="0" onclick="toggleBigMode(); event.stopPropagation();">✕ 작게 (Esc)</button><button class="exit-big-btn" tabindex="0" onclick="backToList(); event.stopPropagation();">← 목록</button></div>
+<div class="tap-hint" id="tapHint">영상만 보기 모드<br>탭하면 버튼 / Esc로 나가기</div>
+<div class="big-bottom"><button class="exit-big-btn" tabindex="0" onclick="nextVideo(1); event.stopPropagation();">다음 ▶</button><button class="exit-big-btn" tabindex="0" onclick="nextVideo(-1); event.stopPropagation();">◀ 이전</button></div>
 </div>
 
+</div>
 <script>
-const INSTANCES = ["https://pipedapi.kavin.rocks","https://api.piped.private.coffee","https://pipedapi.adminforge.de","https://pipedapi.in.projectsegfau.lt","https://pipedapi.syncpundi.com"];
+console.log('V19 - 영상만');
 const CHO = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
 const JUNG = ['ㅏ','ㅐ','ㅑ','ㅒ','ㅓ','ㅔ','ㅕ','ㅖ','ㅗ','ㅘ','ㅙ','ㅚ','ㅛ','ㅜ','ㅝ','ㅞ','ㅟ','ㅠ','ㅡ','ㅢ','ㅣ'];
 const JONG = ['', 'ㄱ','ㄲ','ㄳ','ㄴ','ㄵ','ㄶ','ㄷ','ㄹ','ㄺ','ㄻ','ㄼ','ㄽ','ㄾ','ㄿ','ㅀ','ㅁ','ㅂ','ㅄ','ㅅ','ㅆ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
-const DOUBLE_JONG_SPLIT = {'ㄳ':['ㄱ','ㅅ'],'ㄵ':['ㄴ','ㅈ'],'ㄶ':['ㄴ','ㅎ'],'ㄺ':['ㄹ','ㄱ'],'ㄻ':['ㄹ','ㅁ'],'ㄼ':['ㄹ','ㅂ'],'ㄽ':['ㄹ','ㅅ'],'ㄾ':['ㄹ','ㅌ'],'ㄿ':['ㄹ','ㅍ'],'ㅀ':['ㄹ','ㅎ'],'ㅄ':['ㅂ','ㅅ']};
-const DOUBLE_JONG_COMBINE = {'ㄱㅅ':'ㄳ','ㄴㅈ':'ㄵ','ㄴㅎ':'ㄶ','ㄹㄱ':'ㄺ','ㄹㅁ':'ㄻ','ㄹㅂ':'ㄼ','ㄹㅅ':'ㄽ','ㄹㅌ':'ㄾ','ㄹㅍ':'ㄿ','ㄹㅎ':'ㅀ','ㅂㅅ':'ㅄ'};
-const DOUBLE_JUNG_COMBINE = {'ㅗㅏ':'ㅘ','ㅗㅐ':'ㅙ','ㅗㅣ':'ㅚ','ㅜㅓ':'ㅝ','ㅜㅔ':'ㅞ','ㅜㅣ':'ㅟ','ㅡㅣ':'ㅢ'};
-const DOUBLE_CHO_COMBINE = {'ㄱㄱ':'ㄲ','ㄷㄷ':'ㄸ','ㅂㅂ':'ㅃ','ㅅㅅ':'ㅆ','ㅈㅈ':'ㅉ'};
-function isConsonant(j){return CHO.includes(j);} 
-let committed=''; let composing={cho:-1,jung:-1,jong:0};
 function choIdx(c){return CHO.indexOf(c);} function jungIdx(j){return JUNG.indexOf(j);} function jongIdx(j){return JONG.indexOf(j);}
 function makeSyllable(cho,jung,jong){if(cho<0||jung<0) return null; return String.fromCharCode(0xAC00+cho*21*28+jung*28+jong);}
+let committed=''; let composing={cho:-1,jung:-1,jong:0};
 function getComposingChar(){if(composing.cho>=0&&composing.jung>=0){return makeSyllable(composing.cho,composing.jung,composing.jong);} if(composing.cho>=0&&composing.jung<0){return CHO[composing.cho];} if(composing.cho<0&&composing.jung>=0){return JUNG[composing.jung];} return '';}
 function commitComposing(){const ch=getComposingChar(); if(ch) committed+=ch; composing={cho:-1,jung:-1,jong:0};}
 function updateInputField(){document.getElementById('q').value=committed+getComposingChar();}
+function isConsonant(j){return CHO.includes(j);}
 function inputHangulClean(jamo){
   if(jamo===' '){commitComposing(); committed+=' '; updateInputField(); return;}
+  const DC={'ㄱㄱ':'ㄲ','ㄷㄷ':'ㄸ','ㅂㅂ':'ㅃ','ㅅㅅ':'ㅆ','ㅈㅈ':'ㅉ'}; const DJC={'ㅗㅏ':'ㅘ','ㅗㅐ':'ㅙ','ㅗㅣ':'ㅚ','ㅜㅓ':'ㅝ','ㅜㅔ':'ㅞ','ㅜㅣ':'ㅟ','ㅡㅣ':'ㅢ'}; const DJOC={'ㄱㅅ':'ㄳ','ㄴㅈ':'ㄵ','ㄴㅎ':'ㄶ','ㄹㄱ':'ㄺ','ㄹㅁ':'ㄻ','ㄹㅂ':'ㄼ','ㄹㅅ':'ㄽ','ㄹㅌ':'ㄾ','ㄹㅍ':'ㄿ','ㄹㅎ':'ㅀ','ㅂㅅ':'ㅄ'}; const DJS={'ㄳ':['ㄱ','ㅅ'],'ㄵ':['ㄴ','ㅈ'],'ㄶ':['ㄴ','ㅎ'],'ㄺ':['ㄹ','ㄱ'],'ㄻ':['ㄹ','ㅁ'],'ㄼ':['ㄹ','ㅂ'],'ㄽ':['ㄹ','ㅅ'],'ㄾ':['ㄹ','ㅌ'],'ㄿ':['ㄹ','ㅍ'],'ㅀ':['ㄹ','ㅎ'],'ㅄ':['ㅂ','ㅅ']};
   if(isConsonant(jamo)){
     const cIdx=choIdx(jamo);
     if(composing.cho<0&&composing.jung<0){composing.cho=cIdx;}
-    else if(composing.cho>=0&&composing.jung<0){const prev=CHO[composing.cho]; const comb=DOUBLE_CHO_COMBINE[prev+jamo]; if(comb){composing.cho=choIdx(comb);} else {committed+=CHO[composing.cho]; composing.cho=cIdx;}}
+    else if(composing.cho>=0&&composing.jung<0){const prev=CHO[composing.cho]; const comb=DC[prev+jamo]; if(comb){composing.cho=choIdx(comb);} else {committed+=CHO[composing.cho]; composing.cho=cIdx;}}
     else if(composing.jung>=0&&composing.jong==0){const ji=jongIdx(jamo); if(ji>0){composing.jong=ji;} else {const syl=makeSyllable(composing.cho,composing.jung,0); committed+=syl; composing={cho:cIdx,jung:-1,jong:0};}}
-    else if(composing.jong>0){const prevJ=JONG[composing.jong]; const comb=DOUBLE_JONG_COMBINE[prevJ+jamo]; if(comb){composing.jong=jongIdx(comb);} else {const syl=makeSyllable(composing.cho,composing.jung,composing.jong); committed+=syl; composing={cho:cIdx,jung:-1,jong:0};}}
+    else if(composing.jong>0){const prevJ=JONG[composing.jong]; const comb=DJOC[prevJ+jamo]; if(comb){composing.jong=jongIdx(comb);} else {const syl=makeSyllable(composing.cho,composing.jung,composing.jong); committed+=syl; composing={cho:cIdx,jung:-1,jong:0};}}
   } else {
     const vIdx=jungIdx(jamo);
     if(composing.cho<0){composing.cho=choIdx('ㅇ'); composing.jung=vIdx;}
     else if(composing.jung<0){composing.jung=vIdx;}
-    else if(composing.jong==0){const prevV=JUNG[composing.jung]; const comb=DOUBLE_JUNG_COMBINE[prevV+jamo]; if(comb){composing.jung=jungIdx(comb);} else {const syl=makeSyllable(composing.cho,composing.jung,0); committed+=syl; composing={cho:choIdx('ㅇ'),jung:vIdx,jong:0};}}
-    else {const jongChar=JONG[composing.jong]; let remainingJong=0; let nextChoChar=jongChar; if(DOUBLE_JONG_SPLIT[jongChar]){const parts=DOUBLE_JONG_SPLIT[jongChar]; remainingJong=jongIdx(parts[0]); nextChoChar=parts[1];} else {remainingJong=0; nextChoChar=jongChar;} const syl=makeSyllable(composing.cho,composing.jung,remainingJong); committed+=syl; composing={cho:choIdx(nextChoChar),jung:vIdx,jong:0};}
+    else if(composing.jong==0){const prevV=JUNG[composing.jung]; const comb=DJC[prevV+jamo]; if(comb){composing.jung=jungIdx(comb);} else {const syl=makeSyllable(composing.cho,composing.jung,0); committed+=syl; composing={cho:choIdx('ㅇ'),jung:vIdx,jong:0};}}
+    else {const jongChar=JONG[composing.jong]; let rem=0; let nextC=jongChar; if(DJS[jongChar]){const p=DJS[jongChar]; rem=jongIdx(p[0]); nextC=p[1];} else {rem=0; nextC=jongChar;} const syl=makeSyllable(composing.cho,composing.jung,rem); committed+=syl; composing={cho:choIdx(nextC),jung:vIdx,jong:0};}
   }
   updateInputField();
 }
-function delKey(){if(getComposingChar()){if(composing.jong>0){const jc=JONG[composing.jong]; if(DOUBLE_JONG_SPLIT[jc]){const first=DOUBLE_JONG_SPLIT[jc][0]; composing.jong=jongIdx(first);} else {composing.jong=0;}} else if(composing.jung>=0){const jChar=JUNG[composing.jung]; let found=false; for(const [k,v] of Object.entries(DOUBLE_JUNG_COMBINE)){if(v===jChar){composing.jung=jungIdx(k[0]); found=true; break;}} if(!found) composing.jung=-1;} else if(composing.cho>=0){const cChar=CHO[composing.cho]; let found=false; for(const [k,v] of Object.entries(DOUBLE_CHO_COMBINE)){if(v===cChar){composing.cho=choIdx(k[0]); found=true; break;}} if(!found) composing.cho=-1;}} else {if(committed.length>0) committed=committed.slice(0,-1);} updateInputField();}
+function delKey(){if(getComposingChar()){if(composing.jong>0){composing.jong=0;} else if(composing.jung>=0){composing.jung=-1;} else if(composing.cho>=0){composing.cho=-1;}} else {if(committed.length>0) committed=committed.slice(0,-1);} updateInputField();}
 function clearInput(){committed=''; composing={cho:-1,jung:-1,jong:0}; updateInputField();}
 function typeKey(k){if(currentLang==='kr'){if(k===' ') inputHangulClean(' '); else inputHangulClean(k);} else {commitComposing(); committed+=k; updateInputField();}}
 let currentLang='kr';
@@ -152,172 +139,92 @@ function buildKeypad(){
     const enter=document.createElement('button'); enter.textContent='Search'; enter.style.background='#00ff88'; enter.style.color='#000'; enter.style.gridColumn='span 4'; enter.onclick=()=>doSearch(); kp.appendChild(enter);
   }
 }
-function showKeypad(){document.getElementById('keypadWrap').style.display='flex'; document.getElementById('kbBtn').classList.add('active');}
-function hideKeypad(){document.getElementById('keypadWrap').style.display='none'; document.getElementById('kbBtn').classList.remove('active');}
-function toggleKeypad(){const w=document.getElementById('keypadWrap'); if(w.style.display==='none'||w.style.display===''){showKeypad(); document.getElementById('voiceHelp').style.display='none';} else {hideKeypad();}}
+function showKeypad(){document.getElementById('keypadWrap').style.display='flex';}
+function hideKeypad(){document.getElementById('keypadWrap').style.display='none';}
+function toggleKeypad(){const w=document.getElementById('keypadWrap'); w.style.display=(w.style.display==='none'||w.style.display==='')?'flex':'none';}
 
 let lastItems=[], focusedIndex=0, currentPage=0, isPlayer=false, isBigMode=false;
-const ITEMS_PER_PAGE = 4;
+const ITEMS_PER_PAGE=10;
 
-async function fetchTimeout(url,ms=6500){const c=new AbortController(); const t=setTimeout(()=>c.abort(),ms); try{const r=await fetch(url,{signal:c.signal}); clearTimeout(t); if(!r.ok) throw new Error(r.status); return await r.json();}catch(e){clearTimeout(t); throw e;}}
-async function searchPiped(q){for(let i=0;i<INSTANCES.length;i++){document.getElementById('info').textContent=`${i+1}/${INSTANCES.length}`; try{const d=await fetchTimeout(`${INSTANCES[i]}/search?q=${encodeURIComponent(q)}&filter=videos`,7000); if(d.items&&d.items.length) return {items:d.items, host:new URL(INSTANCES[i]).host};}catch(e){continue;}} throw new Error('all failed');}
+async function fetchTimeout(url,ms=7000){const c=new AbortController(); const t=setTimeout(()=>c.abort(),ms); try{const r=await fetch(url,{signal:c.signal}); clearTimeout(t); if(!r.ok) throw new Error(r.status); return await r.json();}catch(e){clearTimeout(t); throw e;}}
+async function searchPiped(q){
+  const INSTANCES=["https://pipedapi.kavin.rocks","https://api.piped.private.coffee","https://pipedapi.adminforge.de"];
+  for(let i=0;i<INSTANCES.length;i++){
+    document.getElementById('info').textContent=`${i+1}/${INSTANCES.length}`;
+    try{
+      const d=await fetchTimeout(`${INSTANCES[i]}/search?q=${encodeURIComponent(q)}&filter=videos`,8000);
+      if(d.items&&d.items.length) return {items:d.items, host:new URL(INSTANCES[i]).host};
+    }catch(e){continue;}
+  }
+  throw new Error('all failed');
+}
 
 function renderPage(){
-  const list=document.getElementById('list');
-  list.innerHTML='';
-  document.getElementById('player').style.display='none';
-  list.style.display='flex';
-  isPlayer=false; isBigMode=false;
-  document.getElementById('hud').classList.remove('big-mode');
-  
-  const start = currentPage * ITEMS_PER_PAGE;
-  const end = Math.min(start + ITEMS_PER_PAGE, lastItems.length);
-  const pageItems = lastItems.slice(start, end);
-  
-  pageItems.forEach((v,idx)=>{
-    const globalIdx = start + idx;
-    const id=v.url?.replace('/watch?v=','')||v.id||'';
-    const title=v.title||'No title';
-    const ch=v.uploaderName||v.author||'';
-    const thumb=v.thumbnail||`https://i.ytimg.com/vi/${id}/mqdefault.jpg`;
-    const div=document.createElement('div');
-    div.className='card'+(globalIdx===focusedIndex?' focused':'');
-    if(globalIdx!==focusedIndex) div.classList.add('dim');
-    div.id='card-'+globalIdx;
-    div.innerHTML=`<div class="num">${globalIdx+1}</div><img class="thumb" src="${thumb}"><div class="meta"><div class="title">${title}</div><div class="ch">${ch}</div></div>`;
-    div.onclick=()=>{ focusedIndex=globalIdx; playFocused(); };
-    list.appendChild(div);
-  });
-  
-  document.getElementById('pageInfo').textContent=`${currentPage+1}/${Math.ceil(lastItems.length/ITEMS_PER_PAGE)}`;
-  document.getElementById('count').textContent=lastItems.length+'개';
-  document.getElementById('statusText').textContent=`${focusedIndex+1}/${lastItems.length} - 밴드 ▲▼ - 🎤 음성검색 가능`;
+  const list=document.getElementById('list'); list.innerHTML=''; document.getElementById('player').style.display='none'; document.getElementById('pagination').style.display='flex'; list.style.display='flex'; isPlayer=false; isBigMode=false; document.getElementById('hud').classList.remove('big-mode');
+  const totalPages=Math.ceil(lastItems.length/ITEMS_PER_PAGE); const start=currentPage*ITEMS_PER_PAGE; const end=Math.min(start+ITEMS_PER_PAGE,lastItems.length);
+  for(let idx=start; idx<end; idx++){
+    const v=lastItems[idx]; const id=v.url?.replace('/watch?v=','')||v.id||''; const title=v.title||'No title'; const ch=v.uploaderName||v.author||''; const thumb=v.thumbnail||`https://i.ytimg.com/vi/${id}/mqdefault.jpg`;
+    const btn=document.createElement('button'); btn.className='card-btn'; btn.id='card-'+idx; btn.setAttribute('tabindex','0');
+    btn.innerHTML=`<div class="num">${idx+1}</div><img class="thumb" src="${thumb}" loading="lazy"><div class="meta"><div class="title">${title}</div><div class="ch">${ch}</div></div>`;
+    btn.addEventListener('click', ()=>{ focusedIndex=idx; playVideo(id); });
+    btn.addEventListener('focus', ()=>{ focusedIndex=idx; });
+    list.appendChild(btn);
+  }
+  document.getElementById('pageInfo').textContent=`${currentPage+1}/${totalPages} (${lastItems.length}개)`; document.getElementById('count').textContent=`${lastItems.length}개`; document.getElementById('statusText').textContent=`V19: ${lastItems.length}개 - ${currentPage+1}/${totalPages} 페이지`;
+  document.getElementById('prevBtn').disabled=currentPage===0; document.getElementById('nextBtn').disabled=currentPage>=totalPages-1;
+  setTimeout(()=>{ const first=document.getElementById('card-'+start); if(first) first.focus(); },100);
 }
+function changePage(dir){const totalPages=Math.ceil(lastItems.length/ITEMS_PER_PAGE); let newPage=currentPage+dir; if(newPage<0) newPage=0; if(newPage>=totalPages) newPage=totalPages-1; if(newPage===currentPage) return; currentPage=newPage; focusedIndex=currentPage*ITEMS_PER_PAGE; renderPage();}
 
-function moveFocus(dir){
-  let newIdx = focusedIndex + dir;
-  if(newIdx < 0) newIdx = 0;
-  if(newIdx >= lastItems.length) newIdx = lastItems.length-1;
-  if(newIdx === focusedIndex) return;
-  focusedIndex = newIdx;
-  const newPage = Math.floor(focusedIndex / ITEMS_PER_PAGE);
-  if(newPage !== currentPage){ currentPage = newPage; }
-  renderPage();
+function playVideo(id){
+  const list=document.getElementById('list'); list.style.display='none'; hideKeypad();
+  const player=document.getElementById('player'); player.style.display='flex'; isPlayer=true;
+  document.getElementById('pagination').style.display='none';
+  player.innerHTML=`<div class="controls"><button class="ctrl" tabindex="0" onclick="backToList()">← 목록 (Esc)</button><button class="ctrl big" tabindex="0" onclick="toggleBigMode()">⛶ 크게 - 영상만</button><button class="ctrl" tabindex="0" onclick="nextVideo(1)">다음 →</button></div><iframe id="ytFrame" src="https://www.youtube.com/embed/${id}?autoplay=1&playsinline=1&fs=1" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe><div class="controls"><button class="ctrl" tabindex="0" onclick="nextVideo(-1)">← 이전</button><button class="ctrl big" tabindex="0" onclick="backToList()">✕ 닫기</button><button class="ctrl exit" tabindex="0" onclick="toggleBigMode()">⛶ 크게/작게</button></div>`;
+  setTimeout(()=>{ const b=player.querySelector('button'); if(b) b.focus(); },100);
 }
-function nextPage(dir){
-  let newPage = currentPage + dir;
-  const maxPage = Math.ceil(lastItems.length / ITEMS_PER_PAGE) -1;
-  if(newPage < 0) newPage = 0;
-  if(newPage > maxPage) newPage = maxPage;
-  if(newPage === currentPage) return;
-  currentPage = newPage;
-  focusedIndex = currentPage * ITEMS_PER_PAGE;
-  renderPage();
-}
-function playFocused(){
-  const v = lastItems[focusedIndex];
-  if(!v) return;
-  const id=v.url?.replace('/watch?v=','')||v.id;
-  playVideo(id, v.title, focusedIndex);
-}
-function playVideo(id,title,idx){
-  const list=document.getElementById('list'); list.style.display='none';
-  hideKeypad();
-  const player=document.getElementById('player'); player.style.display='flex'; isPlayer=true; isBigMode=false;
-  document.getElementById('hud').classList.remove('big-mode');
-  player.innerHTML=`
-    <div class="controls">
-      <button class="ctrl" onclick="backToList()">← 목록</button>
-      <button class="ctrl big" onclick="toggleBigMode()">⛶ 크게</button>
-      <button class="ctrl" onclick="nextVideo(1)">다음 →</button>
-    </div>
-    <iframe id="yt" src="https://www.youtube.com/embed/${id}?autoplay=1&playsinline=1&enablejsapi=1" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>
-    <div class="controls">
-      <button class="ctrl" onclick="nextVideo(-1)">← 이전</button>
-      <button class="ctrl big" onclick="backToList()">✕ 닫기</button>
-      <button class="ctrl exit" onclick="toggleBigMode()">⛶ 크게</button>
-    </div>`;
-}
-function backToList(){document.getElementById('player').style.display='none'; document.getElementById('list').style.display='flex'; isPlayer=false; isBigMode=false; document.getElementById('hud').classList.remove('big-mode'); renderPage();}
-function nextVideo(dir){if(!lastItems.length) return; let ni=focusedIndex+dir; if(ni<0) ni=lastItems.length-1; if(ni>=lastItems.length) ni=0; focusedIndex=ni; currentPage=Math.floor(focusedIndex/ITEMS_PER_PAGE); const v=lastItems[ni]; const id=v.url?.replace('/watch?v=','')||v.id; playVideo(id,v.title,ni);}
-
+function backToList(){document.getElementById('player').style.display='none'; document.getElementById('list').style.display='flex'; document.getElementById('pagination').style.display='flex'; isPlayer=false; isBigMode=false; document.getElementById('hud').classList.remove('big-mode'); renderPage();}
+function nextVideo(dir){if(!lastItems.length) return; let ni=focusedIndex+dir; if(ni<0) ni=lastItems.length-1; if(ni>=lastItems.length) ni=0; focusedIndex=ni; currentPage=Math.floor(ni/ITEMS_PER_PAGE); const v=lastItems[ni]; const id=v.url?.replace('/watch?v=','')||v.id; playVideo(id);}
 function toggleBigMode(){
   const hud=document.getElementById('hud');
-  isBigMode = !isBigMode;
+  isBigMode=!isBigMode;
   if(isBigMode){
     hud.classList.add('big-mode');
-    document.getElementById('statusText').textContent='큰 화면 모드 - 뒤로가기(Escape)로 나가기';
+    document.getElementById('statusText').textContent='V19 영상만 모드 - Esc 또는 화면 탭으로 나가기';
+    // 3초 후 힌트 숨기기
+    setTimeout(()=>{ const hint=document.getElementById('tapHint'); if(hint) hint.style.display='none'; },4000);
   } else {
     hud.classList.remove('big-mode');
-    document.getElementById('statusText').textContent='일반 모드';
+    document.getElementById('statusText').textContent='V19 일반 모드';
+    document.getElementById('tapHint').style.display='block';
   }
 }
-
-// 음성 검색
-function startVoice(){
-  const voiceBtn=document.getElementById('voiceBtn');
-  const help=document.getElementById('voiceHelp');
-  
-  // Web Speech API 확인
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if(!SpeechRecognition){
-    help.style.display='block';
-    document.getElementById('statusText').textContent='안경 브라우저는 마이크가 막혀있음 - 핸드폰에서 🎤 사용';
-    // 3초 후 안내 숨김
-    setTimeout(()=>help.style.display='none', 5000);
-    return;
+function handleBigTap(){
+  // 크게 모드에서 화면 탭하면 버튼들 토글
+  const top=document.querySelector('.big-top');
+  const bottom=document.querySelector('.big-bottom');
+  if(top.style.opacity==='0' || top.style.opacity===''){
+    top.style.opacity='1'; bottom.style.opacity='1';
+    setTimeout(()=>{ top.style.opacity='0'; bottom.style.opacity='0'; },3000);
+  } else {
+    top.style.opacity='0'; bottom.style.opacity='0';
   }
-  
-  const recog = new SpeechRecognition();
-  recog.lang='ko-KR';
-  recog.interimResults=false;
-  recog.maxAlternatives=1;
-  
-  voiceBtn.classList.add('listening');
-  voiceBtn.textContent='🔴';
-  document.getElementById('statusText').textContent='듣는 중... 말해보세요!';
-  help.style.display='block';
-  help.innerHTML='<b style="color:#00ff88">🎤 듣는 중...</b> 예: "고양이", "아이유", "뉴스"';
-  
-  recog.onresult = (e)=>{
-    const text = e.results[0][0].transcript;
-    committed=text;
-    composing={cho:-1,jung:-1,jong:0};
-    updateInputField();
-    document.getElementById('statusText').textContent=`음성 인식: "${text}" - 검색 중...`;
-    setTimeout(()=>doSearch(), 300);
-  };
-  recog.onerror = (e)=>{
-    document.getElementById('statusText').textContent='음성 인식 실패: '+e.error;
-    help.innerHTML='<b style="color:#ff3b30">🎤 실패</b> 다시 시도하거나 키보드 사용<br>안경: "Hey Meta, search cats" 라고 말해보세요';
-  };
-  recog.onend = ()=>{
-    voiceBtn.classList.remove('listening');
-    voiceBtn.textContent='🎤';
-    setTimeout(()=>help.style.display='none', 3000);
-  };
-  recog.start();
 }
 
 document.addEventListener('keydown', e=>{
   if(e.key==='Escape'){
-    if(isBigMode){ toggleBigMode(); e.preventDefault(); return; }
-    if(isPlayer){ backToList(); e.preventDefault(); return; }
-    if(document.getElementById('keypadWrap').style.display!=='none'){ hideKeypad(); e.preventDefault(); return; }
+    if(isBigMode){ toggleBigMode(); return; }
+    if(isPlayer){ backToList(); return; }
+    if(document.getElementById('keypadWrap').style.display!=='none'){ hideKeypad(); return; }
   }
-  if(isPlayer) return;
-  if(document.getElementById('keypadWrap').style.display!=='none') return;
-  if(e.key==='ArrowDown' || e.key==='ArrowRight'){ moveFocus(1); e.preventDefault(); }
-  if(e.key==='ArrowUp' || e.key==='ArrowLeft'){ moveFocus(-1); e.preventDefault(); }
-  if(e.key==='Enter'){ playFocused(); e.preventDefault(); }
 });
 
 async function doSearch(){
   commitComposing();
   const q=document.getElementById('q').value.trim()||'고양이';
   hideKeypad();
-  document.getElementById('statusText').textContent='검색 중...';
-  document.getElementById('list').innerHTML='<div class="center"><b>검색 중...</b></div>';
+  document.getElementById('statusText').textContent='V19 검색: '+q;
+  document.getElementById('list').innerHTML='<div class="center"><b>V19 검색 중...</b><br>'+q+'</div>';
   document.getElementById('player').style.display='none'; document.getElementById('list').style.display='flex';
   try{
     const res=await searchPiped(q);
@@ -326,12 +233,12 @@ async function doSearch(){
     document.getElementById('info').textContent=res.host+' ✓';
     renderPage();
   }catch(e){
-    document.getElementById('list').innerHTML=`<div class="center"><b>검색 실패</b><button onclick="doSearch()" style="background:#00ff88;color:#000;border:0;padding:10px 20px;border-radius:10px;font-weight:900">재시도</button></div>`;
+    document.getElementById('list').innerHTML=`<div class="center"><b>검색 실패</b><br><button tabindex="0" onclick="doSearch()" style="background:#00ff88;color:#000;border:0;padding:10px 20px;border-radius:10px;font-weight:900">재시도</button></div>`;
   }
 }
 
 buildKeypad(); hideKeypad();
-setTimeout(()=>{ document.getElementById('q').value='고양이'; doSearch(); }, 600);
+setTimeout(()=>{ document.getElementById('q').value='고양이'; doSearch(); }, 500);
 </script>
 </body>
 </html>
